@@ -7,9 +7,9 @@ using System.Text;
 
 namespace RB.DAL.Repositories
 {
-    public class PhotosRepository : GenericRepository<Photos, Guid>
+    public class SocialNetsRepository : GenericRepository<SocialNets, Guid>
     {
-        public PhotosRepository(DbContext context) : base(context)
+        public SocialNetsRepository(DbContext context) : base(context)
         {
         }
     }
