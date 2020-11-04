@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BR.DAL.Common
+namespace RB.DAL.Common
 {
     public abstract class GenericRepository<T, TKey> : IGenericRepository<T, TKey> where T : class, new()
     {

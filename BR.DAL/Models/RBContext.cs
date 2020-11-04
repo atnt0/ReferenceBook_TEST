@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace BR.DAL.Models
+namespace RB.DAL.Models
 {
     public partial class RBContext : DbContext
     {

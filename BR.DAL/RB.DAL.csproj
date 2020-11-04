@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>RB.DAL</AssemblyName>
+    <RootNamespace>RB.DAL</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace BR.DAL.Common
+namespace RB.DAL.Common
 {
     public interface IGenericRepository<T, TKey> where T : class, new()
     {
