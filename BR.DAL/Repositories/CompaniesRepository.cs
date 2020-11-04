@@ -8,7 +8,7 @@ using System.Text;
 
 namespace RB.DAL.Repositories
 {
-    public class CompaniesRepository : GenericRepository<Companies, int>
+    public class CompaniesRepository : GenericRepository<Companies, Guid>
     {
         public CompaniesRepository(DbContext context) : base(context)
         {
