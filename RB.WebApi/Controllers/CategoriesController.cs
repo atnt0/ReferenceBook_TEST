@@ -20,14 +20,12 @@ namespace RB.WebApi.Controllers
             _context = context;
         }
 
-        // GET: api/Categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Categories>>> GetCategories()
         {
             return await _context.Categories.ToListAsync();
         }
 
-        // GET: api/Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Categories>> GetCategories(int id)
         {
@@ -41,7 +39,6 @@ namespace RB.WebApi.Controllers
             return categories;
         }
 
-        // PUT: api/Categories/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategories(int id, Categories categories)
         {
@@ -71,7 +68,6 @@ namespace RB.WebApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
         [HttpPost]
         public async Task<ActionResult<Categories>> PostCategories(Categories categories)
         {
@@ -81,7 +77,6 @@ namespace RB.WebApi.Controllers
             return CreatedAtAction("GetCategories", new { id = categories.CategoryId }, categories);
         }
 
-        // DELETE: api/Categories/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Categories>> DeleteCategories(int id)
         {
