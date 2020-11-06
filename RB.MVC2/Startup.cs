@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
-using RB.MVC.Data;
+using RB.MVC2.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FilmDB_DAL.Infrastructure;
 using Microsoft.AspNetCore.Http;
 
-namespace RB.MVC
+namespace RB.MVC2
 {
     public class Startup
     {
@@ -38,17 +38,10 @@ namespace RB.MVC
                .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews()
                          .AddSessionStateTempDataProvider();
-            services.AddSession();    
+            services.AddSession();
             services.AddRazorPages();
             services.AddSignalR();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
-
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-            //services.AddControllersWithViews();
-            //services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

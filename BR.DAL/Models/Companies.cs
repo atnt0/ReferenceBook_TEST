@@ -25,13 +25,19 @@ namespace RB.DAL.Models
         [StringLength(256)]
         public string CompanyName { get; set; }
         public Guid? ParentCompanyId { get; set; }
+        [StringLength(256)]
+        public string Director { get; set; }
         [StringLength(200)]
         public string DescriptionShort { get; set; }
         [StringLength(2000)]
         public string DescriptionFull { get; set; }
         [StringLength(256)]
         public string WebSite { get; set; }
+        public Guid? AddressId { get; set; }
 
+        [ForeignKey(nameof(AddressId))]
+        [InverseProperty(nameof(Addresses.Companies))]
+        public virtual Addresses Address { get; set; }
         [ForeignKey(nameof(ParentCompanyId))]
         [InverseProperty(nameof(Companies.InverseParentCompany))]
         public virtual Companies ParentCompany { get; set; }

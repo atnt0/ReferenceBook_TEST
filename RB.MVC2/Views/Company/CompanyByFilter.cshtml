@@ -1,0 +1,14 @@
+﻿@model IEnumerable<RB.DAL.Models.Companies>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div id="tr-@item.CompanyId" class="col-4">
+            <img src=" @(((Dictionary<Guid, String>)ViewBag.Photos)[item.CompanyId])" height="130" />
+            <div class="font-weight-bold"> @item.CompanyName</div>
+        </div>
+    }
+</div>

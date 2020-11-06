@@ -23,7 +23,13 @@ namespace RB.DAL.Repositories
                 .Include(p => p.Emails)
                 .Include(p => p.Phones)
                 .Include(p => p.Photos)
-                .Include(p => p.SocialNets);
+                .Include(p => p.SocialNets)
+                .Include(p => p.Address)
+                .ThenInclude(p => p.City)
+                //.Include(p => p.Address)
+                //.ThenInclude(p => p.Street)
+                .Include(p => p.ParentCompany);
+
         }
     }
 

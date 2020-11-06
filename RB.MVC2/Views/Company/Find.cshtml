@@ -1,0 +1,146 @@
+﻿@using RB.MVC.Models
+@model ViewModelCompanyFind
+@{
+    ViewData["Title"] = "Find";
+}
+
+<h1>Find</h1>
+
+
+<form id="form" asp-controller="Company" asp-action="Find">
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+
+                <div class="container-fluid">
+                    <div class="row">
+                        Manufacturer
+                        <div class="col-sm-12">
+                            @for (int i = 0; i < Model.SubCategorySelects.Count; i++)
+                            {
+                                <div>
+                                    @Html.HiddenFor(x => Model.SubCategorySelects[i].SubcategoryId)
+                                    @Html.CheckBoxFor(x => Model.SubCategorySelects[i].IsCheck)
+                                    @Html.DisplayFor(x => Model.SubCategorySelects[i].SubcategoryName)
+                                    @Html.HiddenFor(x => Model.SubCategorySelects[i].SubcategoryName)
+                                </div>
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        Category
+                        <div class="col-sm-12">
+                            @for (int i = 0; i < Model.CategorySelects.Count; i++)
+                            {
+                                <div>
+                                    @Html.HiddenFor(x => Model.CategorySelects[i].CategoryId)
+                                    @Html.CheckBoxFor(x => Model.CategorySelects[i].IsCheck)
+                                    @Html.DisplayFor(x => Model.CategorySelects[i].CategoryName)
+                                    @Html.HiddenFor(x => Model.CategorySelects[i].CategoryName)
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            @Html.EditorFor(t => t.CompanyName, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "form-control w-100",
+                                                                    placeholder = "Input part name goods"
+                                }
+                            })
+                        </div>
+                        <div class="col-sm-1">
+                            <button id="find" type="submit" class="btn btn-sm btn-warning">Find</button>
+                        </div>
+                        @*<div class="col-sm-2">
+                            @Html.ActionLink("Show Cart", "Index", "Cart", null, new { @class = "btn btn-sm btn-success" })
+                        </div>*@
+
+                    </div>
+                    <div class="row">
+                        <div id="comps" class="col-sm-12">
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+</form>
+
+
+
+@section Scripts
+{
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('#find').click(function (e) {
+                e.preventDefault();
+                let dataForm = $('#form').serialize();
+                $.ajax({
+                    url: "@Url.Action("CompanyByFilter", "Company")",
+                    type: 'POST',
+                    data: dataForm,
+                    success: function (data) {
+                        $('#comps').html(data);
+                    },
+                    error: function (data) {
+                        alert(data);
+
+                    }
+
+                });
+               @*$.ajax({
+                    url: "@Url.Action("Find", "Goods")",
+                    type: 'POST',
+                    data: dataForm,
+                    success: function (data) {
+                        if (data == "OK") {
+                            $('#goods').load("@Url.Action("GoodByFilter", "Goods")");
+                        }
+
+                    },
+                    error: function (data) {
+                        alert(data);
+
+                    }
+
+                });*@
+            });
+
+
+
+        });
+
+
+
+
+    </script>
+
+}

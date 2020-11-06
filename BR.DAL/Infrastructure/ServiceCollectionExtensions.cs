@@ -25,10 +25,13 @@ namespace FilmDB_DAL.Infrastructure
             services.AddScoped<IGenericRepository<Emails, Guid>, EmailsRepository>();
             services.AddScoped<IGenericRepository<Phones, Guid>, PhonesRepository>();
             services.AddScoped<IGenericRepository<Photos, Guid>, PhotosRepository>();
-
             services.AddScoped<IGenericRepository<SocialNets, Guid>, SocialNetsRepository>();
             services.AddScoped<IGenericRepository<Subcategories, int>, SubcategoriesRepository>();
             services.AddScoped<IGenericRepository<UserCompanies, Guid>, UserCompaniesRepository>();
+            services.AddScoped<IGenericRepository<Cities, Guid>, CitiesRepository>();
+            services.AddScoped<IGenericRepository<Addresses, Guid>, AdressesRepository>();
+            services.AddScoped<IGenericRepository<Streets, Guid>, StreetsRepository>();
+
             services.AddScoped<DbContext, RBContext>();
 
             string connection = configuration.GetConnectionString("DefaultConnection");
