@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RB.DAL.Models
+namespace RB_DAL.Models
 {
     public partial class Phones
     {
         [Key]
-        public Guid PhonesId { get; set; }
-        public Guid CompanyId { get; set; }
+        public Guid PhoneId { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? CreatedOn { get; set; }
+        public Guid? CompanyId { get; set; }
         [Required]
         [StringLength(13)]
         public string PhoneNumber { get; set; }

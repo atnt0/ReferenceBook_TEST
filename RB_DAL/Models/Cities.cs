@@ -3,22 +3,25 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RB.DAL.Models
+namespace RB_DAL.Models
 {
-    public partial class Streets
+    public partial class Cities
     {
-        public Streets()
+        public Cities()
         {
             Addresses = new HashSet<Addresses>();
+            ZipCodes = new HashSet<ZipCodes>();
         }
 
         [Key]
-        public Guid StreetId { get; set; }
+        public Guid CityId { get; set; }
         [Required]
         [StringLength(150)]
-        public string StreetName { get; set; }
+        public string CityName { get; set; }
 
-        [InverseProperty("Street")]
+        [InverseProperty("City")]
         public virtual ICollection<Addresses> Addresses { get; set; }
+        [InverseProperty("City")]
+        public virtual ICollection<ZipCodes> ZipCodes { get; set; }
     }
 }

@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RB.DAL.Models
+namespace RB_DAL.Models
 {
-    public partial class CompanyCategories
+    public partial class CompaniesCategories
     {
         [Key]
-        [Column("CompanyCategories")]
-        public Guid CompanyCategories1 { get; set; }
-        public Guid CompanyId { get; set; }
-        public int CategoryId { get; set; }
+        public Guid CompanyCategoryId { get; set; }
+        public Guid? CompanyId { get; set; }
+        public int? CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
-        [InverseProperty(nameof(Categories.CompanyCategories))]
+        [InverseProperty(nameof(Categories.CompaniesCategories))]
         public virtual Categories Category { get; set; }
         [ForeignKey(nameof(CompanyId))]
-        [InverseProperty(nameof(Companies.CompanyCategories))]
+        [InverseProperty(nameof(Companies.CompaniesCategories))]
         public virtual Companies Company { get; set; }
     }
 }

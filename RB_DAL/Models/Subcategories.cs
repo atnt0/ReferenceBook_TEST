@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RB.DAL.Models
+namespace RB_DAL.Models
 {
     public partial class Subcategories
     {
         public Subcategories()
         {
-            CompanySubcategories = new HashSet<CompanySubcategories>();
+            CompaniesSubcategories = new HashSet<CompaniesSubcategories>();
         }
 
         [Key]
@@ -19,6 +19,6 @@ namespace RB.DAL.Models
         public string SubcategoryName { get; set; }
 
         [InverseProperty("Subcategory")]
-        public virtual ICollection<CompanySubcategories> CompanySubcategories { get; set; }
+        public virtual ICollection<CompaniesSubcategories> CompaniesSubcategories { get; set; }
     }
 }

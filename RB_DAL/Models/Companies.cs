@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RB.DAL.Models
+namespace RB_DAL.Models
 {
     public partial class Companies
     {
         public Companies()
         {
-            CompanyCategories = new HashSet<CompanyCategories>();
-            CompanySubcategories = new HashSet<CompanySubcategories>();
+            CompaniesCategories = new HashSet<CompaniesCategories>();
+            CompaniesSubcategories = new HashSet<CompaniesSubcategories>();
             Emails = new HashSet<Emails>();
             InverseParentCompany = new HashSet<Companies>();
             Phones = new HashSet<Phones>();
             Photos = new HashSet<Photos>();
             SocialNets = new HashSet<SocialNets>();
-            UserCompanies = new HashSet<UserCompanies>();
+            UsersCompanies = new HashSet<UsersCompanies>();
         }
 
         [Key]
         public Guid CompanyId { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? CreatedOn { get; set; }
         [Required]
         [StringLength(256)]
         public string CompanyName { get; set; }
         public Guid? ParentCompanyId { get; set; }
+        [Required]
         [StringLength(256)]
         public string Director { get; set; }
         [StringLength(200)]
@@ -42,9 +45,9 @@ namespace RB.DAL.Models
         [InverseProperty(nameof(Companies.InverseParentCompany))]
         public virtual Companies ParentCompany { get; set; }
         [InverseProperty("Company")]
-        public virtual ICollection<CompanyCategories> CompanyCategories { get; set; }
+        public virtual ICollection<CompaniesCategories> CompaniesCategories { get; set; }
         [InverseProperty("Company")]
-        public virtual ICollection<CompanySubcategories> CompanySubcategories { get; set; }
+        public virtual ICollection<CompaniesSubcategories> CompaniesSubcategories { get; set; }
         [InverseProperty("Company")]
         public virtual ICollection<Emails> Emails { get; set; }
         [InverseProperty(nameof(Companies.ParentCompany))]
@@ -56,6 +59,6 @@ namespace RB.DAL.Models
         [InverseProperty("Company")]
         public virtual ICollection<SocialNets> SocialNets { get; set; }
         [InverseProperty("Company")]
-        public virtual ICollection<UserCompanies> UserCompanies { get; set; }
+        public virtual ICollection<UsersCompanies> UsersCompanies { get; set; }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RB.DAL.Common;
-using RB.DAL.Models;
 using RB.DAL.Repositories;
 using RB.MVC.Models;
+using RB_DAL.Models;
 //using RB.MVC.Models;
 
 namespace RB.MVC.Controllers
@@ -20,11 +20,11 @@ namespace RB.MVC.Controllers
 
         IGenericRepository<Categories, int> categories;
         IGenericRepository<Subcategories, int> subcategories;
-        IGenericRepository<CompanyCategories, Guid> compcat;//категория-кампания
-        IGenericRepository<CompanySubcategories, Guid> compSubcat;
+        IGenericRepository<CompaniesCategories, Guid> compcat;//категория-кампания
+        IGenericRepository<CompaniesSubcategories, Guid> compSubcat;
         public CompanyController(IGenericRepository<Companies, Guid> companies, IGenericRepository<Photos, Guid> photos, IGenericRepository<Categories, int> categories,
-            IGenericRepository<Subcategories, int> subcategories, IGenericRepository<CompanyCategories, Guid> compcat,
-           IGenericRepository<CompanySubcategories, Guid> compSubcat)
+            IGenericRepository<Subcategories, int> subcategories, IGenericRepository<CompaniesCategories, Guid> compcat,
+           IGenericRepository<CompaniesSubcategories, Guid> compSubcat)
         {
             this.companies = companies;
             this.categories = categories;
@@ -36,7 +36,7 @@ namespace RB.MVC.Controllers
         public IActionResult Index()
         {
             var model = companies.GetAll();
-
+            var aa = compSubcat.GetAll();
             //System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             //bool c = currentUser.IsInRole("Admin");
             //ViewBag.role = c;
@@ -50,7 +50,7 @@ namespace RB.MVC.Controllers
                 var a = item.CompanyId;
                 var photostmp = photos.FindBy(p => p.CompanyId == a);
                 string path = @"\Files\";
-                if (photostmp.Count() != 0) photoS.Add(a, $"{path}{photostmp.First().Photo}");
+                if (photostmp.Count() != 0) photoS.Add(a, $"{path}{photostmp.First().FileName}");
                 else photoS.Add(a, $"{path}Default.jpg");
             }
             ViewBag.Photos = photoS;
@@ -61,7 +61,7 @@ namespace RB.MVC.Controllers
 
         public IActionResult Find()
         {
-            var model = new ViewModelCompanyFind(categories, subcategories, compcat, compSubcat);
+            var model = new ViewModelCompanyFind(categories, subcategories, compcat, compSubcat, companies);
             return View(model);
         }
 
@@ -89,7 +89,7 @@ namespace RB.MVC.Controllers
                 var a = item.CompanyId;
                 var photostmp = photos.FindBy(p => p.CompanyId == a);
                 string path = @"\Files\";
-                if (photostmp.Count() != 0) photoS.Add(a, $"{path}{photostmp.First().Photo}");
+                if (photostmp.Count() != 0) photoS.Add(a, $"{path}{photostmp.First().FileName}");
                 else photoS.Add(a, $"{path}Default.jpg");
             }
             ViewBag.Photos = photoS;

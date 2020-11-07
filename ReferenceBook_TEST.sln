@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RB.DAL", "BR.DAL\RB.DAL.csproj", "{5C69BFC4-385B-4461-9C4A-536CC2EA14F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RB.DAL1", "BR.DAL\RB.DAL1.csproj", "{5C69BFC4-385B-4461-9C4A-536CC2EA14F5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RB.MVC2", "RB.MVC2\RB.MVC2.csproj", "{5E7825F4-7D1B-45C2-BC45-5A714C27C198}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RB.DAL", "RB_DAL\RB.DAL.csproj", "{302A9840-38C8-4FA5-BF35-864D244615D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5E7825F4-7D1B-45C2-BC45-5A714C27C198}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E7825F4-7D1B-45C2-BC45-5A714C27C198}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E7825F4-7D1B-45C2-BC45-5A714C27C198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{302A9840-38C8-4FA5-BF35-864D244615D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{302A9840-38C8-4FA5-BF35-864D244615D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{302A9840-38C8-4FA5-BF35-864D244615D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{302A9840-38C8-4FA5-BF35-864D244615D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

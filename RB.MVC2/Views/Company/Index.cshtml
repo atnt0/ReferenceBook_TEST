@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RB.DAL.Models.Companies>
+﻿@model IEnumerable<RB_DAL.Models.Companies>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,14 +16,16 @@
     <div id="tr-@item.CompanyId" class="col-4">
         <img src=" @(((Dictionary<Guid, String>)ViewBag.Photos)[item.CompanyId])" height="130" />
         <div class="font-weight-bold"> @item.CompanyName</div>
-        @foreach (var item2 in item.CompanyCategories)
+        <p class="font-weight-bold"> Категории </p>
+        @foreach (var item2 in item.CompaniesCategories)
         {
             <p> @item2.Category.CategoryName</p>
         }
-        <p class="font-weight-bold"> В ролях </p>
-        @foreach (var item2 in item.CompanySubcategories)
+        <p class="font-weight-bold"> Субкатегории </p>
+        @foreach (var item2 in item.CompaniesSubcategories)
         {
-    <p> @item2.Subcategory.SubcategoryName</p>
+            <p>fffff @item2.Subcategory.SubcategoryId</p>
+            <p>fffff @item2.Subcategory.SubcategoryName</p>
         }
         @*<div class="font-weight-bold"> @item.Address.Street.StreetName</div>*@
         @*<div>@item.FilmInfo</div>
