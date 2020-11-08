@@ -39,7 +39,8 @@ namespace FilmDB_DAL.Infrastructure
 
             string connection = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<RBContext>(options =>
-                options.UseSqlServer(connection));
+                options.UseSqlServer(connection)
+                .UseLazyLoadingProxies());
             return services;
         }
     }

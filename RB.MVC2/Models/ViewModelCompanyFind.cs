@@ -22,7 +22,6 @@ namespace RB.MVC.Models
         public string SubcategoryName { get; set; }
         public bool IsCheck { get; set; }
     }
-    //[Serializable]
     public class ViewModelCompanyFind
     {
         IGenericRepository<Categories, int> categories;
@@ -51,116 +50,50 @@ namespace RB.MVC.Models
                 .Select(c => new CategoryCheck
                 { CategoryId = c.CategoryId, CategoryName = c.CategoryName }).ToList();
         }
-        //!!![NonSerialized]
         public Expression<Func<Companies, bool>> Predicate()
         {
-
             var predicate = PredicateBuilder.New<Companies>(true);
+            var predicateAllData = PredicateBuilder.New<Companies>(true);
 
-            if (!string.IsNullOrEmpty(CompanyName))
-                predicate = predicate.And(g => g.CompanyName.Contains(CompanyName));
+            if (!string.IsNullOrEmpty(CompanyName)) {
+                //  predicate = predicate.And(g => g.CompanyName.Contains(CompanyName));
+                var a = predicateAllData
+                     .And(g => g.Emails.Any(c => c.Email.Contains(CompanyName)) || g.CompanyName.Contains(CompanyName)
+                     || g.Director.Contains(CompanyName) || g.Address.City.CityName.Contains(CompanyName)
+                     || g.Address.Street.StreetName.Contains(CompanyName));
+                    //.And(g => g.CompanyName.Contains(CompanyName))
+                    //.And(g => g.Address.City.CityName.Contains(CompanyName))
+                    //.And(g => g.Emails.Any(c => c.Email.Contains(CompanyName)));
+                predicate = predicate.And(predicateAllData);
+            }
+            //  predicate = predicate.And(g => g.Address..Contains(CompanyName));
             if (CategorySelects.Select(c => c.IsCheck).Count() > 0)
             {
                 var predicateCategory = PredicateBuilder.New<Companies>(true);
-                //foreach (var item in CategorySelects)
-                //{
-                //    //var a = compcat.FindBy(p => p.CategoryId == item.CategoryId).ToList();
-                //    //foreach (var item2 in a)
-                //    //{
-
-
-                //    //    if (item.IsCheck)
-                //    //    {
-                //    //        var aerg = predicateCategory
-                //    //                   .Or(c => c.CompanyId == item2.CompanyId);
-                //            //var aerg = predicateCategory
-                //            //    .Or(c =>
-                //            //        c.CompanyCategories.Contains(
-                //            //            (compcat.FindBy(p =>
-                //            //                 p.CategoryId == item.CategoryId
-                //            //            ))
-                //            //            .ToList().FirstOrDefault())
-                //            //    );
-                //        }
-                //    }
-                //}
-
-                //foreach (var item in CategorySelects)
-                //{
-                //    if (item.IsCheck)
-                //    {
-
-                //        //var aerg = predicateCategory
-                //        //    .Or(c => c.CompanyCategories.First().CategoryId == item.CategoryId);
-
-
-
-                //    }
-                //}
-
-                predicate = predicate.And(predicateCategory);
+                foreach (var item in CategorySelects)
+                {
+                    if (item.IsCheck)
+                    {
+                        var aerg = predicateCategory
+                            .Or(c => c.CompaniesCategories.Any(c => c.CategoryId == item.CategoryId));
+                    }
+                } 
+                    predicate = predicate.And(predicateCategory);
             }
-
-            //var expr3 = expr1.And(expr2);
-            //var queryBoth = myEntityManager.Customers.Where(expr3)
-
             if (SubCategorySelects.Select(c => c.IsCheck).Count() > 0)
             {
                 var predicateSubCategory = PredicateBuilder.New<Companies>(true);
                 foreach (var item in SubCategorySelects)
                 {
-
                     if (item.IsCheck)
                     {
-
                         var aerg = predicateSubCategory
-                            .Or(c => c.CompaniesSubcategories.Any( c=>c.SubcategoryId == item.SubcategoryId));
-
-
-
+                            .Or(c => c.CompaniesSubcategories.Any(c => c.SubcategoryId == item.SubcategoryId));
                     }
-                    predicate = predicate.And(predicateSubCategory);
-                    //     if (item.IsCheck)
-                    //     {
-                    //     int b = item.SubcategoryId;
-                    //     var c = compcat.GetAll();
-                    //     var a = compSubcat.GetAll();
-                    ////     var a = compSubcat.GetAll().Where(p => p.SubcategoryId == b).ToList();
-                    //     foreach (var item2 in a)
-                    //     {
-                    //         var aerg = predicateSubCategory
-                    //                    .Or(c => c.CompanyId == item2.CompanyId);
-                    //         //var aerg = predicateCategory
-                    //         //    .Or(c =>
-                    //         //        c.CompanyCategories.Contains(
-                    //         //            (compcat.FindBy(p =>
-                    //         //                 p.CategoryId == item.CategoryId
-                    //         //            ))
-                    //         //            .ToList().FirstOrDefault())
-                    //         //    );
-                    //     }
-                    // }
                 }
-                //foreach (var item in SubCategorySelects)
-                //{
-                //    if (item.IsCheck)
-                //    {
-                //        var aerg = predicateSubCategory
-                //            .Or(c =>
-                //                c.CompanySubcategories.Contains(
-                //                    (compSubcat.FindBy(p =>
-                //                         p.SubcategoryId == item.SubcategoryId && p.CompanyId == c.CompanyId
-                //                    ))
-                //                    .ToList().FirstOrDefault())
-                //            );
-                //    }
-                //}
-               
-            }
-
+               predicate = predicate.And(predicateSubCategory);
+            }       
             return predicate;
-
         }
-
     }
 }

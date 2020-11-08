@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FilmDB_DAL.Infrastructure;
 using Microsoft.AspNetCore.Http;
+using FilmDB_MVC.Data;
 
 namespace RB.MVC2
 {
@@ -45,8 +46,12 @@ namespace RB.MVC2
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+            RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
         {
+            ApplicationDbInitializer.SeedRoles(roleManager);
+            ApplicationDbInitializer.SeedUsers(userManager);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,7 +70,7 @@ namespace RB.MVC2
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

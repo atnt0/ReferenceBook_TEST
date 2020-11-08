@@ -26,8 +26,8 @@ namespace RB.DAL.Repositories
                 .Include(p => p.SocialNets)
                 .Include(p => p.Address)
                 .ThenInclude(p => p.City)
-                //.Include(p => p.Address)
-                //.ThenInclude(p => p.Street)
+                .Include(p => p.Address)
+                .ThenInclude(p => p.Street)
                 .Include(p => p.ParentCompany);
 
         }
