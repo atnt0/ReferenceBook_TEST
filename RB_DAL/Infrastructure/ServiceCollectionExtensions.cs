@@ -9,6 +9,7 @@ using RB_DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using RB_DAL.Models;
 
 namespace FilmDB_DAL.Infrastructure
 {
