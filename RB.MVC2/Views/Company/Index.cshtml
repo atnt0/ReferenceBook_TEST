@@ -39,9 +39,19 @@
         <p class="font-weight-bold"> Director </p>
         <p>@item.Director</p>
         <p class="font-weight-bold"> Adress </p>
-        <p>Город: @item.Address?.City?.CityName  Улица: @item.Address?.Street?.StreetName @item.Address?.House</p> 
+        <p>Город: @item.Address?.City?.CityName  Улица: @item.Address?.Street?.StreetName @item.Address?.House</p>
         <p class="font-weight-bold"> fffff @item.Popularity </p>
-    @*Улица: @item.Address?.Street?.StreetName @item.Address?.House?</p>*@
+        <a asp-action="Edit" asp-route-id="@item.CompanyId" class="btn btn-sm btn-success">Редактировать</a>
+        @if (item.AddressId != null)
+        {
+            <a asp-action="Index" asp-controller="Address" asp-route-id="@item.CompanyId" class="btn btn-sm btn-success">Адрес</a>
+        }
+        else
+        {
+            @*@TempData["CompanyId"]=item.CompanyId;*@
+            <a asp-action="Create" asp-controller="Address" asp-route-id="@item.CompanyId" class="btn btn-sm btn-success">Добавить адрес</a>
+        }
+        @*Улица: @item.Address?.Street?.StreetName @item.Address?.House?</p>*@
 
 
         @*<div class="font-weight-bold"> @item.Address.Street.StreetName</div>*@

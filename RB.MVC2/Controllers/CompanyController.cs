@@ -57,6 +57,26 @@ namespace RB.MVC.Controllers
             return View(model);
         }
 
+        public ActionResult Edit(Guid id)
+        {
+            Companies company = id == null ? new Companies() : companies.Get(id);
+            return View(company);
+        }
+        [HttpPost]
+        public ActionResult Edit(Companies company)
+        {
+            if (ModelState.IsValid)
+            {
+                companies.Update(company);
+                companies.Save();
+                return RedirectToAction("Index");
+            }
+            return View(company);
+        }
+
+
+
+
 
 
         public IActionResult Find()
