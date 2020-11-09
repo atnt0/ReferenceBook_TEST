@@ -1,0 +1,161 @@
+﻿@model IEnumerable<RB_DAL.Models.Categories>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <button id="createNewBtn" class="btn btn-primary">Create New</button>
+
+    @*<a asp-action="Create">Create New</a>*@
+</p>
+<div class="row"><div id="createNew" class="col-12"></div></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th >
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="empFname">
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-info">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+		$('#createNewBtn').click(function () {
+			$.get('@Url.Action("Create")', function (data) {
+				$('#createNew').html(data);
+				$('#createNewBtn').prop('disabled', true);
+				$('#newFname').focus();
+				$('#CanselNewEmp').click(function () {
+					$('#createNew').empty();
+					$('#createNewBtn').prop('disabled', false);
+				});
+				$('#CreateNewEmp').click(function () {
+					let norm = 0;
+					let fname = $('#newFname').val();
+				//	console.log(fname);
+					if (fname.length < 3 || fname.length > 256) {
+						$('#newFname').css('border', '2px solid #f00');
+						norm++;
+					} else { $('#newFname').removeAttr('style'); }
+
+					if (norm == 0) {
+						//let formData = new FormData();
+                        //formData.append('CategoryName', fname);
+
+                        //console.log('fname', fname);
+                        //console.log('formData', formData);
+
+                        try {
+							$.ajax({
+								url: '@Url.Action("CreateNewCat")',
+								type: 'post',
+								//data: formData,
+								data: {
+                                    categoryName: fname
+								},
+								success: function (newdata) {
+									$('#CanselNewEmp').click();
+									$('tbody').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+					}
+				});
+			});
+		});
+		$('table').on('click.edit', '.editEmp', function (e) {
+			e.preventDefault();
+			$('#CanselNewEmp').click();
+			$('#empCancel').click();
+			let id = $(this).attr('data-id');
+			let trtmp = $(this).closest('tr').html();
+			let tr = $(this).closest('tr');
+			let fname = tr.children('.empFname').text();
+			let lname = tr.children('.empLname').text();
+			let bday = tr.children('.empBday').text();
+			let inn = Number(tr.children('.empInn').text());
+			console.log(inn);
+			$.ajax({
+				url: '@Url.Action("Edit")',
+				type: 'get',
+				data: {
+					id: id,
+					fname: fname,
+					lname: lname,
+					bday: bday,
+					inn: inn
+				},
+				success: function (data) {
+					tr.html(data);
+					$('#empCancel').click(function () {
+						tr.html(trtmp);
+					});
+					$('#empSave').click(function () {
+						let norm = 0;
+						let fname = $('#newFname').val();
+						let lname = $('#newLname').val();
+						let bday = $('#newBday').val();
+						let inn = $('#newInn').val();
+						if (fname.length < 2 || fname.length > 64) {
+							$('#newFname').css('border', '2px solid #f00');
+							norm++;
+						} else { $('#newFname').removeAttr('style'); }
+						if (lname.length < 2 || lname.length > 64) {
+							$('#newLname').css('border', '2px solid #f00');
+							norm++;
+						} else { $('#newLname').removeAttr('style'); }
+						if (bday.length != 10) {
+							$('#newBday').css('border', '2px solid #f00');
+							norm++;
+						} else { $('#newBday').removeAttr('style'); }
+						if (norm == 0) {
+							$.post(
+								'@Url.Action("Save")',
+								{
+									id: id,
+									fname: fname,
+									lname: lname,
+									bday: bday,
+									inn: inn
+								},
+								function (data) {
+									tr.html(data);
+								}
+							);
+						}
+					});
+				}
+			});
+		});
+		$('table').on('click.delete', '.deleteEmp', function (e) {
+			e.preventDefault();
+			let id = $(this).attr('data-id');
+			let tr = $(this).closest('tr');
+			$.post('@Url.Action("DeleteEmp")', { id: id }, function (data) {
+				if (data) {
+					tr.remove();
+				}
+			});
+		});
+    </script>
+}

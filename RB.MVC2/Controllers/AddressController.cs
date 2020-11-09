@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -44,6 +45,14 @@ namespace RB.MVC2.Controllers
             return View(address);
         }
 
+        public ActionResult SelectZip(Guid id)
+        {
+            var zip = zipCodes.FindBy(p => p.CityId == id);
+           // var a = JsonSerializer.Serialize(zip);
+            return PartialView(zip);
+        }
+
+
         [HttpPost]
         public ActionResult Edit(Addresses address)
         {
@@ -58,11 +67,55 @@ namespace RB.MVC2.Controllers
                 //  address.Companies.Add
                 //  companies.Update(comp);
                 if (address.AddressId == Guid.Empty)
-                address.AddressId =  Guid.NewGuid();
-                adresses.Update(address);
-                adresses.Save();
-              
-                return RedirectToAction("Index", new { id = CompId });
+                {
+                 //   address.AddressId = "";
+                    // address.AddressId = Guid.NewGuid();
+                    adresses.Create(address);
+                    var a = adresses.GetAll();
+                    adresses.Save();
+
+                    return RedirectToAction("Index", new { id = CompId });
+                }
+            }
+            return View(address);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Addresses address)
+        {
+            if (ModelState.IsValid)
+            {
+                Guid CompId = (Guid)TempData["CompanyId"];
+
+                if (address.AddressId == Guid.Empty)
+                {
+                    //var b = new Addresses()
+                    //{
+                    //    AddressId = Guid.NewGuid(),
+                    //    ZipCodeId = new Guid("C7C17E8E-6DA5-43F0-BB6C-C117C1BC08BA"),
+                    //    CityId = new Guid("F07714C4-187A-4382-8E5B-47C33F0917B2"),
+                    //    StreetId = new Guid("6C31603C-7955-4B21-A322-D0ED468861FD"),
+                    //    House = "4",
+                    //    Longitude = 65m,
+                    //    Latitude = 56m,
+                    //    Block = "56",
+                    //    Apartment = "67"
+                    //};
+                    //   address.AddressId = "";
+                     address.AddressId = Guid.NewGuid();
+                    adresses.Create(address);
+                  //  var a = adresses.GetAll();
+                    adresses.Save();
+                    var comp = companies.Get(CompId);
+                    if (comp.AddressId == null)
+                    {
+                        comp.AddressId = address.AddressId;
+                    }
+                   // address.companies.add
+                  companies.Update(comp);
+                    companies.Save();
+                    return RedirectToAction("Index", new { id = CompId });
+                }
             }
             return View(address);
         }

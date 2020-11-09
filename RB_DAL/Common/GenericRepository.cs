@@ -18,7 +18,7 @@ namespace RB.DAL.Common
         }
         public void Create(T obj)
         {
-            dbSet.Update(obj);
+            dbSet.Add(obj);
         }
 
         public void Update(T obj)
