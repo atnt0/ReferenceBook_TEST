@@ -16,6 +16,5 @@ namespace RB.DAL.Common
         void Update(T obj);
         void Delete(TKey id);
         void Save();
-        Companies Get(int id);
     }
 }

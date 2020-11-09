@@ -13,7 +13,7 @@ namespace RB.WebApi.Controllers
     [ApiController]
     public class CompaniesFindController : ControllerBase
     {
-        IGenericRepository<Companies, Guid> companies;
+        //IGenericRepository<Companies, Guid> companies;
         private readonly RBContext _context;
 
         public CompaniesFindController(RBContext context)

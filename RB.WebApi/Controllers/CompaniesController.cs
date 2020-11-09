@@ -14,7 +14,7 @@ namespace RB.WebApi.Controllers
     [ApiController]
     public class CompaniesController : ControllerBase
     {
-        IGenericRepository<Companies, Guid> companies;
+        readonly IGenericRepository<Companies, Guid> companies;
 
         public CompaniesController(IGenericRepository<Companies, Guid> companies)
         {
@@ -29,7 +29,7 @@ namespace RB.WebApi.Controllers
                 var collection = companies.GetAll();
                 return Ok(collection);
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 return StatusCode(500, "Server Error");
             }
@@ -47,7 +47,7 @@ namespace RB.WebApi.Controllers
                 }
                 return Ok(comp);
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 return StatusCode(500, "Server Error");
             }
