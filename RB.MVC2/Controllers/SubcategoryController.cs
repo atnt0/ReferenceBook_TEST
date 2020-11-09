@@ -8,16 +8,16 @@ using RB_DAL.Models;
 
 namespace RB.MVC2.Controllers
 {
-    public class CategoryController : Controller
+    public class SubcategoryController : Controller
     {
-        IGenericRepository<Categories, int> categories;
-        public CategoryController(IGenericRepository<Categories, int> categories)
+        IGenericRepository<Subcategories, int> subCategories;
+        public SubcategoryController(IGenericRepository<Subcategories, int> subCategories)
         {
-            this.categories = categories;
+            this.subCategories = subCategories;
         }
         public IActionResult Index()
         {
-            var model = categories.GetAll();
+            var model = subCategories.GetAll();
             return View(model);
         }
 
@@ -26,17 +26,17 @@ namespace RB.MVC2.Controllers
             return PartialView();
         }
         [HttpPost]
-        public ActionResult CreateNewCat(string categoryName)
+        public ActionResult CreateNewCat(string subcategoryName)
         {
-            Categories category = new Categories() { CategoryName = categoryName, CategoryId = 0 };
-            categories.Create(category);
-            categories.Save();
-            return PartialView(category);
+            Subcategories subcategory = new Subcategories() { SubcategoryName = subcategoryName, SubcategoryId = 0 };
+            subCategories.Create(subcategory);
+            subCategories.Save();
+            return PartialView(subcategory);
         }
 
         public ActionResult Edit(int id)
-        {        
-            var model = categories.Get(id);       
+        {
+            var model = subCategories.Get(id);
             return PartialView(model);
         }
 
@@ -44,19 +44,19 @@ namespace RB.MVC2.Controllers
         public ActionResult Save(string id, string fname)
         {
             int id1 = Convert.ToInt32(id);
-            var model = categories.Get(id1);
-            model.CategoryName = fname;
-            categories.Update(model);
-            categories.Save();   
+            var model = subCategories.Get(id1);
+            model.SubcategoryName = fname;
+            subCategories.Update(model);
+            subCategories.Save();
             return PartialView(model);
         }
         [HttpPost]
         public ActionResult Delete(int id)
-        {        
+        {
             try
             {
-                categories.Delete(id);
-                categories.Save();
+                subCategories.Delete(id);
+                subCategories.Save();
                 return Json("OK");
             }
             catch (Exception exc)
@@ -64,6 +64,5 @@ namespace RB.MVC2.Controllers
                 return Json("Bad");
             }
         }
-
     }
 }
