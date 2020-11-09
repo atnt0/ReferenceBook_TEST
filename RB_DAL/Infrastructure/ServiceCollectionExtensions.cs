@@ -4,14 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RB.DAL.Common;
 using RB.DAL.Repositories;
-using RB_DAL.Models;
-using RB_DAL.Repositories;
+using RB.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 
-namespace RB_DAL.Infrastructure
+namespace RB.DAL.Infrastructure
 {
     public static class ServiceCollectionExtensions
     {
