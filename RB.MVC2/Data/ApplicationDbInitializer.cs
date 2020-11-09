@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FilmDB_MVC.Data
+namespace RB_MVC2.Data
 {
     public static class ApplicationDbInitializer
     {

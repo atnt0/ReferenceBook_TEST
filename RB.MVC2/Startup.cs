@@ -12,9 +12,9 @@ using RB.MVC2.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using FilmDB_DAL.Infrastructure;
+using RB_DAL.Infrastructure;
 using Microsoft.AspNetCore.Http;
-using FilmDB_MVC.Data;
+using RB_MVC2.Data;
 
 namespace RB.MVC2
 {

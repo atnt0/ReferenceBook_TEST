@@ -9,9 +9,9 @@ using RB_DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using RB_DAL.Models;
 
-namespace FilmDB_DAL.Infrastructure
+
+namespace RB_DAL.Infrastructure
 {
     public static class ServiceCollectionExtensions
     {
@@ -36,6 +36,7 @@ namespace FilmDB_DAL.Infrastructure
             services.AddScoped<IGenericRepository<SocialNetNames, int>, SocialNetNamesRepository>();
             services.AddScoped<IGenericRepository<ZipCodes, Guid>, ZipCodesRepository>();
             services.AddScoped<IGenericRepository<Logos, Guid>, LogosRepository>();
+            services.AddScoped<IGenericRepository<DayWeekTimeTables, Guid>, DayWeekTimeTablesRepository>();
             services.AddScoped<DbContext, RBContext>();
 
             string connection = configuration.GetConnectionString("DefaultConnection");
