@@ -1,0 +1,9 @@
+﻿@model IEnumerable<RB_DAL.Models.ZipCodes>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@foreach (var item in Model)
+{
+    <option value="@item.ZipCodeId">@item.ZipCode</option>
+}
+
