@@ -1,0 +1,8 @@
+﻿@model RB_DAL.Models.Categories
+
+<td class="catName">@Model.CategoryName</td>
+
+<td>
+    <a asp-action="Edit" asp-route-id="@Model.CategoryId" class="btn btn-info editCategory" data-id="@Model.CategoryId">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.CategoryId" class="btn btn-danger deleteCategory" data-id="@Model.CategoryId">Delete</a>
+</td>

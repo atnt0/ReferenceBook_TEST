@@ -13,38 +13,23 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AddressId" />
-            @*<div class="form-group">
-            <label asp-for="ZipCodeId" class="control-label"></label>
-            <select asp-for="ZipCodeId" class="form-control" asp-items="ViewBag.ZipCodeId"></select>
-            <span asp-validation-for="ZipCodeId" class="text-danger"></span>
-        </div>*@
-
-            @Html.LabelFor(model => model.ZipCodeId, "ZipCodeId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ZipCodeId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ZipCodeId, "", new { @class = "text-danger" })
-            </div>
 
             @Html.LabelFor(model => model.CityId, "CityId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CityId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
             </div>
-            @*<div class="form-group">
-            <label asp-for="CityId" class="control-label"></label>
-            <select asp-for="CityId" class="form-control" asp-items="ViewBag.CityId"></select>
-            <span asp-validation-for="CityId" class="text-danger"></span>
-        </div>*@
-            @*<div class="form-group">
-            <label asp-for="StreetId" class="control-label"></label>
-            <select asp-for="StreetId" class="form-control" asp-items="ViewBag.StreetId"></select>
-            <span asp-validation-for="StreetId" class="text-danger"></span>
-        </div>*@
+            @Html.LabelFor(model => model.ZipCodeId, "ZipCodeId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ZipCodeId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ZipCodeId, "", new { @class = "text-danger" })
+            </div>
             @Html.LabelFor(model => model.StreetId, "StreetId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("StreetId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.StreetId, "", new { @class = "text-danger" })
             </div>
+
             <div class="form-group">
                 <label asp-for="House" class="control-label"></label>
                 <input asp-for="House" class="form-control" />
@@ -83,4 +68,39 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+<script>
+    $(function () {
+
+        $("#CityId").change(function (e) {
+            e.preventDefault();
+
+            let id = $(this).val();
+
+            let myurl = `/Address/SelectZip/${id}`;
+            console.log('id: ', id);
+            console.log('myurl: ', myurl);
+
+            $.ajax({
+                type: "GET",
+                url: myurl,
+                success: function (data) {
+                    $("#ZipCodeId").html(data);
+                }
+            });
+            let myurl2 = `/Address/SelectStreets/${id}`;
+            $.ajax({
+                type: "GET",
+                url: myurl2,
+                success: function (data) {
+                    $("#StreetId").html(data);
+                }
+            });
+        })
+     
+    })
+
+</script>
+
 }

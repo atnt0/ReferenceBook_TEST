@@ -56,10 +56,9 @@ namespace RB.MVC.Controllers
             ViewBag.Photos = photoS;
             return View(model);
         }
-
         public ActionResult Edit(Guid id)
         {
-            Companies company = id == null ? new Companies() : companies.Get(id);
+            Companies company = id == Guid.Empty ? new Companies() : companies.Get(id);
             return View(company);
         }
         [HttpPost]
@@ -67,17 +66,22 @@ namespace RB.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                companies.Update(company);
-                companies.Save();
-                return RedirectToAction("Index");
+                if (company.CompanyId == Guid.Empty)
+                {
+                    company.CompanyId = Guid.NewGuid();
+                    companies.Create(company);
+                    companies.Save();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    companies.Update(company);
+                    companies.Save();
+                    return RedirectToAction("Index");
+                }
             }
             return View(company);
         }
-
-
-
-
-
 
         public IActionResult Find()
         {
