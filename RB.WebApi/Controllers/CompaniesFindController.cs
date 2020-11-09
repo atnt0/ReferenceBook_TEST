@@ -23,7 +23,7 @@ namespace RB.WebApi.Controllers
 
         [HttpGet]
         [Route("Find/{compName}")]
-        public ActionResult<IQueryable<object>> FindByCompName(string compName)
+        public ActionResult<IEnumerable<object>> FindByCompName(string compName)
         {
             var query = _context.Companies
                 .Where(c => c.CompanyName.Contains(compName))
@@ -38,7 +38,7 @@ namespace RB.WebApi.Controllers
 
         [HttpGet]
         [Route("Find/{director}")]
-        public ActionResult<IQueryable<object>> FindByDirector(string director)
+        public ActionResult<IEnumerable<object>> FindByDirector(string director)
         {
             var query = _context.Companies
                 .Where(d => d.Director.Contains(director))
@@ -53,7 +53,7 @@ namespace RB.WebApi.Controllers
 
         [HttpGet]
         [Route("Find/{descrShort}")]
-        public ActionResult<IQueryable<object>> FindByDescrShort(string descrShort)
+        public ActionResult<IEnumerable<object>> FindByDescrShort(string descrShort)
         {
             var query = _context.Companies
                 .Where(d => d.DescriptionShort.Contains(descrShort))
@@ -68,7 +68,7 @@ namespace RB.WebApi.Controllers
 
         [HttpGet]
         [Route("Find/{descrFull}")]
-        public ActionResult<IQueryable<object>> FindByDescrFull(string descrFull)
+        public ActionResult<IEnumerable<object>> FindByDescrFull(string descrFull)
         {
             var query = _context.Companies
                 .Where(d => d.DescriptionFull.Contains(descrFull))
@@ -83,7 +83,7 @@ namespace RB.WebApi.Controllers
 
         [HttpGet]
         [Route("Find/{webSite}")]
-        public ActionResult<IQueryable<object>> FindBySite(string webSite)
+        public ActionResult<IEnumerable<object>> FindBySite(string webSite)
         {
             var query = _context.Companies
                 .Where(w => w.WebSite.Contains(webSite))
