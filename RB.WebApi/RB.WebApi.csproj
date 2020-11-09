@@ -21,6 +21,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BR.DAL\RB.DAL.csproj" />
+    <ProjectReference Include="..\BR.DAL\RB.DAL1.csproj" />
+    <ProjectReference Include="..\RB.MVC2\RB.MVC2.csproj" />
+    <ProjectReference Include="..\RB_DAL\RB.DAL.csproj" />
   </ItemGroup>
 
 

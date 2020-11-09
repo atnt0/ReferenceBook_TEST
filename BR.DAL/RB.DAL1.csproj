@@ -23,4 +23,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RB_DAL\RB.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

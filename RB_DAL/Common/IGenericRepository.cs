@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RB_DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -15,6 +16,6 @@ namespace RB.DAL.Common
         void Update(T obj);
         void Delete(TKey id);
         void Save();
-
+        Companies Get(int id);
     }
 }
