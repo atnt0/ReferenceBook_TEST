@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using RB.MVC.Models;
-using RB_DAL.Models;
 using RB.DAL.Common;
+using RB.DAL.Models;
 
 namespace RB.WebApi.Controllers
 {
@@ -14,19 +11,19 @@ namespace RB.WebApi.Controllers
     [ApiController]
     public class CompaniesController : ControllerBase
     {
-        readonly IGenericRepository<Companies, Guid> companies;
+        readonly IGenericRepository<Companies, Guid> comp;
 
         public CompaniesController(IGenericRepository<Companies, Guid> companies)
         {
-            this.companies = companies;
+            comp = companies;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Companies>> GetAll()
+        public ActionResult<IQueryable<Companies>> GetAll()
         {
             try
             {
-                var collection = companies.GetAll();
+                var collection = comp.GetAll();
                 return Ok(collection);
             }
             catch (Exception)
@@ -40,12 +37,12 @@ namespace RB.WebApi.Controllers
         {
             try
             {
-                Companies comp = companies.Get(id);
+                Companies compan = comp.Get(id);
                 if (comp == null)
                 {
                     return NotFound($"By id={id} - object not found");
                 }
-                return Ok(comp);
+                return Ok(compan);
             }
             catch (Exception)
             {
