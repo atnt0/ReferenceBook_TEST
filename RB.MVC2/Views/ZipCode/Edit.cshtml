@@ -1,0 +1,13 @@
+﻿@model RB.DAL.Models.ZipCodes
+
+<td>
+    @Html.DropDownList("CityId", null, htmlAttributes: new { @class = "form-control" })
+</td>
+<td class="subcatName">
+    <input type="text" value="@Model.ZipCode" minlength="2" maxlength="64" id="newZipCodeName" class="form-control" placeholder="Почтовый индекс" />
+</td>
+<td>
+    <button class="btn btn-success" data-id="@Model.ZipCodeId" id="zipSave">Save</button>
+    <button class="btn btn-secondary" id="zipCancel">Cancel</button>
+</td>
+

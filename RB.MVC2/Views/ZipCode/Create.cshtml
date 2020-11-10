@@ -1,0 +1,25 @@
+﻿
+<table class="table">
+    <thead>
+        <tr>
+            <th>Введите почтовый индекс</th>
+            <th>              
+                                                
+            </th>       
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DropDownList("CityId", null, htmlAttributes: new { @class = "form-control" })
+            </td>
+            <td>
+                <input type="text" minlength="2" maxlength="64" id="newZipCodeName" class="form-control" placeholder="Почтовый индекс" />
+            </td>
+            <td>
+                <button id="CreateNewZipCode" class="btn btn-primary">Create</button>
+                <button id="CanselNewZipCode" class="btn btn-secondary">Cancel</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
