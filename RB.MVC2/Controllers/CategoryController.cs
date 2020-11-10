@@ -41,10 +41,9 @@ namespace RB.MVC2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(string id, string fname)
-        {
-            int id1 = Convert.ToInt32(id);
-            var model = categories.Get(id1);
+        public ActionResult Save(int id, string fname)
+        {        
+            var model = categories.Get(id);
             model.CategoryName = fname;
             categories.Update(model);
             categories.Save();   

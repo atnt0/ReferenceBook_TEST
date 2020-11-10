@@ -1,0 +1,9 @@
+﻿@model RB.DAL.Models.Phones
+
+<td class="subcatName">
+    <input type="text" value="@Model.PhoneNumber" minlength="13" maxlength="13" id="newPhoneName" class="form-control" placeholder="Номер телефона" />
+</td>
+<td>
+    <button class="btn btn-success" data-id="@Model.PhoneId" id="phoneSave">Save</button>
+    <button class="btn btn-secondary" id="phoneCancel">Cancel</button>
+</td>

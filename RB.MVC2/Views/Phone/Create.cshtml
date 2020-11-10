@@ -1,0 +1,20 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>Введите номер телефона</th>
+            <th></th>         
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <input type="text" minlength="3" maxlength="13" id="newPhoneName" class="form-control" placeholder="Номер телефона" />
+                <input type="hidden" value="@ViewBag.CompanyId" id="newPhoneId" class="form-control" placeholder="Номер телефона" />
+            </td>
+            <td>
+                <button id="CreateNewPhone" class="btn btn-primary">Create</button>
+                <button id="CanselNewPhone" class="btn btn-secondary">Cancel</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
