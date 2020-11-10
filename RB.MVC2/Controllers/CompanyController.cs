@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using RB.DAL.Common;
 using RB.DAL.Repositories;
 using RB.MVC.Models;
-using RB_DAL.Models;
+using RB.DAL.Models;
 //using RB.MVC.Models;
 
 namespace RB.MVC.Controllers

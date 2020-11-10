@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RB.DAL.Common;
-using RB_DAL.Models;
+using RB.DAL.Models;
 
 namespace RB.MVC2.Controllers
 {
@@ -61,7 +61,7 @@ namespace RB.MVC2.Controllers
             }
             catch (Exception exc)
             {
-                return Json("Bad");
+                return Json($"Bad\n{exc}");
             }
         }
     }

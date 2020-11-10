@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RB_DAL.Models
+namespace RB.DAL.Models
 {
     public partial class Photos
     {
