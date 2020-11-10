@@ -1,0 +1,9 @@
+﻿@model RB.DAL.Models.Emails
+
+<td class="subcatName">
+    <input type="text" value="@Model.Email" minlength="3" maxlength="256" id="newEmailName" class="form-control" placeholder="Email" />
+</td>
+<td>
+    <button class="btn btn-success" data-id="@Model.EmailId" id="emailSave">Save</button>
+    <button class="btn btn-secondary" id="emailCancel">Cancel</button>
+</td>

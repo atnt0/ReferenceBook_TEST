@@ -58,7 +58,25 @@
         </form>
     </div>
     <div class="col-md-4">
-        @*<button id="LoadPhones" class="btn btn-primary">Телефоны</button>*@
+        <p>
+            <button id="createNewEmailBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Email</button>
+        </p>
+        <div class="row"><div id="createNewEmail" class="col-12"></div></div>
+        <ul id="newEmail" style="list-style-type:none; padding-left: 0;">
+            @foreach (var item in Model.Emails)
+            {
+                <li>
+                    <div>
+                        @Html.DisplayFor(modelItem => item.Email)
+                        @Html.HiddenFor(modelItem => item.CreatedOn)
+                        @Html.HiddenFor(modelItem => item.EmailId)
+                        @Html.HiddenFor(modelItem => item.CompanyId)
+                        <a asp-action="Edit" asp-route-id="@item.EmailId" class="btn btn-info editEmail" data-id="@item.EmailId">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.EmailId" class="btn btn-danger delEmail" data-id="@item.EmailId">Delete</a>
+                    </div>
+                </li>
+            }
+        </ul>
     </div>
     <div class="col-md-4" id="LoadDiv">
         <p>
@@ -93,6 +111,7 @@
 
 
 <script>
+    // Для номеров телефона
     $('#createNewBtn').click(function () {
         let companyId = $(this).attr('data-id');
         $.get('@Url.Action("Create" ,"Phone")', { id: companyId }, function (data) {
@@ -135,7 +154,7 @@
 			});
     });
 
-    	$('ul').on('click.edit', '.editPhone', function (e) {
+    $('#newPhone').on('click.edit', '.editPhone', function (e) {
 			e.preventDefault();
 			$('#CanselNewPhone').click();
 			$('#phoneCancel').click();
@@ -184,9 +203,6 @@
             $('#LoadDiv').html(data);
         })
     })*@
-			
-
-
 
     $('#newPhone').on('click.delete', '.delPhone', function (e) {
 			e.preventDefault();
@@ -201,6 +217,107 @@
                        }
                    })
                }
-		});
+    });
+
+    //для Email
+     $('#createNewEmailBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("Create" ,"Email")', { id: companyId }, function (data) {
+				$('#createNewEmail').html(data);
+				$('#createNewEmailBtn').prop('disabled', true);
+				$('#newEmailName').focus();
+				$('#CanselNewEmail').click(function () {
+					$('#createNewEmail').empty();
+					$('#createNewEmailBtn').prop('disabled', false);
+				});
+				$('#CreateNewEmail').click(function () {
+					let countErrors = 0;
+                    let fname = $('#newEmailName').val();
+                    let companyId = $('#newCompanyId').val();
+                    console.log(fname, companyId);
+					if (fname.length < 3 || fname.length > 256) {
+						$('#newEmailName').css('border', '2px solid #f00');
+                        countErrors++;
+					} else { $('#newEmailName').removeAttr('style'); }
+
+                    if (countErrors == 0) {
+                        try {
+							$.ajax({
+								url: '@Url.Action("CreateNewEmail", "Email")',
+								type: 'post',
+								data: {
+                                    emailName: fname,
+                                    companyId: companyId
+								},
+								success: function (newdata) {
+									$('#CanselNewEmail').click();
+                                    $('#newEmail').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+					}
+				});
+			});
+    });
+
+    $('#newEmail').on('click.edit', '.editEmail', function (e) {
+			e.preventDefault();
+			$('#CanselNewEmail').click();
+			$('#emailCancel').click();
+			let id = $(this).attr('data-id');
+			let trtmp = $(this).closest('li').html();
+			let tr = $(this).closest('li');
+
+			$.ajax({
+				url: '@Url.Action("Edit", "Email")',
+				type: 'get',
+				data: {
+					id: id
+				},
+				success: function (data) {
+					tr.html(data);
+					$('#emailCancel').click(function () {
+						tr.html(trtmp);
+					});
+					$('#emailSave').click(function () {
+                        let countErrors = 0;
+						let fname = $('#newEmailName').val();
+						if (fname.length < 3 || fname.length > 256) {
+                            $('#newEmailName').css('border', '2px solid #f00');
+                            countErrors++;
+                        } else { $('#newEmailName').removeAttr('style'); }
+                        if (countErrors == 0) {
+							$.post(
+								'@Url.Action("Save", "Email")',
+								{
+									id: id,
+									fname: fname
+								},
+								function (data) {
+									tr.html(data);
+								}
+							);
+						}
+					});
+				}
+			});
+	});
+
+     $('#newEmail').on('click.delete', '.delEmail', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+			let id = el.attr('data-id');
+            let tr = $(this).closest('li');
+               if (confirm('Вы  хотите удалить запись?')) {
+                   $.post('@Url.Action("Delete", "Email")', { id: id }, function (data) {
+                       if (data == "OK") {
+                           tr.remove();
+                       }
+                   })
+               }
+    });
 </script>
 }
