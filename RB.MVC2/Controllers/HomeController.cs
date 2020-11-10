@@ -26,10 +26,10 @@ namespace RB.MVC2.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUser = await userManager.GetUserAsync(HttpContext.User);
-            if (currentUser != null)
-            {
-                userManager.AddToRoleAsync(currentUser, "Admin").Wait();
-            }
+            //if (currentUser != null)
+            //{
+            //    userManager.AddToRoleAsync(currentUser, "Admin").Wait();
+            //}
             return View();
         }
 

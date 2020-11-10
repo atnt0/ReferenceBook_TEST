@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace RB.DAL.Common
 {
@@ -15,6 +13,5 @@ namespace RB.DAL.Common
         void Update(T obj);
         void Delete(TKey id);
         void Save();
-
     }
 }

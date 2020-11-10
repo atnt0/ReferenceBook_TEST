@@ -1,0 +1,10 @@
+﻿@using RB.DAL.Models
+@model ZipCodes
+<tr>
+    <td class="zipName">@Model.ZipCode</td>
+    <td class="zipName">@ViewBag.cityName</td>
+    <td>
+        <a asp-action="Edit" asp-route-id="@Model.ZipCodeId" class="btn btn-info editZipCode" data-id="@Model.ZipCodeId">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.ZipCodeId" class="btn btn-danger editZipCode" data-id="@Model.ZipCodeId">Delete</a>
+    </td>
+</tr>

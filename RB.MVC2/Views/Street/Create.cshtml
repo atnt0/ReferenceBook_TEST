@@ -1,0 +1,24 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>Введите название улицы</th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DropDownList("CityId", null, htmlAttributes: new { @class = "form-control" })
+            </td>
+            <td>
+                <input type="text" minlength="3" maxlength="256" id="newStreetName" class="form-control" placeholder="Название улицы" />
+            </td>
+            <td>
+                <button id="CreateNewStreet" class="btn btn-primary">Create</button>
+                <button id="CanselNewStreet" class="btn btn-secondary">Cancel</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

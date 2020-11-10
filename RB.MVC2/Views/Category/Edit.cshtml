@@ -1,19 +1,9 @@
 ﻿@model RB.DAL.Models.Categories
 
-<h4>Редактирование категории</h4>
-
 <td class="catName">
-    <input type="text" value="@Model.CategoryName" minlength="2" maxlength="64" id="newCategoryName" class="form-control" placeholder="FirstName" />
+    <input type="text" value="@Model.CategoryName" minlength="3" maxlength="256" id="newCategoryName" class="form-control" placeholder="Имя категории" />
 </td>
 <td>
     <button class="btn btn-success" data-id="@Model.CategoryId" id="catSave">Save</button>
     <button class="btn btn-secondary" id="catCancel">Cancel</button>
 </td>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

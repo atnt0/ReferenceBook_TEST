@@ -1,0 +1,142 @@
+﻿@model IEnumerable<RB.DAL.Models.Streets>
+
+<h1>Список почтовых индексов</h1>
+
+<p>
+    <button id="createNewBtn" class="btn btn-primary">Create New</button>
+</p>
+<div class="row"><div id="createNew" class="col-12"></div></div>
+<table class="table" id="tableStreets">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StreetName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StreetName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City.CityName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.StreetId" class="btn btn-info editStreet" data-id="@item.StreetId">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.StreetId" class="btn btn-danger delStreet" data-id="@item.StreetId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+		$('#createNewBtn').click(function () {
+			$.get('@Url.Action("Create")', function (data) {
+				$('#createNew').html(data);
+				$('#createNewBtn').prop('disabled', true);
+				$('#newStreetName').focus();
+				var btn_close = $('#CanselNewStreet');
+                btn_close.click(function () {
+					$('#createNew').empty();
+					$('#createNewBtn').prop('disabled', false);
+				});
+				$('#CreateNewStreet').click(function () {
+					let countErrors = 0;
+                    let fname = $('#newStreetName').val();
+					if (fname.length < 3 || fname.length > 256) {
+                        $('#newStreetName').css('border', '2px solid #f00');
+                        countErrors++;
+                    } else { $('#newStreetName').removeAttr('style'); }
+					let cname = $('#CityId').val();
+                    if (countErrors == 0) {
+                        try {
+							$.ajax({
+								url: '@Url.Action("CreateNewStreet")',
+								type: 'post',
+								data: {
+									streetName: fname,
+                                    citId: cname
+								},
+								success: function (newdata) {
+                                    btn_close.click();
+                                    $('#tableStreets').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+					}
+				});
+			});
+		});
+
+        $('table').on('click.edit', '.editStreet', function (e) {
+			e.preventDefault();
+            var btn_close = $('#CanselNewStreet');
+            btn_close.click();
+            $('#streetCancel').click();
+			let id = $(this).attr('data-id');
+			let trtmp = $(this).closest('tr').html();
+			let tr = $(this).closest('tr');        
+			$.ajax({
+				url: '@Url.Action("Edit")',
+				type: 'get',
+				data: {
+					id: id
+				},
+				success: function (data) {
+					tr.html(data);
+					$('#streetCancel').click(function () {
+						tr.html(trtmp);
+					});
+					$('#streetSave').click(function () {
+                        let countErrors = 0;
+						let fname = $('#newStreetName').val();
+                        let cityId = $('#CityId').val();
+						if (fname.length < 3 || fname.length > 256) {
+                            $('#newStreetName').css('border', '2px solid #f00');
+                            countErrors++;
+                        } else { $('#newStreetName').removeAttr('style'); }
+
+                        if (countErrors == 0) {
+							$.post(
+								'@Url.Action("Save")',
+								{
+									id: id,
+									fname: fname,
+                                    cityId: cityId
+								},
+								function (data) {
+									tr.html(data);
+								}
+							);
+						}
+					});
+				}
+			});
+		});
+
+        $('table').on('click.delete', '.delStreet', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+			let id = el.attr('data-id');
+            let tr = $(this).closest('tr');
+               if (confirm('Вы  хотите удалить запись?')) {
+                   $.post('@Url.Action("Delete", "Street")', { id: id }, function (data) {
+                       if (data == "OK") {
+                           tr.remove();
+                       }
+                   })
+               }
+		});
+    </script>
+}

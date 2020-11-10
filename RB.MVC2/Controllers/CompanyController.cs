@@ -59,28 +59,34 @@ namespace RB.MVC.Controllers
         public ActionResult Edit(Guid id)
         {
             Companies company = id == Guid.Empty ? new Companies() : companies.Get(id);
+            
             return View(company);
         }
         [HttpPost]
-        public ActionResult Edit(Companies company)
+        public ActionResult Edit(Companies companyNew)
         {
             if (ModelState.IsValid)
             {
-                if (company.CompanyId == Guid.Empty)
+                if (companyNew.CompanyId == Guid.Empty)
                 {
-                    company.CompanyId = Guid.NewGuid();
-                    companies.Create(company);
+                    companyNew.CompanyId = Guid.NewGuid();
+                    companies.Create(companyNew);
                     companies.Save();
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    companies.Update(company);
+                    var companyOld = companies.Get(companyNew.CompanyId);
+                    // если пользователь ClientCompany и является владельцем компании
+                    // с формы забираем только поля которые ему доступны (игнорируем и переопределяем оставшиеся
+                    // поля из старой записи)     
+                    companyNew.CreatedOn = companyOld.CreatedOn;
+                    companies.Update(companyNew);
                     companies.Save();
                     return RedirectToAction("Index");
                 }
             }
-            return View(company);
+            return View(companyNew);
         }
 
         public IActionResult Find()

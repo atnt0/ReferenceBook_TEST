@@ -9,7 +9,7 @@ namespace RB.DAL.Common
 {
     public abstract class GenericRepository<T, TKey> : IGenericRepository<T, TKey> where T : class, new()
     {
-        DbContext context;
+        readonly DbContext context;
         protected DbSet<T> dbSet;
         public GenericRepository(DbContext context)
         {
