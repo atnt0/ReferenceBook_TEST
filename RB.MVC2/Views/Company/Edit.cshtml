@@ -6,7 +6,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CompanyId" />
+            <input type="hidden" asp-for="CompanyId" id="CompId" />
             <div class="form-group">
                 <label asp-for="CreatedOn" class="control-label"></label>
                 <input asp-for="CreatedOn" class="form-control" />
@@ -57,6 +57,31 @@
             </div>
         </form>
     </div>
+    <div class="col-md-4">
+        @*<button id="LoadPhones" class="btn btn-primary">Телефоны</button>*@
+    </div>
+    <div class="col-md-4" id="LoadDiv">
+        <p>
+            <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New</button>
+        </p>
+        <div class="row"><div id="createNew" class="col-12"></div></div>
+        <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
+            @foreach (var item in Model.Phones)
+            {
+                <li>
+                    <div>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        @Html.HiddenFor(modelItem => item.CreatedOn)
+                        @Html.HiddenFor(modelItem => item.PhoneId)
+                        @Html.HiddenFor(modelItem => item.CompanyId)
+                        <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-info editPhone" data-id="@item.PhoneId">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
+                    </div>
+                </li>
+            }
+        </ul>
+
+    </div>
 </div>
 
 <div>
@@ -65,4 +90,117 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+<script>
+    $('#createNewBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("Create" ,"Phone")', { id: companyId }, function (data) {
+				$('#createNew').html(data);
+				$('#createNewBtn').prop('disabled', true);
+				$('#newPhoneName').focus();
+				$('#CanselNewPhone').click(function () {
+					$('#createNew').empty();
+					$('#createNewBtn').prop('disabled', false);
+				});
+				$('#CreateNewPhone').click(function () {
+					let countErrors = 0;
+                    let fname = $('#newPhoneName').val();
+                    let companyId = $('#newPhoneId').val();
+                    console.log(fname, companyId);
+					if (fname.length < 13 || fname.length > 13) {
+						$('#newPhoneName').css('border', '2px solid #f00');
+                        countErrors++;
+					} else { $('#newPhoneName').removeAttr('style'); }
+
+                    if (countErrors == 0) {
+                        try {
+							$.ajax({
+								url: '@Url.Action("CreateNewPhone", "Phone")',
+								type: 'post',
+								data: {
+                                    phoneNumber: fname,
+                                    companyId: companyId
+								},
+								success: function (newdata) {
+									$('#CanselNewPhone').click();
+                                    $('#newPhone').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+					}
+				});
+			});
+    });
+
+    	$('ul').on('click.edit', '.editPhone', function (e) {
+			e.preventDefault();
+			$('#CanselNewPhone').click();
+			$('#phoneCancel').click();
+			let id = $(this).attr('data-id');
+			let trtmp = $(this).closest('li').html();
+			let tr = $(this).closest('li');
+
+			$.ajax({
+				url: '@Url.Action("Edit", "Phone")',
+				type: 'get',
+				data: {
+					id: id
+				},
+				success: function (data) {
+					tr.html(data);
+					$('#phoneCancel').click(function () {
+						tr.html(trtmp);
+					});
+					$('#phoneSave').click(function () {
+                        let countErrors = 0;
+						let fname = $('#newPhoneName').val();
+						if (fname.length < 13 || fname.length > 13) {
+                            $('#newPhoneName').css('border', '2px solid #f00');
+                            countErrors++;
+                        } else { $('#newPhoneName').removeAttr('style'); }
+                        if (countErrors == 0) {
+							$.post(
+								'@Url.Action("Save", "Phone")',
+								{
+									id: id,
+									fname: fname
+								},
+								function (data) {
+									tr.html(data);
+								}
+							);
+						}
+					});
+				}
+			});
+		});
+    @*$('#LoadPhones').click(function () {
+        let id = $('#CompId').val();
+        console.log(id);
+        $.get('@Url.Action("Index", "Phone")', { id: id }, function (data) {
+            $('#LoadDiv').html(data);
+        })
+    })*@
+			
+
+
+
+    $('#newPhone').on('click.delete', '.delPhone', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+			let id = el.attr('data-id');
+            let tr = $(this).closest('li');
+               if (confirm('Вы  хотите удалить запись?')) {
+                   $.post('@Url.Action("Delete", "Phone")', { id: id }, function (data) {
+                       if (data == "OK") {
+                           tr.remove();
+                       }
+                   })
+               }
+		});
+</script>
 }

@@ -19,12 +19,12 @@
         <p class="font-weight-bold"> Категории </p>
         @foreach (var item2 in item.CompaniesCategories)
         {
-            <p> @item2.Category.CategoryName</p>
+            <p> @item2.Category?.CategoryName</p>
         }
         <p class="font-weight-bold"> Субкатегории </p>
         @foreach (var item2 in item.CompaniesSubcategories)
         {
-            <p>@item2.Subcategory.SubcategoryName</p>
+            <p>@item2.Subcategory?.SubcategoryName</p>
         }
         <p class="font-weight-bold"> Email </p>
         @foreach (var item2 in item.Emails)

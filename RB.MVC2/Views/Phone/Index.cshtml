@@ -1,0 +1,39 @@
+﻿@model IEnumerable<RB.DAL.Models.Phones>
+
+<h1>Номера телефонов</h1>
+
+<p>
+    <button id="createNewBtn" class="btn btn-primary">Create New</button>
+</p>
+<div class="row"><div id="createNew" class="col-12"></div></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.HiddenFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.HiddenFor(modelItem => item.Company.CompanyName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-info editPhone" data-id="@item.PhoneId">Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
