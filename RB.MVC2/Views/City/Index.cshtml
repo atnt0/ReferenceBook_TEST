@@ -1,0 +1,132 @@
+﻿@model IEnumerable<RB.DAL.Models.Cities>
+
+<h1>Список категорий</h1>
+
+<p>
+    <button id="createNewBtn" class="btn btn-primary">Create New</button>
+</p>
+<div class="row"><div id="createNew" class="col-12"></div></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CityName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="cityName">
+                    @Html.DisplayFor(modelItem => item.CityName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CityId" class="btn btn-info editCity" data-id="@item.CityId">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.CityId" class="btn btn-danger delCity" data-id="@item.CityId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+		$('#createNewBtn').click(function () {
+			$.get('@Url.Action("Create")', function (data) {
+				$('#createNew').html(data);
+				$('#createNewBtn').prop('disabled', true);
+				$('#newCityName').focus();
+				$('#CanselNewCity').click(function () {
+					$('#createNew').empty();
+					$('#createNewBtn').prop('disabled', false);
+				});
+				$('#CreateNewCity').click(function () {
+					let countErrors = 0;
+					let fname = $('#newCityName').val();
+					if (fname.length < 3 || fname.length > 150) {
+                        $('#newCityName').css('border', '2px solid #f00');
+                        countErrors++;
+                    } else { $('#newCityName').removeAttr('style'); }
+
+                    if (countErrors == 0) {
+                        try {
+							$.ajax({
+								url: '@Url.Action("CreateNewCity")',
+								type: 'post',
+								data: {
+                                    cityName: fname
+								},
+								success: function (newdata) {
+									$('#CanselNewCity').click();
+									$('tbody').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+					}
+				});
+			});
+		});
+
+		$('table').on('click.edit', '.editCity', function (e) {
+			e.preventDefault();
+			$('#CanselNewCity').click();
+			$('#cityCancel').click();
+			let id = $(this).attr('data-id');
+			let trtmp = $(this).closest('tr').html();
+			let tr = $(this).closest('tr');
+
+			$.ajax({
+				url: '@Url.Action("Edit")',
+				type: 'get',
+				data: {
+					id: id
+				},
+				success: function (data) {
+					tr.html(data);
+					$('#cityCancel').click(function () {
+						tr.html(trtmp);
+					});
+					$('#citySave').click(function () {
+                        let countErrors = 0;
+						let fname = $('#newCityName').val();
+						if (fname.length < 3 || fname.length > 150) {
+							$('#newCityName').css('border', '2px solid #f00');
+                            countErrors++;
+						} else { $('#newCityName').removeAttr('style'); }
+                        if (countErrors == 0) {
+							$.post(
+								'@Url.Action("Save")',
+								{
+									id: id,
+									fname: fname
+								},
+								function (data) {
+									tr.html(data);
+								}
+							);
+						}
+					});
+				}
+			});
+		});
+
+        $('table').on('click.delete', '.delCity', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+			let id = el.attr('data-id');
+            let tr = $(this).closest('tr');
+               if (confirm('Вы  хотите удалить запись?')) {
+                   $.post('@Url.Action("Delete", "City")', { id: id }, function (data) {
+                       if (data == "OK") {
+                           tr.remove();
+                       }
+                   })
+               }
+		});
+    </script>
+}

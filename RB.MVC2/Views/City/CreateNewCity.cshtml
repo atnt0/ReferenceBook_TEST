@@ -1,0 +1,9 @@
+﻿@using RB.DAL.Models
+@model Cities
+<tr>
+    <td class="cityName">@Model.CityName</td>
+    <td>
+        <a asp-action="Edit" asp-route-id="@Model.CityId" class="btn btn-info editCity" data-id="@Model.CityId">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.CityId" class="btn btn-danger delCity" data-id="@Model.CityId">Delete</a>
+    </td>
+</tr>
