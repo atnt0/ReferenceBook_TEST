@@ -80,8 +80,7 @@
 			$('#catCancel').click();
 			let id = $(this).attr('data-id');
 			let trtmp = $(this).closest('tr').html();
-			let tr = $(this).closest('tr');		
-			console.log(id);
+			let tr = $(this).closest('tr');					
 
 			$.ajax({
 				url: '@Url.Action("Edit")',
@@ -122,8 +121,7 @@
 			e.preventDefault();
 
 			let el = $(this);
-			let id = el.attr('data-id');
-			console.log("Delete:", id)
+			let id = el.attr('data-id');		
             let tr = $(this).closest('tr');
                if (confirm('Вы  хотите удалить запись?')) {
                    $.post('@Url.Action("Delete", "Category")', { id: id }, function (data) {

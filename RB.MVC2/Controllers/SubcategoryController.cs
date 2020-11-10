@@ -17,7 +17,7 @@ namespace RB.MVC2.Controllers
         }
         public IActionResult Index()
         {
-            var model = subCategories.GetAll();
+            var model = subCategories.GetAll().OrderBy(p=>p.SubcategoryName);
             return View(model);
         }
 
@@ -26,7 +26,7 @@ namespace RB.MVC2.Controllers
             return PartialView();
         }
         [HttpPost]
-        public ActionResult CreateNewCat(string subcategoryName)
+        public ActionResult CreateNewSubCat(string subcategoryName)
         {
             Subcategories subcategory = new Subcategories() { SubcategoryName = subcategoryName, SubcategoryId = 0 };
             subCategories.Create(subcategory);

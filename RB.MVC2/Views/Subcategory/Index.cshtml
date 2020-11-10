@@ -37,29 +37,29 @@
 			$.get('@Url.Action("Create")', function (data) {
 				$('#createNew').html(data);
 				$('#createNewBtn').prop('disabled', true);
-				$('#newCategoryName').focus();
-				$('#CanselNewCat').click(function () {
+				$('#newSubCategoryName').focus();
+				$('#CanselNewSubCat').click(function () {
 					$('#createNew').empty();
 					$('#createNewBtn').prop('disabled', false);
 				});
-				$('#CreateNewCategory').click(function () {
+				$('#CreateNewSubCategory').click(function () {
 					let countErrors = 0;
-					let fname = $('#newCategoryName').val();
+					let fname = $('#newSubCategoryName').val();				
 					if (fname.length < 3 || fname.length > 256) {
-						$('#newCategoryName').css('border', '2px solid #f00');
+						$('#newSubCategoryName').css('border', '2px solid #f00');
                         countErrors++;
-					} else { $('#newCategoryName').removeAttr('style'); }
+					} else { $('#newSubCategoryName').removeAttr('style'); }
 
                     if (countErrors == 0) {
                         try {
 							$.ajax({
-								url: '@Url.Action("CreateNewCat")',
+								url: '@Url.Action("CreateNewSubCat")',
 								type: 'post',
 								data: {
-                                    categoryName: fname
+                                    subcategoryName: fname
 								},
 								success: function (newdata) {
-									$('#CanselNewCat').click();
+									$('#CanselNewSubCat').click();
 									$('tbody').prepend(newdata);
 								}
 							});
@@ -71,14 +71,13 @@
 			});
 		});
 
-		$('table').on('click.edit', '.editCategory', function (e) {
+		$('table').on('click.edit', '.editSubCategory', function (e) {
 			e.preventDefault();
-			$('#CanselNewCat').click();
-			$('#catCancel').click();
+			$('#CanselNewSubCat').click();
+			$('#subcatCancel').click();
 			let id = $(this).attr('data-id');
 			let trtmp = $(this).closest('tr').html();
-			let tr = $(this).closest('tr');
-			console.log(id);
+			let tr = $(this).closest('tr');		
 
 			$.ajax({
 				url: '@Url.Action("Edit")',
@@ -88,16 +87,16 @@
 				},
 				success: function (data) {
 					tr.html(data);
-					$('#catCancel').click(function () {
+					$('#subcatCancel').click(function () {
 						tr.html(trtmp);
 					});
-					$('#catSave').click(function () {
+					$('#subcatSave').click(function () {
                         let countErrors = 0;
-						let fname = $('#newCategoryName').val();
+						let fname = $('#newSubCategoryName').val();
 						if (fname.length < 3 || fname.length > 256) {
-							$('#newCategoryName').css('border', '2px solid #f00');
+							$('#newSubCategoryName').css('border', '2px solid #f00');
                             countErrors++;
-						} else { $('#newCategoryName').removeAttr('style'); }
+						} else { $('#newSubCategoryName').removeAttr('style'); }
                         if (countErrors == 0) {
 							$.post(
 								'@Url.Action("Save")',
@@ -115,15 +114,14 @@
 			});
 		});
 
-        $('table').on('click.delete', '.delCategory', function (e) {
+        $('table').on('click.delete', '.delSubCategory', function (e) {
 			e.preventDefault();
 
 			let el = $(this);
-			let id = el.attr('data-id');
-			console.log("Delete:", id)
+			let id = el.attr('data-id');		
             let tr = $(this).closest('tr');
                if (confirm('Вы  хотите удалить запись?')) {
-                   $.post('@Url.Action("Delete", "Category")', { id: id }, function (data) {
+                   $.post('@Url.Action("Delete", "Subcategory")', { id: id }, function (data) {
                        if (data == "OK") {
                            tr.remove();
                        }

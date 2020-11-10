@@ -1,0 +1,9 @@
+﻿@model RB.DAL.Models.Subcategories
+
+<td class="subcatName">
+    <input type="text" value="@Model.SubcategoryName" minlength="2" maxlength="64" id="newSubCategoryName" class="form-control" placeholder="Имя субкатегории" />
+</td>
+<td>
+    <button class="btn btn-success" data-id="@Model.SubcategoryId" id="subcatSave">Save</button>
+    <button class="btn btn-secondary" id="subcatCancel">Cancel</button>
+</td>
