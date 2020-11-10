@@ -1,7 +1,7 @@
 ﻿using LinqKit;
 using Microsoft.EntityFrameworkCore.Internal;
 using RB.DAL.Common;
-using RB_DAL.Models;
+using RB.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

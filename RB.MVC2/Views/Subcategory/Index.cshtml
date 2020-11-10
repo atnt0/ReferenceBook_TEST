@@ -1,0 +1,132 @@
+﻿@model IEnumerable<RB.DAL.Models.Subcategories>
+
+<h1>Список субкатегорий</h1>
+
+<p>
+    <button id="createNewBtn" class="btn btn-primary">Create New</button>
+</p>
+<div class="row"><div id="createNew" class="col-12"></div></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SubcategoryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubcategoryName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SubcategoryId" class="btn btn-info editSubCategory" data-id="@item.SubcategoryId">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.SubcategoryId" class="btn btn-danger delSubCategory" data-id="@item.SubcategoryId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+		$('#createNewBtn').click(function () {
+			$.get('@Url.Action("Create")', function (data) {
+				$('#createNew').html(data);
+				$('#createNewBtn').prop('disabled', true);
+				$('#newSubCategoryName').focus();
+				$('#CanselNewSubCat').click(function () {
+					$('#createNew').empty();
+					$('#createNewBtn').prop('disabled', false);
+				});
+				$('#CreateNewSubCategory').click(function () {
+					let countErrors = 0;
+					let fname = $('#newSubCategoryName').val();				
+					if (fname.length < 3 || fname.length > 256) {
+						$('#newSubCategoryName').css('border', '2px solid #f00');
+                        countErrors++;
+					} else { $('#newSubCategoryName').removeAttr('style'); }
+
+                    if (countErrors == 0) {
+                        try {
+							$.ajax({
+								url: '@Url.Action("CreateNewSubCat")',
+								type: 'post',
+								data: {
+                                    subcategoryName: fname
+								},
+								success: function (newdata) {
+									$('#CanselNewSubCat').click();
+									$('tbody').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+					}
+				});
+			});
+		});
+
+		$('table').on('click.edit', '.editSubCategory', function (e) {
+			e.preventDefault();
+			$('#CanselNewSubCat').click();
+			$('#subcatCancel').click();
+			let id = $(this).attr('data-id');
+			let trtmp = $(this).closest('tr').html();
+			let tr = $(this).closest('tr');		
+
+			$.ajax({
+				url: '@Url.Action("Edit")',
+				type: 'get',
+				data: {
+					id: id
+				},
+				success: function (data) {
+					tr.html(data);
+					$('#subcatCancel').click(function () {
+						tr.html(trtmp);
+					});
+					$('#subcatSave').click(function () {
+                        let countErrors = 0;
+						let fname = $('#newSubCategoryName').val();
+						if (fname.length < 3 || fname.length > 256) {
+							$('#newSubCategoryName').css('border', '2px solid #f00');
+                            countErrors++;
+						} else { $('#newSubCategoryName').removeAttr('style'); }
+                        if (countErrors == 0) {
+							$.post(
+								'@Url.Action("Save")',
+								{
+									id: id,
+									fname: fname
+								},
+								function (data) {
+									tr.html(data);
+								}
+							);
+						}
+					});
+				}
+			});
+		});
+
+        $('table').on('click.delete', '.delSubCategory', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+			let id = el.attr('data-id');		
+            let tr = $(this).closest('tr');
+               if (confirm('Вы  хотите удалить запись?')) {
+                   $.post('@Url.Action("Delete", "Subcategory")', { id: id }, function (data) {
+                       if (data == "OK") {
+                           tr.remove();
+                       }
+                   })
+               }
+		});
+    </script>
+}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RB.DAL.Common;
-using RB_DAL.Models;
+using RB.DAL.Models;
 
 namespace RB.MVC2.Controllers
 {

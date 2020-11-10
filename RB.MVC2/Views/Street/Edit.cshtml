@@ -1,0 +1,13 @@
+﻿@model RB.DAL.Models.Streets
+
+<td>
+    @Html.DropDownList("CityId", null, htmlAttributes: new { @class = "form-control" })
+</td>
+<td class="streetName">
+    <input type="text" value="@Model.StreetName" minlength="3" maxlength="256" id="newStreetName" class="form-control" placeholder="Улица" />
+</td>
+<td>
+    <button class="btn btn-success" data-id="@Model.StreetId" id="streetSave">Save</button>
+    <button class="btn btn-secondary" id="streetCancel">Cancel</button>
+</td>
+

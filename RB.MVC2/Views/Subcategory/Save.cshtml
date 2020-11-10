@@ -1,0 +1,8 @@
+﻿@model RB.DAL.Models.Subcategories
+
+<td class="catName">@Model.SubcategoryName</td>
+
+<td>
+    <a asp-action="Edit" asp-route-id="@Model.SubcategoryId" class="btn btn-info editSubCategory" data-id="@Model.SubcategoryId">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.SubcategoryId" class="btn btn-danger delSubCategory" data-id="@Model.SubcategoryId">Delete</a>
+</td>

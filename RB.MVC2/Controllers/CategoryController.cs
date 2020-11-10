@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RB.DAL.Common;
-using RB_DAL.Models;
+using RB.DAL.Models;
 
 namespace RB.MVC2.Controllers
 {
@@ -35,16 +35,8 @@ namespace RB.MVC2.Controllers
         }
 
         public ActionResult Edit(int id)
-        {
-           // int id1 = Convert.ToInt32(id);
-            var model = categories.Get(id);
-
-            //ViewBag.id = id;
-            //ViewBag.fname = fname;
-            //ViewBag.lname = lname;
-            //var date = bday.Split('.');
-            //ViewBag.bday = $"{date[2]}-{date[1]}-{date[0]}";
-            //ViewBag.inn = inn;
+        {        
+            var model = categories.Get(id);       
             return PartialView(model);
         }
 
@@ -69,7 +61,7 @@ namespace RB.MVC2.Controllers
             }
             catch (Exception exc)
             {
-                return Json("Bad");
+                return Json($"Bad\n{exc}");
             }
         }
 
