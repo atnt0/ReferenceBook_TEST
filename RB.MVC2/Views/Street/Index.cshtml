@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RB.DAL.Models.ZipCodes>
+﻿@model IEnumerable<RB.DAL.Models.Streets>
 
 <h1>Список почтовых индексов</h1>
 
@@ -6,11 +6,11 @@
     <button id="createNewBtn" class="btn btn-primary">Create New</button>
 </p>
 <div class="row"><div id="createNew" class="col-12"></div></div>
-<table class="table" id="tableZips">
+<table class="table" id="tableStreets">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ZipCode)
+                @Html.DisplayNameFor(model => model.StreetName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.City)
@@ -23,14 +23,14 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ZipCode)
+                    @Html.DisplayFor(modelItem => item.StreetName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.City.CityName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ZipCodeId" class="btn btn-info editZipCode" data-id="@item.ZipCodeId">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.ZipCodeId" class="btn btn-danger delZipCode" data-id="@item.ZipCodeId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.StreetId" class="btn btn-info editStreet" data-id="@item.StreetId">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.StreetId" class="btn btn-danger delStreet" data-id="@item.StreetId">Delete</a>
                 </td>
             </tr>
         }
@@ -42,32 +42,32 @@
 			$.get('@Url.Action("Create")', function (data) {
 				$('#createNew').html(data);
 				$('#createNewBtn').prop('disabled', true);
-				$('#newZipCodeName').focus();
-				var btn_close = $('#CanselNewZipCode');
+				$('#newStreetName').focus();
+				var btn_close = $('#CanselNewStreet');
                 btn_close.click(function () {
 					$('#createNew').empty();
 					$('#createNewBtn').prop('disabled', false);
 				});
-				$('#CreateNewZipCode').click(function () {
+				$('#CreateNewStreet').click(function () {
 					let countErrors = 0;
-                    let fname = $('#newZipCodeName').val();
-					if (fname.length < 3 || fname.length > 15) {
-                        $('#newZipCodeName').css('border', '2px solid #f00');
+                    let fname = $('#newStreetName').val();
+					if (fname.length < 3 || fname.length > 256) {
+                        $('#newStreetName').css('border', '2px solid #f00');
                         countErrors++;
-                    } else { $('#newZipCodeName').removeAttr('style'); }
+                    } else { $('#newStreetName').removeAttr('style'); }
 					let cname = $('#CityId').val();
                     if (countErrors == 0) {
                         try {
 							$.ajax({
-								url: '@Url.Action("CreateNewZip")',
+								url: '@Url.Action("CreateNewStreet")',
 								type: 'post',
 								data: {
-									zipcodeName: fname,
+									streetName: fname,
                                     citId: cname
 								},
 								success: function (newdata) {
                                     btn_close.click();
-                                    $('#tableZips').prepend(newdata);
+                                    $('#tableStreets').prepend(newdata);
 								}
 							});
                         } catch (e) {
@@ -78,14 +78,14 @@
 			});
 		});
 
-        $('table').on('click.edit', '.editZipCode', function (e) {
+        $('table').on('click.edit', '.editStreet', function (e) {
 			e.preventDefault();
-            var btn_close = $('#CanselNewZipCode');
+            var btn_close = $('#CanselNewStreet');
             btn_close.click();
-            $('#zipCancel').click();
+            $('#streetCancel').click();
 			let id = $(this).attr('data-id');
 			let trtmp = $(this).closest('tr').html();
-			let tr = $(this).closest('tr');          
+			let tr = $(this).closest('tr');        
 			$.ajax({
 				url: '@Url.Action("Edit")',
 				type: 'get',
@@ -94,17 +94,17 @@
 				},
 				success: function (data) {
 					tr.html(data);
-					$('#zipCancel').click(function () {
+					$('#streetCancel').click(function () {
 						tr.html(trtmp);
 					});
-					$('#zipSave').click(function () {
+					$('#streetSave').click(function () {
                         let countErrors = 0;
-						let fname = $('#newZipCodeName').val();
+						let fname = $('#newStreetName').val();
                         let cityId = $('#CityId').val();
-						if (fname.length < 3 || fname.length > 15) {
-                            $('#newZipCodeName').css('border', '2px solid #f00');
+						if (fname.length < 3 || fname.length > 256) {
+                            $('#newStreetName').css('border', '2px solid #f00');
                             countErrors++;
-						} else { $('#newZipCodeName').removeAttr('style'); }
+                        } else { $('#newStreetName').removeAttr('style'); }
 
                         if (countErrors == 0) {
 							$.post(
@@ -124,14 +124,14 @@
 			});
 		});
 
-        $('table').on('click.delete', '.delZipCode', function (e) {
+        $('table').on('click.delete', '.delStreet', function (e) {
 			e.preventDefault();
 
 			let el = $(this);
 			let id = el.attr('data-id');
             let tr = $(this).closest('tr');
                if (confirm('Вы  хотите удалить запись?')) {
-                   $.post('@Url.Action("Delete", "ZipCode")', { id: id }, function (data) {
+                   $.post('@Url.Action("Delete", "Street")', { id: id }, function (data) {
                        if (data == "OK") {
                            tr.remove();
                        }

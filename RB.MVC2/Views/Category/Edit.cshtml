@@ -1,7 +1,7 @@
 ﻿@model RB.DAL.Models.Categories
 
 <td class="catName">
-    <input type="text" value="@Model.CategoryName" minlength="2" maxlength="64" id="newCategoryName" class="form-control" placeholder="Имя категории" />
+    <input type="text" value="@Model.CategoryName" minlength="3" maxlength="256" id="newCategoryName" class="form-control" placeholder="Имя категории" />
 </td>
 <td>
     <button class="btn btn-success" data-id="@Model.CategoryId" id="catSave">Save</button>
