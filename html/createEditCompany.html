@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    
+    <title>Main</title>
+    <style>
+		h1,h2,h3,h4{text-align: center;}
+		.row{margin: 10px 0;}
+        .selector-for-some-widget {box-sizing: content-box;}
+        #basic-addon2{background-color: #28a745;color: white;}
+        #logo{height: 247px; border:1px solid #000; background-image: url(https://ontstudyabroad.com/wp-content/uploads/2017/01/placeholder-2-300x300.jpg); background-size: contain; background-position: center; background-repeat: no-repeat;}
+		/*input[type="text"],textarea.form-control{margin: 5px 0;}*/
+		/*.input-group-prepend input[type="text"]{margin: 0;}*/
+		td{/*border: 1px solid #ccc;*/ text-align: center; vertical-align: bottom;}
+		.weekend{width: 50px;}
+		.tabcol3{width: 60px; height: 24px;}
+    </style>
+</head>
+
+<body>
+	<form>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <br>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Поиск компании...">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">Искать</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+				<div id="logo"></div>
+                
+            </div>
+            <div class="col-9">
+				<div class="row">
+                    <div class="col-6">
+						<input type="text" class="form-control" placeholder="Название компании">
+                    </div>
+                    <div class="col-6">
+						<input type="text" class="form-control" placeholder="Ссылка на сайт">             
+                    </div>
+				</div>
+				<div class="row">
+                    <div class="col-6">
+                        <input type="text" class="form-control" placeholder="ФИО директора компании">
+                    </div>
+                    <div class="col-6">
+                        <select class="form-control">
+                            <option value="0" selected>Выберите родительскую компанию (если есть)</option>
+                        </select>
+                    </div>
+				</div>
+				<div class="row">
+                    <div class="col-6">
+                        <select class="form-control">
+                            <option value="0" selected>Выберите подходящие категории</option>
+                            <option value="1">Полиграфия</option>
+                            <option value="2">Унитазы</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <select class="form-control">
+                            <option value="0" selected>Выберите подходящие подкатегории</option>
+                            <option value="1">Расходные материалы</option>
+                            <option value="2">Обслуживание и ремонт</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4" id="phones">
+                <div class="input-group mb-3 phones-item">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">&#9742;</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Телефон">
+                    <input type="button" class="btn btn-success phones-add" value="+" title="Добавить еще">
+                </div>
+            </div>
+            <div class="col-4" id="emails">
+                <div class="input-group mb-3 emails-item">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">@</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Email">
+                    <input type="button" class="btn btn-success emails-add" value="+" title="Добавить еще">
+                </div>
+            </div>
+            <div class="col-4" id="socials">
+                <div class="input-group mb-3 socials-item">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">@</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Социальная сеть">
+                    <input type="button" class="btn btn-success socials-add" value="+" title="Добавить еще">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <textarea class="form-control" name="descrshort" placeholder="Краткое описание (до 200 символов)" style="height: 100%"></textarea>
+            </div>
+            <div class="col-6">
+				<div class="row">
+					<div class="col-6">
+						<select class="form-control" name="city">
+							<option value="0" selected>Выберите город</option>
+							<option value="1">Киев</option>
+						</select>
+					</div>
+					<div class="col-6">
+						<select class="form-control" name="zipcode">
+							<option value="0" selected>Выберите индекс</option>
+							<option value="1">01001</option>
+							<option value="2">03028</option>
+							<option value="2">04111</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<select class="form-control" name="street">
+							<option value="0" selected>Выберите улицу</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-4">
+						<input type="text" class="form-control" name="house" placeholder="Дом">
+					</div>
+					<div class="col-4">
+						<input type="text" class="form-control" name="block" placeholder="Корпус">
+					</div>
+					<div class="col-4">
+						<input type="text" class="form-control" name="apartment" placeholder="Кв./оф.">
+					</div>
+				</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <textarea class="form-control" name="descrfull" rows="5" placeholder="Полное описание"></textarea>
+            </div>
+        </div>
+		<div class="row">
+			<h2 class="col-12">График работы</h2>
+			<div class="col-10 offset-1">
+				<table id="workdays">
+					<thead>
+						<tr>
+							<td rowspan="2">Рабо<br>чий</td>
+							<td rowspan="2">День<br>недели</td>
+							<td colspan="7">Рабочее время</td>
+							<td colspan="7">Перерыв</td>
+						</tr>
+						<tr>
+							<td colspan="3">начало</td>
+							<td></td>
+							<td colspan="3">конец</td>
+							<td colspan="3">начало</td>
+							<td></td>
+							<td colspan="3">конец</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="weekend">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="customSwitch1">
+									<label class="custom-control-label" for="customSwitch1"></label>
+								</div>
+							</td>
+							<td class="day">Пн</td>
+							<td class="tabcol3"><select class="day-start-h pn form-control"></select></td>
+							<td class="tabcol4">:</td>
+							<td class="tabcol3"><select class="day-start-m pn form-control"></select></td>
+							<td class="tabcol4">&nbsp;</td>
+							<td class="tabcol3"><select class="day-finish-h pn form-control"></select></td>
+							<td class="tabcol4">:</td>
+							<td class="tabcol3"><select class="day-finish-m pn form-control"></select></td>
+							<td class="tabcol3"><select class="timeout-start-h pn form-control"></select></td>
+							<td class="tabcol4">:</td>
+							<td class="tabcol3"><select class="timeout-start-m pn form-control"></select></td>
+							<td class="tabcol4">&nbsp;</td>
+							<td class="tabcol3"><select class="timeout-finish-h pn form-control"></select></td>
+							<td class="tabcol4">:</td>
+							<td class="tabcol3"><select class="timeout-finish-m pn form-control"></select></td>
+						</tr>
+						<tr>
+							<td class="weekend">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="customSwitch2">
+									<label class="custom-control-label" for="customSwitch2"></label>
+								</div>
+							</td>
+							<td class="day">Вт</td>
+							<td><select class="day-start-h vt form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-start-m vt form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="day-finish-h vt form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-finish-m vt form-control"></select></td>
+							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-finish-m pn form-control"></select></td>
+						</tr>
+						<tr>
+							<td class="weekend">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="customSwitch3">
+									<label class="custom-control-label" for="customSwitch3"></label>
+								</div>
+							</td>
+							<td class="day">Ср</td>
+							<td><select class="day-start-h sr form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-start-m sr form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="day-finish-h sr form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-finish-m sr form-control"></select></td>
+							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-finish-m pn form-control"></select></td>
+						</tr>
+						<tr>
+							<td class="weekend">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="customSwitch4">
+									<label class="custom-control-label" for="customSwitch4"></label>
+								</div>
+							</td>
+							<td class="day">Чт</td>
+							<td><select class="day-start-h cht form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-start-m cht form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="day-finish-h cht form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-finish-m cht form-control"></select></td>
+							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-finish-m pn form-control"></select></td>
+						</tr>
+						<tr>
+							<td class="weekend">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="customSwitch5">
+									<label class="custom-control-label" for="customSwitch5"></label>
+								</div>
+							</td>
+							<td class="day">Пт</td>
+							<td><select class="day-start-h pt form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-start-m pt form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="day-finish-h pt form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-finish-m pt form-control"></select></td>
+							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-finish-m pn form-control"></select></td>
+						</tr>
+						<tr>
+							<td class="weekend">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="customSwitch6">
+									<label class="custom-control-label" for="customSwitch6"></label>
+								</div>
+							</td>
+							<td class="day">Сб</td>
+							<td><select class="day-start-h sb form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-start-m sb form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="day-finish-h sb form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-finish-m sb form-control"></select></td>
+							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-finish-m pn form-control"></select></td>
+						</tr>
+						<tr>
+							<td class="weekend">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="customSwitch7">
+									<label class="custom-control-label" for="customSwitch7"></label>
+								</div>
+							</td>
+							<td class="day">Вс</td>
+							<td><select class="day-start-h vs form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-start-m vs form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="day-finish-h vs form-control"></select></td>
+							<td>:</td>
+							<td><select class="day-finish-m vs form-control"></select></td>
+							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td>&nbsp;</td>
+							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td>:</td>
+							<td><select class="timeout-finish-m pn form-control"></select></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+    </div>
+	</form>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+			//емейл,Телефон,Социальные сети
+			function ContactsMultiplier(type,placeholder){
+				$('#'+type).on('click','.'+type+'-add',function(){
+					if($(this).hasClass('btn-success')){
+						var add='<div class="input-group mb-3 '+type+'-item">'+
+							'<div class="input-group-prepend">'+
+								'<span class="input-group-text">@</span>'+
+								'</div>'+
+								'<input type="text" class="form-control" placeholder="'+placeholder+'">'+
+							'<input type="button" class="btn btn-success '+type+'-add" value="+" title="Добавить еще">'+
+							'</div>';
+						$(this).removeClass(type+'-add btn-success').addClass(type+'-remove btn-danger').attr('title','Удалить').val('-');
+						$('#'+type).append(add);
+					}
+				});
+				$('#'+type).on('click','.'+type+'-remove',function(){
+					$(this).parent().remove();
+				});
+			}
+			ContactsMultiplier('emails','Email');
+			ContactsMultiplier('phones','Телефон');
+			ContactsMultiplier('socials','Социальные сети');
+			//расписание
+			for(let i=0;i<24;i++){
+				$('.day-start-h,.day-finish-h,.timeout-start-h,.timeout-finish-h').append('<option value="'+i+'"'+(i==0?' selected':'')+'>'+(i<10?'0'+i:i)+'</option>');
+			}
+			for(let i=0;i<60;i+=5){
+				$('.day-start-m,.day-finish-m,.timeout-start-m,.timeout-finish-m').append('<option value="'+i+'"'+(i==0?' selected':'')+'>'+(i<10?'0'+i:i)+'</option>');
+			}
+			$('input.custom-control-input:checkbox').on('change',function(){
+				if($(this).prop('checked')==true){
+					let tr=$(this).closest('tr');
+					tr.find('select').each(function(){
+						$(this).prop('disabled',true);
+					});
+				}else{
+					let tr=$(this).closest('tr');
+					tr.find('select').each(function(){
+						$(this).prop('disabled',false);
+					});
+				}
+			});
+
+        })
+    </script>
+</body>
+
+</html>
