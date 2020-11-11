@@ -1,0 +1,24 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>Выберите категорию</th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+            </td>
+            <td>
+                <input type="hidden"  id="CompanyId" class="form-control" value="@ViewBag.CompanyId" />
+            </td>
+            <td>
+                <button id="CreateNewCategory" class="btn btn-primary">Add</button>
+                <button id="CanselNewCategory" class="btn btn-secondary">Cancel</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

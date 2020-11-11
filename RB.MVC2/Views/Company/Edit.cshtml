@@ -58,29 +58,57 @@
         </form>
     </div>
     <div class="col-md-4">
-        <p>
-            <button id="createNewEmailBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Email</button>
-        </p>
-        <div class="row"><div id="createNewEmail" class="col-12"></div></div>
-        <ul id="newEmail" style="list-style-type:none; padding-left: 0;">
-            @foreach (var item in Model.Emails)
-            {
-                <li>
-                    <div>
-                        @Html.DisplayFor(modelItem => item.Email)
-                        @Html.HiddenFor(modelItem => item.CreatedOn)
-                        @Html.HiddenFor(modelItem => item.EmailId)
-                        @Html.HiddenFor(modelItem => item.CompanyId)
-                        <a asp-action="Edit" asp-route-id="@item.EmailId" class="btn btn-info editEmail" data-id="@item.EmailId">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.EmailId" class="btn btn-danger delEmail" data-id="@item.EmailId">Delete</a>
-                    </div>
-                </li>
-            }
-        </ul>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Emails </p>
+                <p>
+                    <button id="createNewEmailBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Email</button>
+                </p>
+                <div class="row"><div id="createNewEmail" class="col-12"></div></div>
+                <ul id="newEmail" style="list-style-type:none; padding-left: 0;">
+                    @foreach (var item in Model.Emails)
+                    {
+                        <li>
+                            <div>
+                                @Html.DisplayFor(modelItem => item.Email)
+                                @Html.HiddenFor(modelItem => item.CreatedOn)
+                                @Html.HiddenFor(modelItem => item.EmailId)
+                                @Html.HiddenFor(modelItem => item.CompanyId)
+                                <a asp-action="Edit" asp-route-id="@item.EmailId" class="btn btn-info editEmail" data-id="@item.EmailId">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.EmailId" class="btn btn-danger delEmail" data-id="@item.EmailId">Delete</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Категории </p>             
+                <p>
+                    <button id="createNewCategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Category</button>
+                </p>
+                <div class="row"><div id="createNewCategory" class="col-12"></div></div>
+                <ul id="newCategory" style="list-style-type:none; padding-left: 0;">
+                    @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
+                    @foreach (var item in ViewBag.Categories)
+                    {
+                        <li>
+                            <div>
+                                @item.CategoryName
+                                <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger delCategory" data-id="@item.CategoryId">Delete</a>
+                            </div>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-md-4" id="LoadDiv">
+        <p class="font-weight-bold">Телефоны </p>
         <p>
-            <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New</button>
+            <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Phone</button>
         </p>
         <div class="row"><div id="createNew" class="col-12"></div></div>
         <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
@@ -151,7 +179,7 @@
                         }
 					}
 				});
-			});
+		});
     });
 
     $('#newPhone').on('click.edit', '.editPhone', function (e) {
@@ -318,6 +346,66 @@
                        }
                    })
                }
-    });
+     });
+
+    //Добавление категории
+    //для Email
+     $('#createNewCategoryBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("AddCategory", "Company")', { id: companyId }, function (data) {
+				$('#createNewCategory').html(data);
+				$('#createNewCategoryBtn').prop('disabled', true);
+            $('#CategoryId').focus();
+				$('#CanselNewCategory').click(function () {
+					$('#createNewCategory').empty();
+					$('#createNewCategoryBtn').prop('disabled', false);
+				});
+				$('#CreateNewCategory').click(function () {					
+                    let fname = $('#CategoryId').val();
+                    let companyId = $('#CompanyId').val();                				
+                        try {
+							$.ajax({
+								url: '@Url.Action("AddNewCategory", "Company")',
+								type: 'post',
+								data: {
+                                    categoryId: fname,
+                                    companyId: companyId
+								},
+								success: function (newdata) {
+									$('#CanselNewCategory').click();
+                                    $('#newCategory').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }					
+				});
+			});
+     });
+
+    $('#newCategory').on('click.delete', '.delCategory', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+			let id = el.attr('data-id');
+            let tr = $(this).closest('li');
+            let companyId = $('#createNewCategoryBtn').attr('data-id');
+            if (confirm('Вы  хотите удалить запись?')) {
+                $.ajax({
+				    url: '@Url.Action("DeleteCategory", "Company")',
+				    type: 'post',
+                    data: {
+                        companyId: companyId,
+                        categoryId: id                
+				    },
+                    success: function (data) {
+                        if (data == "OK") {
+                            tr.remove();
+                        }
+				    }
+			    });
+                  
+               }
+     });
 </script>
 }

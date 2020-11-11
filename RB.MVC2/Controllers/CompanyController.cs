@@ -9,6 +9,7 @@ using RB.DAL.Common;
 using RB.DAL.Repositories;
 using RB.MVC.Models;
 using RB.DAL.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 //using RB.MVC.Models;
 
 namespace RB.MVC.Controllers
@@ -59,8 +60,65 @@ namespace RB.MVC.Controllers
         public ActionResult Edit(Guid id)
         {
             Companies company = id == Guid.Empty ? new Companies() : companies.Get(id);
-            
+            var companycat = compcat.FindBy(p => p.CompanyId == id);
+            List<Categories> cateGories = new List<Categories>();
+            foreach (var item in companycat)            
+            { 
+                var category = categories.FindBy(p=>p.CategoryId== item.CategoryId).FirstOrDefault();
+                cateGories.Add(category);
+            }
+            ViewBag.Categories = cateGories;
             return View(company);
+        }
+
+        public ActionResult AddCategory(Guid id)
+        {
+            var companycat = compcat.FindBy(p => p.CompanyId == id);
+            List<Categories> cateGories = new List<Categories>();
+            var categoryList = categories.GetAll();
+            foreach (var item in categoryList)
+            {
+                bool isInCompanycat = false;
+                foreach (var item2 in companycat)
+                {
+                    if(item.CategoryId == item2.CategoryId)
+                    {
+                        isInCompanycat = true;
+                    }
+                }
+                if ( !isInCompanycat )
+                {               
+                    cateGories.Add(item);
+                }              
+            }
+            ViewBag.CompanyId = id;
+            ViewBag.CategoryId = new SelectList(cateGories, "CategoryId", "CategoryName");        
+            return PartialView();
+        }
+        [HttpPost]
+        public ActionResult AddNewCategory(Guid companyId , int categoryId)
+        {
+            var newCompaniesCategories = new CompaniesCategories() { CompanyId = companyId, CategoryId = categoryId, CompanyCategoryId=Guid.NewGuid() };
+            compcat.Create(newCompaniesCategories);
+            compcat.Save();
+            var model = categories.Get(categoryId);
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCategory(Guid companyId, int categoryId)
+        {
+            try
+            {
+                var id = compcat.FindBy(p => p.CategoryId == categoryId && p.CompanyId == companyId).FirstOrDefault().CompanyCategoryId;
+                compcat.Delete(id);
+                compcat.Save();
+                return Json("OK");
+            }
+            catch (Exception exc)
+            {
+                return Json($"Bad\n{exc}");
+            }
         }
         [HttpPost]
         public ActionResult Edit(Companies companyNew)
