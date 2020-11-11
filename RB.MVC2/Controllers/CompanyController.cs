@@ -68,6 +68,16 @@ namespace RB.MVC.Controllers
                 cateGories.Add(category);
             }
             ViewBag.Categories = cateGories;
+
+            var companysubcat = compSubcat.FindBy(p => p.CompanyId == id);
+            List<Subcategories> subcateGories = new List<Subcategories>();
+            foreach (var item in companysubcat)
+            {
+                var subcategory = subcategories.FindBy(p => p.SubcategoryId == item.SubcategoryId).FirstOrDefault();
+                subcateGories.Add(subcategory);
+            }
+            ViewBag.Subategories = subcateGories;
+
             return View(company);
         }
 
@@ -113,6 +123,55 @@ namespace RB.MVC.Controllers
                 var id = compcat.FindBy(p => p.CategoryId == categoryId && p.CompanyId == companyId).FirstOrDefault().CompanyCategoryId;
                 compcat.Delete(id);
                 compcat.Save();
+                return Json("OK");
+            }
+            catch (Exception exc)
+            {
+                return Json($"Bad\n{exc}");
+            }
+        }
+        public ActionResult AddSubcategory(Guid id)
+        {
+            var companysubcat = compSubcat.FindBy(p => p.CompanyId == id);
+            List<Subcategories> subcateGories = new List<Subcategories>();
+            var subcategoryList = subcategories.GetAll();
+            foreach (var item in subcategoryList)
+            {
+                bool isInCompanycat = false;
+                foreach (var item2 in companysubcat)
+                {
+                    if (item.SubcategoryId == item2.SubcategoryId)
+                    {
+                        isInCompanycat = true;
+                    }
+                }
+                if (!isInCompanycat)
+                {
+                    subcateGories.Add(item);
+                }
+            }
+            ViewBag.CompanyId = id;
+            ViewBag.SubcategoryId = new SelectList(subcateGories, "SubcategoryId", "SubcategoryName");
+            return PartialView();
+        }
+        [HttpPost]
+        public ActionResult AddNewSubcategory(Guid companyId, int subcategoryId)
+        {
+            var newCompaniesSubcategories = new CompaniesSubcategories() { CompanyId = companyId, SubcategoryId = subcategoryId, CompanySubcategoryId = Guid.NewGuid() };
+            compSubcat.Create(newCompaniesSubcategories);
+            compSubcat.Save();
+            var model = subcategories.Get(subcategoryId);
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteSubcategory(Guid companyId, int subcategoryId)
+        {
+            try
+            {
+                var id = compSubcat.FindBy(p => p.SubcategoryId == subcategoryId && p.CompanyId == companyId).FirstOrDefault().CompanySubcategoryId;
+                compSubcat.Delete(id);
+                compSubcat.Save();
                 return Json("OK");
             }
             catch (Exception exc)

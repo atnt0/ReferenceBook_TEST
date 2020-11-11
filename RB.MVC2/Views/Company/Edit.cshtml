@@ -84,7 +84,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <p class="font-weight-bold">Категории </p>             
+                <p class="font-weight-bold">Категории </p>
                 <p>
                     <button id="createNewCategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Category</button>
                 </p>
@@ -97,6 +97,28 @@
                             <div>
                                 @item.CategoryName
                                 <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger delCategory" data-id="@item.CategoryId">Delete</a>
+                            </div>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Подкатегории </p>
+                <p>
+                    <button id="createNewSubcategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Subcategory</button>
+                </p>
+                <div class="row"><div id="createNewSubcategory" class="col-12"></div></div>
+                <ul id="newSubcategory" style="list-style-type:none; padding-left: 0;">
+                    @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
+                    @foreach (var item in ViewBag.Subategories)
+                    {
+                        <li>
+                            <div>
+                                @item.SubcategoryName
+                                <a asp-action="Delete" asp-route-id="@item.SubcategoryId" class="btn btn-danger delSubcategory" data-id="@item.SubcategoryId">Delete</a>
                             </div>
                         </li>
 
@@ -348,8 +370,7 @@
                }
      });
 
-    //Добавление категории
-    //для Email
+    //Добавление и удаление категории
      $('#createNewCategoryBtn').click(function () {
         let companyId = $(this).attr('data-id');
         $.get('@Url.Action("AddCategory", "Company")', { id: companyId }, function (data) {
@@ -360,9 +381,9 @@
 					$('#createNewCategory').empty();
 					$('#createNewCategoryBtn').prop('disabled', false);
 				});
-				$('#CreateNewCategory').click(function () {					
+				$('#CreateNewCategory').click(function () {
                     let fname = $('#CategoryId').val();
-                    let companyId = $('#CompanyId').val();                				
+                    let companyId = $('#CompanyId').val();
                         try {
 							$.ajax({
 								url: '@Url.Action("AddNewCategory", "Company")',
@@ -378,7 +399,7 @@
 							});
                         } catch (e) {
 							console.log('exception: ', e);
-                        }					
+                        }
 				});
 			});
      });
@@ -396,7 +417,7 @@
 				    type: 'post',
                     data: {
                         companyId: companyId,
-                        categoryId: id                
+                        categoryId: id
 				    },
                     success: function (data) {
                         if (data == "OK") {
@@ -404,8 +425,67 @@
                         }
 				    }
 			    });
-                  
+
                }
+    });
+     //Добавление и удаление подкатегории
+
+      $('#createNewSubcategoryBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("AddSubcategory", "Company")', { id: companyId }, function (data) {
+				$('#createNewSubcategory').html(data);
+				$('#createNewSubcategoryBtn').prop('disabled', true);
+            $('#SubcategoryId').focus();
+				$('#CanselNewSubcategory').click(function () {
+					$('#createNewSubcategory').empty();
+					$('#createNewSubcategoryBtn').prop('disabled', false);
+                });        
+            $('.addNewSubcategory').click(function () {            
+                    let fname = $('#SubcategoryId').val();
+                    let companyId = $('#CompanyId').val();               
+                        try {
+							$.ajax({
+								url: '@Url.Action("AddNewSubcategory", "Company")',
+								type: 'post',
+								data: {
+                                    subcategoryId: fname,
+                                    companyId: companyId
+								},
+								success: function (newdata) {
+									$('#CanselNewSubcategory').click();
+                                    $('#newSubcategory').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+				});
+			});
      });
+
+    $('#newSubcategory').on('click.delete', '.delSubcategory', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+        let id = el.attr('data-id');   
+            let tr = $(this).closest('li');
+            let companyId = $('#createNewSubcategoryBtn').attr('data-id');
+            if (confirm('Вы  хотите удалить запись?')) {
+                $.ajax({
+				    url: '@Url.Action("DeleteSubcategory", "Company")',
+				    type: 'post',
+                    data: {
+                        companyId: companyId,
+                        subcategoryId: id
+				    },
+                    success: function (data) {
+                        if (data == "OK") {
+                            tr.remove();
+                        }
+				    }
+			    });
+
+            }
+    });
 </script>
 }
