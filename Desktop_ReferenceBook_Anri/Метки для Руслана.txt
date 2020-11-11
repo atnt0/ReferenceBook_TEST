@@ -1,0 +1,10 @@
+
+заменить
+EmailsId в EmailId
+PhotosId в PhotoId
+
+
+
+
+
+

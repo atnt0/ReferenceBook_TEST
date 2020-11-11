@@ -1,0 +1,20 @@
+
+
+git --version
+
+https://git-scm.com/book/en/v2
+
+
+https://kbroman.org/github_tutorial/pages/first_time.html
+
+git config --global user.name "atnt0"
+git config --global user.email "..."
+
+
+
+JSONPlaceholder
+linq
+
+
+
+
