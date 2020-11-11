@@ -1,0 +1,8 @@
+﻿@model RB.DAL.Models.SocialNetNames
+
+<td class="SocialNetName">@Model.SocialNetName</td>
+
+<td>
+    <a asp-action="Edit" asp-route-id="@Model.SocialNetNameId" class="btn btn-info editSocialNetName" data-id="@Model.SocialNetNameId">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.SocialNetNameId" class="btn btn-danger delSocialNetName" data-id="@Model.SocialNetNameId">Delete</a>
+</td>
