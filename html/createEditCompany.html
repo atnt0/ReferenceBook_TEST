@@ -21,7 +21,7 @@
 		/*.input-group-prepend input[type="text"]{margin: 0;}*/
 		td{/*border: 1px solid #ccc;*/ text-align: center; vertical-align: bottom;}
 		.weekend{width: 50px;}
-		.tabcol3{width: 60px; height: 24px;}
+		.tabcol3{width: 70px; height: 24px;}
     </style>
 </head>
 
@@ -158,19 +158,21 @@
         </div>
 		<div class="row">
 			<h2 class="col-12">График работы</h2>
-			<div class="col-10 offset-1">
+			<div class="col-12">
 				<table id="workdays">
 					<thead>
 						<tr>
 							<td rowspan="2">Рабо<br>чий</td>
 							<td rowspan="2">День<br>недели</td>
 							<td colspan="7">Рабочее время</td>
+							<td></td>
 							<td colspan="7">Перерыв</td>
 						</tr>
 						<tr>
 							<td colspan="3">начало</td>
 							<td></td>
 							<td colspan="3">конец</td>
+							<td></td>
 							<td colspan="3">начало</td>
 							<td></td>
 							<td colspan="3">конец</td>
@@ -180,163 +182,170 @@
 						<tr>
 							<td class="weekend">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customSwitch1">
+									<input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
 									<label class="custom-control-label" for="customSwitch1"></label>
 								</div>
 							</td>
 							<td class="day">Пн</td>
-							<td class="tabcol3"><select class="day-start-h pn form-control"></select></td>
+							<td class="tabcol3"><select class="day-start-h form-control"></select></td>
 							<td class="tabcol4">:</td>
-							<td class="tabcol3"><select class="day-start-m pn form-control"></select></td>
+							<td class="tabcol3"><select class="day-start-m form-control"></select></td>
 							<td class="tabcol4">&nbsp;</td>
-							<td class="tabcol3"><select class="day-finish-h pn form-control"></select></td>
+							<td class="tabcol3"><select class="day-finish-h form-control"></select></td>
 							<td class="tabcol4">:</td>
-							<td class="tabcol3"><select class="day-finish-m pn form-control"></select></td>
-							<td class="tabcol3"><select class="timeout-start-h pn form-control"></select></td>
+							<td class="tabcol3"><select class="day-finish-m form-control"></select></td>
+							<td class="">&nbsp;&nbsp;</td>
+							<td class="tabcol3"><select class="timeout-start-h form-control"></select></td>
 							<td class="tabcol4">:</td>
-							<td class="tabcol3"><select class="timeout-start-m pn form-control"></select></td>
+							<td class="tabcol3"><select class="timeout-start-m form-control"></select></td>
 							<td class="tabcol4">&nbsp;</td>
-							<td class="tabcol3"><select class="timeout-finish-h pn form-control"></select></td>
+							<td class="tabcol3"><select class="timeout-finish-h form-control"></select></td>
 							<td class="tabcol4">:</td>
-							<td class="tabcol3"><select class="timeout-finish-m pn form-control"></select></td>
+							<td class="tabcol3"><select class="timeout-finish-m form-control"></select></td>
 						</tr>
 						<tr>
 							<td class="weekend">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customSwitch2">
+									<input type="checkbox" class="custom-control-input" id="customSwitch2" checked>
 									<label class="custom-control-label" for="customSwitch2"></label>
 								</div>
 							</td>
 							<td class="day">Вт</td>
-							<td><select class="day-start-h vt form-control"></select></td>
+							<td><select class="day-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-start-m vt form-control"></select></td>
+							<td><select class="day-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="day-finish-h vt form-control"></select></td>
+							<td><select class="day-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-finish-m vt form-control"></select></td>
-							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td><select class="day-finish-m form-control"></select></td>
+							<td class="">&nbsp;&nbsp;</td>
+							<td><select class="timeout-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td><select class="timeout-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td><select class="timeout-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-finish-m pn form-control"></select></td>
+							<td><select class="timeout-finish-m form-control"></select></td>
 						</tr>
 						<tr>
 							<td class="weekend">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customSwitch3">
+									<input type="checkbox" class="custom-control-input" id="customSwitch3" checked>
 									<label class="custom-control-label" for="customSwitch3"></label>
 								</div>
 							</td>
 							<td class="day">Ср</td>
-							<td><select class="day-start-h sr form-control"></select></td>
+							<td><select class="day-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-start-m sr form-control"></select></td>
+							<td><select class="day-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="day-finish-h sr form-control"></select></td>
+							<td><select class="day-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-finish-m sr form-control"></select></td>
-							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td><select class="day-finish-m form-control"></select></td>
+							<td class="">&nbsp;&nbsp;</td>
+							<td><select class="timeout-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td><select class="timeout-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td><select class="timeout-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-finish-m pn form-control"></select></td>
+							<td><select class="timeout-finish-m form-control"></select></td>
 						</tr>
 						<tr>
 							<td class="weekend">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customSwitch4">
+									<input type="checkbox" class="custom-control-input" id="customSwitch4" checked>
 									<label class="custom-control-label" for="customSwitch4"></label>
 								</div>
 							</td>
 							<td class="day">Чт</td>
-							<td><select class="day-start-h cht form-control"></select></td>
+							<td><select class="day-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-start-m cht form-control"></select></td>
+							<td><select class="day-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="day-finish-h cht form-control"></select></td>
+							<td><select class="day-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-finish-m cht form-control"></select></td>
-							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td><select class="day-finish-m form-control"></select></td>
+							<td class="">&nbsp;&nbsp;</td>
+							<td><select class="timeout-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td><select class="timeout-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td><select class="timeout-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-finish-m pn form-control"></select></td>
+							<td><select class="timeout-finish-m form-control"></select></td>
 						</tr>
 						<tr>
 							<td class="weekend">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customSwitch5">
+									<input type="checkbox" class="custom-control-input" id="customSwitch5" checked>
 									<label class="custom-control-label" for="customSwitch5"></label>
 								</div>
 							</td>
 							<td class="day">Пт</td>
-							<td><select class="day-start-h pt form-control"></select></td>
+							<td><select class="day-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-start-m pt form-control"></select></td>
+							<td><select class="day-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="day-finish-h pt form-control"></select></td>
+							<td><select class="day-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-finish-m pt form-control"></select></td>
-							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td><select class="day-finish-m form-control"></select></td>
+							<td class="">&nbsp;&nbsp;</td>
+							<td><select class="timeout-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td><select class="timeout-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td><select class="timeout-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-finish-m pn form-control"></select></td>
+							<td><select class="timeout-finish-m form-control"></select></td>
 						</tr>
 						<tr>
 							<td class="weekend">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customSwitch6">
+									<input type="checkbox" class="custom-control-input" id="customSwitch6" checked>
 									<label class="custom-control-label" for="customSwitch6"></label>
 								</div>
 							</td>
 							<td class="day">Сб</td>
-							<td><select class="day-start-h sb form-control"></select></td>
+							<td><select class="day-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-start-m sb form-control"></select></td>
+							<td><select class="day-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="day-finish-h sb form-control"></select></td>
+							<td><select class="day-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-finish-m sb form-control"></select></td>
-							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td><select class="day-finish-m form-control"></select></td>
+							<td class="">&nbsp;&nbsp;</td>
+							<td><select class="timeout-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td><select class="timeout-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td><select class="timeout-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-finish-m pn form-control"></select></td>
+							<td><select class="timeout-finish-m form-control"></select></td>
 						</tr>
 						<tr>
 							<td class="weekend">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customSwitch7">
+									<input type="checkbox" class="custom-control-input" id="customSwitch7" checked>
 									<label class="custom-control-label" for="customSwitch7"></label>
 								</div>
 							</td>
 							<td class="day">Вс</td>
-							<td><select class="day-start-h vs form-control"></select></td>
+							<td><select class="day-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-start-m vs form-control"></select></td>
+							<td><select class="day-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="day-finish-h vs form-control"></select></td>
+							<td><select class="day-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="day-finish-m vs form-control"></select></td>
-							<td><select class="timeout-start-h pn form-control"></select></td>
+							<td><select class="day-finish-m form-control"></select></td>
+							<td class="">&nbsp;&nbsp;</td>
+							<td><select class="timeout-start-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-start-m pn form-control"></select></td>
+							<td><select class="timeout-start-m form-control"></select></td>
 							<td>&nbsp;</td>
-							<td><select class="timeout-finish-h pn form-control"></select></td>
+							<td><select class="timeout-finish-h form-control"></select></td>
 							<td>:</td>
-							<td><select class="timeout-finish-m pn form-control"></select></td>
+							<td><select class="timeout-finish-m form-control"></select></td>
 						</tr>
 					</tbody>
 				</table>
@@ -383,7 +392,7 @@
 				$('.day-start-m,.day-finish-m,.timeout-start-m,.timeout-finish-m').append('<option value="'+i+'"'+(i==0?' selected':'')+'>'+(i<10?'0'+i:i)+'</option>');
 			}
 			$('input.custom-control-input:checkbox').on('change',function(){
-				if($(this).prop('checked')==true){
+				if($(this).prop('checked')==false){
 					let tr=$(this).closest('tr');
 					tr.find('select').each(function(){
 						$(this).prop('disabled',true);
