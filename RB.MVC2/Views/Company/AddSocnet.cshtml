@@ -1,0 +1,25 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>Выберите соцсеть</th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DropDownList("SocialNetNameId", null, htmlAttributes: new { @class = "form-control" })
+                <input type="text" minlength="3" maxlength="500" id="newUrl" class="form-control" placeholder="Url" />
+            </td>
+            <td>
+                <input type="hidden" id="CompanyId" class="form-control" value="@ViewBag.CompanyId" />
+            </td>
+            <td>
+                <button id="CreateNewSocnet" class="btn btn-primary addNewSocnet">Add</button>
+                <button id="CanselNewSocnet" class="btn btn-secondary">Cancel</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

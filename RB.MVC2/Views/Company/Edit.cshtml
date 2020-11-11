@@ -1,4 +1,6 @@
-﻿@model RB.DAL.Models.Companies
+﻿@using RB.DAL.Models
+@using RB.MVC.Models;
+@model RB.DAL.Models.Companies
 
 <h4>Companies</h4>
 <hr />
@@ -128,27 +130,51 @@
         </div>
     </div>
     <div class="col-md-4" id="LoadDiv">
-        <p class="font-weight-bold">Телефоны </p>
-        <p>
-            <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Phone</button>
-        </p>
-        <div class="row"><div id="createNew" class="col-12"></div></div>
-        <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
-            @foreach (var item in Model.Phones)
-            {
-                <li>
-                    <div>
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        @Html.HiddenFor(modelItem => item.CreatedOn)
-                        @Html.HiddenFor(modelItem => item.PhoneId)
-                        @Html.HiddenFor(modelItem => item.CompanyId)
-                        <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-info editPhone" data-id="@item.PhoneId">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
-                    </div>
-                </li>
-            }
-        </ul>
-
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Телефоны </p>
+                <p>
+                    <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Phone</button>
+                </p>
+                <div class="row"><div id="createNew" class="col-12"></div></div>
+                <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
+                    @foreach (var item in Model.Phones)
+                    {
+                        <li>
+                            <div>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                @Html.HiddenFor(modelItem => item.CreatedOn)
+                                @Html.HiddenFor(modelItem => item.PhoneId)
+                                @Html.HiddenFor(modelItem => item.CompanyId)
+                                <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-info editPhone" data-id="@item.PhoneId">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Социальные сети </p>
+                <p>
+                    <button id="createNewSocnetBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Social Net</button>
+                </p>
+                <div class="row"><div id="createNewSocnet" class="col-12"></div></div>
+                <ul id="newSocnet" style="list-style-type:none; padding-left: 0;">
+                    @foreach (var item in ((List<SocnetPoco>)ViewBag.socialnetNames))
+                    {
+                        <li>
+                            <div>
+                                <p> @item.socialNetNames.SocialNetName</p>
+                                <p> @item.SocNetUrl</p>
+                                <a asp-action="Delete" asp-route-id="@item.socialNetNames.SocialNetNameId" class="btn btn-danger delSocnet" data-id="@item.socialNetNames.SocialNetNameId">Delete</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -160,7 +186,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-<script>
+    <script>
     // Для номеров телефона
     $('#createNewBtn').click(function () {
         let companyId = $(this).attr('data-id');
@@ -439,10 +465,10 @@
 				$('#CanselNewSubcategory').click(function () {
 					$('#createNewSubcategory').empty();
 					$('#createNewSubcategoryBtn').prop('disabled', false);
-                });        
-            $('.addNewSubcategory').click(function () {            
+                });
+            $('.addNewSubcategory').click(function () {
                     let fname = $('#SubcategoryId').val();
-                    let companyId = $('#CompanyId').val();               
+                    let companyId = $('#CompanyId').val();
                         try {
 							$.ajax({
 								url: '@Url.Action("AddNewSubcategory", "Company")',
@@ -467,7 +493,7 @@
 			e.preventDefault();
 
 			let el = $(this);
-        let id = el.attr('data-id');   
+        let id = el.attr('data-id');
             let tr = $(this).closest('li');
             let companyId = $('#createNewSubcategoryBtn').attr('data-id');
             if (confirm('Вы  хотите удалить запись?')) {
@@ -487,5 +513,75 @@
 
             }
     });
-</script>
+
+    //Добавление и удаление соцсети
+         $('#createNewSocnetBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("AddSocnet", "Company")', { id: companyId }, function (data) {
+				$('#createNewSocnet').html(data);
+				$('#createNewSocnet').prop('disabled', true);
+            $('#SocialNetNameId').focus();
+				$('#CanselNewSocnet').click(function () {
+					$('#createNewSocnet').empty();
+					$('#createNewSocnetBtn').prop('disabled', false);
+                });
+            $('.addNewSocnet').click(function () {
+                let countErrors = 0;
+                let fname = $('#SocialNetNameId').val();
+                let url = $('#newUrl').val();
+                let companyId = $('#CompanyId').val();
+                if (url.length < 3 || url.length > 500) {
+                    $('#newUrl').css('border', '2px solid #f00');
+                    countErrors++;
+                } else { $('#newUrl').removeAttr('style'); }
+
+                console.log(fname, url, companyId);
+                if (countErrors == 0) {
+                    try {
+                        $.ajax({
+                            url: '@Url.Action("AddNewSocnet", "Company")',
+                            type: 'post',
+                            data: {
+                                companyId: companyId,
+                                socnetnameId: fname,
+                                url: url
+                            },
+                            success: function (newdata) {
+                                $('#CanselNewSocnet').click();
+                                $('#newSocnet').prepend(newdata);
+                            }
+                        });
+                    } catch (e) {
+                        console.log('exception: ', e);
+                    }
+                }
+				});
+			});
+     });
+
+    $('#newSocnet').on('click.delete', '.delSocnet', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+        let id = el.attr('data-id');
+            let tr = $(this).closest('li');
+            let companyId = $('#createNewSocnetBtn').attr('data-id');
+            if (confirm('Вы  хотите удалить запись?')) {
+                $.ajax({
+				    url: '@Url.Action("DeleteSocnet", "Company")',
+				    type: 'post',
+                    data: {
+                        companyId: companyId,
+                        socnetnameId: id
+				    },
+                    success: function (data) {
+                        if (data == "OK") {
+                            tr.remove();
+                        }
+				    }
+			    });
+
+            }
+    });
+    </script>
 }

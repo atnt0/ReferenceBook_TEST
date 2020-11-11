@@ -10,7 +10,7 @@ using RB.DAL.Repositories;
 using RB.MVC.Models;
 using RB.DAL.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-//using RB.MVC.Models;
+
 
 namespace RB.MVC.Controllers
 {
@@ -20,12 +20,15 @@ namespace RB.MVC.Controllers
         IGenericRepository<Photos, Guid> photos;
 
         IGenericRepository<Categories, int> categories;
+        IGenericRepository<SocialNets, Guid> socialNets;
+        IGenericRepository<SocialNetNames, int> socialNetsNames;
         IGenericRepository<Subcategories, int> subcategories;
         IGenericRepository<CompaniesCategories, Guid> compcat;//категория-кампания
         IGenericRepository<CompaniesSubcategories, Guid> compSubcat;
         public CompanyController(IGenericRepository<Companies, Guid> companies, IGenericRepository<Photos, Guid> photos, IGenericRepository<Categories, int> categories,
             IGenericRepository<Subcategories, int> subcategories, IGenericRepository<CompaniesCategories, Guid> compcat,
-           IGenericRepository<CompaniesSubcategories, Guid> compSubcat)
+           IGenericRepository<CompaniesSubcategories, Guid> compSubcat, IGenericRepository<SocialNets, Guid> socialNets,
+          IGenericRepository<SocialNetNames, int> socialNetsNames)
         {
             this.companies = companies;
             this.categories = categories;
@@ -33,6 +36,8 @@ namespace RB.MVC.Controllers
             this.compcat = compcat;
             this.compSubcat = compSubcat;
             this.photos = photos;
+            this.socialNets = socialNets;
+            this.socialNetsNames = socialNetsNames;
         }
         public IActionResult Index()
         {
@@ -78,7 +83,71 @@ namespace RB.MVC.Controllers
             }
             ViewBag.Subategories = subcateGories;
 
+            var companySocnet = socialNets.FindBy(p => p.CompanyId == id);
+            List<SocnetPoco> socnetPocos = new List<SocnetPoco>();
+            foreach (var item in companySocnet)
+            {
+                
+                var socNetName = socialNetsNames.FindBy(p => p.SocialNetNameId == item.SocialNetNameId);
+                if (socNetName.Count() > 0) {
+                    socnetPocos.Add(new SocnetPoco() { socialNetNames = socNetName.FirstOrDefault(), SocNetUrl = item.SocialNetUrl });
+                }
+            }
+            ViewBag.socialnetNames = socnetPocos;
+
             return View(company);
+        }
+
+        public ActionResult AddSocnet(Guid id)
+        {
+            var companysocnet = socialNets.FindBy(p => p.CompanyId == id);
+            List<SocialNetNames> socialnetNames = new List<SocialNetNames>();
+            var socialNetNamesList = socialNetsNames.GetAll();
+            //foreach (var item in socialNetNamesList)
+            //{
+            //    bool isInCompanycat = false;
+            //    foreach (var item2 in companysocnet)
+            //    {
+            //        if (item.SocialNetNameId == item2.SocialNetNameId)
+            //        {
+            //            isInCompanycat = true;
+            //        }
+            //    }
+            //    if (!isInCompanycat)
+            //    {
+            //        socialnetNames.Add(item);
+            //    }
+            //}
+            ViewBag.CompanyId = id;
+            ViewBag.SocialNetNameId = new SelectList(socialNetNamesList, "SocialNetNameId", "SocialNetName");
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult AddNewSocnet(Guid companyId, int socnetnameId, string url)
+        {
+            var newSocNet = new SocialNets() { CompanyId = companyId, SocialNetNameId = socnetnameId, SocialNetId = Guid.NewGuid(), SocialNetUrl = url };
+            socialNets.Create(newSocNet);
+            socialNets.Save();
+            var model = socialNetsNames.Get(socnetnameId);
+            ViewBag.Url = url;
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteSocnet(Guid companyId, int socnetnameId)
+        {
+            try
+            {
+                var id = socialNets.FindBy(p => p.SocialNetNameId == socnetnameId && p.CompanyId == companyId).FirstOrDefault().SocialNetId;
+                socialNets.Delete(id);
+                socialNets.Save();
+                return Json("OK");
+            }
+            catch (Exception exc)
+            {
+                return Json($"Bad\n{exc}");
+            }
         }
 
         public ActionResult AddCategory(Guid id)
