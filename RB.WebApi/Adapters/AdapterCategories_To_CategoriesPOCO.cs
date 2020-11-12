@@ -23,7 +23,7 @@ namespace RB.WebApi.Adapters
             CategoriesPOCO categoriesPOCO = new CategoriesPOCO()
             {
                 CategoryId = categories.CategoryId,
-                CategoryName = categories.CategoryName,
+                CategoryName = categories.CategoryName
             };
             //CompaniesCategories
             if (categories.CompaniesCategories.Count() <= 0)

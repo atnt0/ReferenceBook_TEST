@@ -22,7 +22,24 @@ namespace RB.WebApi
         {
             services.AddMyService(Configuration);
             services.AddSwaggerGen();
+            services.AddScoped<AdapterAddresses_To_AddressesPOCO>();
+            services.AddScoped<AdapterCategories_To_CategoriesPOCO>();
+            services.AddScoped<AdapterCities_To_CitiesPOCO>();
+            services.AddScoped<AdapterCompaniesCategories_To_CompaniesCategoriesPOCO>();
             services.AddScoped<AdapterCompanies_To_CompaniesPOCO>();
+            services.AddScoped<AdapterCompaniesSubcategories_To_CompaniesSubcategoriesPOCO>();
+            services.AddScoped<AdapterDayWeekTimeTables_To_DayWeekTimeTablesPOCO>();
+            services.AddScoped<AdapterEmails_To_EmailsPOCO>();
+            services.AddScoped<AdapterLogos_To_LogosPOCO>();
+            services.AddScoped<AdapterPhones_To_PhonesPOCO>();
+            services.AddScoped<AdapterPhotos_To_PhotosPOCO>();
+            services.AddScoped<AdapterSocialNetNames_To_SocialNetNamesPOCO>();
+            services.AddScoped<AdapterSocialNets_To_SocialNetsPOCO>();
+            services.AddScoped<AdapterStreets_To_StreetsPOCO>();
+            services.AddScoped<AdapterSubcategories_To_SubcategoriesPOCO>();
+            services.AddScoped<AdapterUsersCompanies_To_UsersCompaniesPOCO>();
+            services.AddScoped<AdapterZipCodes_To_ZipCodesPOCO>();
+
             services.AddControllers();
             //services.AddScoped<IGenericRepository, GenericRepository<Categories, int>>();
         }

@@ -31,7 +31,7 @@ namespace RB.WebApi.Adapters
             CitiesPOCO citiesPOCO = new CitiesPOCO()
             {
                 CityId = cities.CityId,
-                CityName = cities.CityName,
+                CityName = cities.CityName
             };
             //Addresses
             if (cities.Addresses.Count() <= 0)

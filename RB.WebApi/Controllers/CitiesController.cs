@@ -15,12 +15,12 @@ namespace RB.WebApi.Controllers
     public class CitiesController : ControllerBase
     {
         IGenericRepository<Cities, Guid> cities;
-        AdapterCompanies_To_CompaniesPOCO companies_To;
+        AdapterCities_To_CitiesPOCO adapterCities_To_CitiesPOCO;
 
-        public CitiesController(IGenericRepository<Cities, Guid> cities, AdapterCompanies_To_CompaniesPOCO companies_To)
+        public CitiesController(IGenericRepository<Cities, Guid> cities, AdapterCities_To_CitiesPOCO adapterCities_To_CitiesPOCO)
         {
             this.cities = cities;
-            this.companies_To = companies_To;
+            this.adapterCities_To_CitiesPOCO = adapterCities_To_CitiesPOCO;
         }
 
         [HttpGet]
@@ -30,7 +30,7 @@ namespace RB.WebApi.Controllers
             List<CitiesPOCO> citiesPOCOs = new List<CitiesPOCO>();
             foreach (var item in citiesList)
             {
-                citiesPOCOs.Add(companies_To.GetCitiesPOCO(item));
+                citiesPOCOs.Add(adapterCities_To_CitiesPOCO.GetCitiesPOCO(item));
             }
             return Ok(citiesPOCOs);
         }
@@ -43,7 +43,7 @@ namespace RB.WebApi.Controllers
             {
                 return NotFound();
             }
-            var citiesPOCO = companies_To.GetCitiesPOCO(city);
+            var citiesPOCO = adapterCities_To_CitiesPOCO.GetCitiesPOCO(city);
             return Ok(citiesPOCO);
         }
     }
