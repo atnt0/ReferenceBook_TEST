@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using RB.DAL.Common;
 using RB.DAL.Models;
 
@@ -15,9 +16,22 @@ namespace RB.MVC.Controllers
         {
             this.cities = cities;
         }
-        public IActionResult Index()
+        public IActionResult Index(int Page)
         {
-            var model = cities.GetAll().OrderBy(p=>p.CityName);
+            if (Page <= 0) Page = 1;
+            int countrecord = 5;
+            var model = cities.GetAll().Skip(countrecord * (Page - 1)).Take(countrecord).OrderBy(p => p.CityName);
+            int countRows = cities.GetAll().Count();
+            int count = model.Count();
+            if (count == 0)
+            {
+                Page = Page - 1;
+                return RedirectToAction("Index", new RouteValueDictionary(
+                     new { controller = "City", action = "Index", Page = Page }));
+            }
+            ViewData["CountPages"] = Math.Ceiling((double)(countRows / countrecord));
+            ViewData["IsInt"] = countRows % countrecord == 0 ? true : false;
+            ViewData["Page"] = Page;
             return View(model);
         }
 

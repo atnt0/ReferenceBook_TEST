@@ -1,0 +1,8 @@
+﻿@using RB.DAL.Models
+@model Subcategories
+<li>
+    <div>
+        @Html.DisplayFor(modelItem => @Model.SubcategoryName)
+        <a asp-action="Delete" asp-route-id="@Model.SubcategoryId" class="btn btn-danger delSubcategory" data-id="@Model.SubcategoryId">Delete</a>
+    </div>
+</li>

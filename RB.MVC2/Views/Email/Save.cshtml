@@ -1,0 +1,12 @@
+﻿@using RB.DAL.Models
+@model Emails
+<li>
+    <div>
+        @Html.DisplayFor(modelItem => @Model.Email)
+        @Html.HiddenFor(modelItem => @Model.CreatedOn)
+        @Html.HiddenFor(modelItem => @Model.EmailId)
+        @Html.HiddenFor(modelItem => @Model.CompanyId)
+        <a asp-action="Edit" asp-route-id="@Model.EmailId" class="btn btn-info editEmail" data-id="@Model.EmailId">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.EmailId" class="btn btn-danger delEmail" data-id="@Model.EmailId">Delete</a>
+    </div>
+</li>

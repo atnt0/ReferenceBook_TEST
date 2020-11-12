@@ -1,0 +1,20 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>Введите Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <input type="text" minlength="3" maxlength="256" id="newEmailName" class="form-control" placeholder="Email" />
+                <input type="hidden" value="@ViewBag.CompanyId" id="newCompanyId" class="form-control"  />
+            </td>
+            <td>
+                <button id="CreateNewEmail" class="btn btn-primary">Create</button>
+                <button id="CanselNewEmail" class="btn btn-secondary">Cancel</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

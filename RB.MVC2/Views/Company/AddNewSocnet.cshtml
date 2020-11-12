@@ -1,0 +1,9 @@
+﻿@using RB.DAL.Models
+@model SocialNetNames
+<li>
+    <div>
+        @Html.DisplayFor(modelItem => @Model.SocialNetName)
+        <p>  @ViewBag.Url</p>   
+        <a asp-action="Delete" asp-route-id="@Model.SocialNetNameId" class="btn btn-danger delSocnet" data-id="@Model.SocialNetNameId">Delete</a>
+    </div>
+</li>

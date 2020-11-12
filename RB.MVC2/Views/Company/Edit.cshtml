@@ -1,4 +1,6 @@
-﻿@model RB.DAL.Models.Companies
+﻿@using RB.DAL.Models
+@using RB.MVC.Models;
+@model RB.DAL.Models.Companies
 
 <h4>Companies</h4>
 <hr />
@@ -58,29 +60,121 @@
         </form>
     </div>
     <div class="col-md-4">
-        @*<button id="LoadPhones" class="btn btn-primary">Телефоны</button>*@
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Emails </p>
+                <p>
+                    <button id="createNewEmailBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Email</button>
+                </p>
+                <div class="row"><div id="createNewEmail" class="col-12"></div></div>
+                <ul id="newEmail" style="list-style-type:none; padding-left: 0;">
+                    @foreach (var item in Model.Emails)
+                    {
+                        <li>
+                            <div>
+                                @Html.DisplayFor(modelItem => item.Email)
+                                @Html.HiddenFor(modelItem => item.CreatedOn)
+                                @Html.HiddenFor(modelItem => item.EmailId)
+                                @Html.HiddenFor(modelItem => item.CompanyId)
+                                <a asp-action="Edit" asp-route-id="@item.EmailId" class="btn btn-info editEmail" data-id="@item.EmailId">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.EmailId" class="btn btn-danger delEmail" data-id="@item.EmailId">Delete</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Категории </p>
+                <p>
+                    <button id="createNewCategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Category</button>
+                </p>
+                <div class="row"><div id="createNewCategory" class="col-12"></div></div>
+                <ul id="newCategory" style="list-style-type:none; padding-left: 0;">
+                    @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
+                    @foreach (var item in ViewBag.Categories)
+                    {
+                        <li>
+                            <div>
+                                @item.CategoryName
+                                <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger delCategory" data-id="@item.CategoryId">Delete</a>
+                            </div>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Подкатегории </p>
+                <p>
+                    <button id="createNewSubcategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Subcategory</button>
+                </p>
+                <div class="row"><div id="createNewSubcategory" class="col-12"></div></div>
+                <ul id="newSubcategory" style="list-style-type:none; padding-left: 0;">
+                    @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
+                    @foreach (var item in ViewBag.Subategories)
+                    {
+                        <li>
+                            <div>
+                                @item.SubcategoryName
+                                <a asp-action="Delete" asp-route-id="@item.SubcategoryId" class="btn btn-danger delSubcategory" data-id="@item.SubcategoryId">Delete</a>
+                            </div>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-md-4" id="LoadDiv">
-        <p>
-            <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New</button>
-        </p>
-        <div class="row"><div id="createNew" class="col-12"></div></div>
-        <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
-            @foreach (var item in Model.Phones)
-            {
-                <li>
-                    <div>
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        @Html.HiddenFor(modelItem => item.CreatedOn)
-                        @Html.HiddenFor(modelItem => item.PhoneId)
-                        @Html.HiddenFor(modelItem => item.CompanyId)
-                        <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-info editPhone" data-id="@item.PhoneId">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
-                    </div>
-                </li>
-            }
-        </ul>
-
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Телефоны </p>
+                <p>
+                    <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Phone</button>
+                </p>
+                <div class="row"><div id="createNew" class="col-12"></div></div>
+                <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
+                    @foreach (var item in Model.Phones)
+                    {
+                        <li>
+                            <div>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                @Html.HiddenFor(modelItem => item.CreatedOn)
+                                @Html.HiddenFor(modelItem => item.PhoneId)
+                                @Html.HiddenFor(modelItem => item.CompanyId)
+                                <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-info editPhone" data-id="@item.PhoneId">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Социальные сети </p>
+                <p>
+                    <button id="createNewSocnetBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Social Net</button>
+                </p>
+                <div class="row"><div id="createNewSocnet" class="col-12"></div></div>
+                <ul id="newSocnet" style="list-style-type:none; padding-left: 0;">
+                    @foreach (var item in ((List<SocnetPoco>)ViewBag.socialnetNames))
+                    {
+                        <li>
+                            <div>
+                                <p> @item.socialNetNames.SocialNetName</p>
+                                <p> @item.SocNetUrl</p>
+                                <a asp-action="Delete" asp-route-id="@item.socialNetNames.SocialNetNameId" class="btn btn-danger delSocnet" data-id="@item.socialNetNames.SocialNetNameId">Delete</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -92,7 +186,8 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-<script>
+    <script>
+    // Для номеров телефона
     $('#createNewBtn').click(function () {
         let companyId = $(this).attr('data-id');
         $.get('@Url.Action("Create" ,"Phone")', { id: companyId }, function (data) {
@@ -132,10 +227,10 @@
                         }
 					}
 				});
-			});
+		});
     });
 
-    	$('ul').on('click.edit', '.editPhone', function (e) {
+    $('#newPhone').on('click.edit', '.editPhone', function (e) {
 			e.preventDefault();
 			$('#CanselNewPhone').click();
 			$('#phoneCancel').click();
@@ -184,9 +279,6 @@
             $('#LoadDiv').html(data);
         })
     })*@
-			
-
-
 
     $('#newPhone').on('click.delete', '.delPhone', function (e) {
 			e.preventDefault();
@@ -201,6 +293,295 @@
                        }
                    })
                }
-		});
-</script>
+    });
+
+    //для Email
+     $('#createNewEmailBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("Create" ,"Email")', { id: companyId }, function (data) {
+				$('#createNewEmail').html(data);
+				$('#createNewEmailBtn').prop('disabled', true);
+				$('#newEmailName').focus();
+				$('#CanselNewEmail').click(function () {
+					$('#createNewEmail').empty();
+					$('#createNewEmailBtn').prop('disabled', false);
+				});
+				$('#CreateNewEmail').click(function () {
+					let countErrors = 0;
+                    let fname = $('#newEmailName').val();
+                    let companyId = $('#newCompanyId').val();
+                    console.log(fname, companyId);
+					if (fname.length < 3 || fname.length > 256) {
+						$('#newEmailName').css('border', '2px solid #f00');
+                        countErrors++;
+					} else { $('#newEmailName').removeAttr('style'); }
+
+                    if (countErrors == 0) {
+                        try {
+							$.ajax({
+								url: '@Url.Action("CreateNewEmail", "Email")',
+								type: 'post',
+								data: {
+                                    emailName: fname,
+                                    companyId: companyId
+								},
+								success: function (newdata) {
+									$('#CanselNewEmail').click();
+                                    $('#newEmail').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+					}
+				});
+			});
+    });
+
+    $('#newEmail').on('click.edit', '.editEmail', function (e) {
+			e.preventDefault();
+			$('#CanselNewEmail').click();
+			$('#emailCancel').click();
+			let id = $(this).attr('data-id');
+			let trtmp = $(this).closest('li').html();
+			let tr = $(this).closest('li');
+
+			$.ajax({
+				url: '@Url.Action("Edit", "Email")',
+				type: 'get',
+				data: {
+					id: id
+				},
+				success: function (data) {
+					tr.html(data);
+					$('#emailCancel').click(function () {
+						tr.html(trtmp);
+					});
+					$('#emailSave').click(function () {
+                        let countErrors = 0;
+						let fname = $('#newEmailName').val();
+						if (fname.length < 3 || fname.length > 256) {
+                            $('#newEmailName').css('border', '2px solid #f00');
+                            countErrors++;
+                        } else { $('#newEmailName').removeAttr('style'); }
+                        if (countErrors == 0) {
+							$.post(
+								'@Url.Action("Save", "Email")',
+								{
+									id: id,
+									fname: fname
+								},
+								function (data) {
+									tr.html(data);
+								}
+							);
+						}
+					});
+				}
+			});
+	});
+
+     $('#newEmail').on('click.delete', '.delEmail', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+			let id = el.attr('data-id');
+            let tr = $(this).closest('li');
+               if (confirm('Вы  хотите удалить запись?')) {
+                   $.post('@Url.Action("Delete", "Email")', { id: id }, function (data) {
+                       if (data == "OK") {
+                           tr.remove();
+                       }
+                   })
+               }
+     });
+
+    //Добавление и удаление категории
+     $('#createNewCategoryBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("AddCategory", "Company")', { id: companyId }, function (data) {
+				$('#createNewCategory').html(data);
+				$('#createNewCategoryBtn').prop('disabled', true);
+            $('#CategoryId').focus();
+				$('#CanselNewCategory').click(function () {
+					$('#createNewCategory').empty();
+					$('#createNewCategoryBtn').prop('disabled', false);
+				});
+				$('#CreateNewCategory').click(function () {
+                    let fname = $('#CategoryId').val();
+                    let companyId = $('#CompanyId').val();
+                        try {
+							$.ajax({
+								url: '@Url.Action("AddNewCategory", "Company")',
+								type: 'post',
+								data: {
+                                    categoryId: fname,
+                                    companyId: companyId
+								},
+								success: function (newdata) {
+									$('#CanselNewCategory').click();
+                                    $('#newCategory').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+				});
+			});
+     });
+
+    $('#newCategory').on('click.delete', '.delCategory', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+			let id = el.attr('data-id');
+            let tr = $(this).closest('li');
+            let companyId = $('#createNewCategoryBtn').attr('data-id');
+            if (confirm('Вы  хотите удалить запись?')) {
+                $.ajax({
+				    url: '@Url.Action("DeleteCategory", "Company")',
+				    type: 'post',
+                    data: {
+                        companyId: companyId,
+                        categoryId: id
+				    },
+                    success: function (data) {
+                        if (data == "OK") {
+                            tr.remove();
+                        }
+				    }
+			    });
+
+               }
+    });
+     //Добавление и удаление подкатегории
+
+      $('#createNewSubcategoryBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("AddSubcategory", "Company")', { id: companyId }, function (data) {
+				$('#createNewSubcategory').html(data);
+				$('#createNewSubcategoryBtn').prop('disabled', true);
+            $('#SubcategoryId').focus();
+				$('#CanselNewSubcategory').click(function () {
+					$('#createNewSubcategory').empty();
+					$('#createNewSubcategoryBtn').prop('disabled', false);
+                });
+            $('.addNewSubcategory').click(function () {
+                    let fname = $('#SubcategoryId').val();
+                    let companyId = $('#CompanyId').val();
+                        try {
+							$.ajax({
+								url: '@Url.Action("AddNewSubcategory", "Company")',
+								type: 'post',
+								data: {
+                                    subcategoryId: fname,
+                                    companyId: companyId
+								},
+								success: function (newdata) {
+									$('#CanselNewSubcategory').click();
+                                    $('#newSubcategory').prepend(newdata);
+								}
+							});
+                        } catch (e) {
+							console.log('exception: ', e);
+                        }
+				});
+			});
+     });
+
+    $('#newSubcategory').on('click.delete', '.delSubcategory', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+        let id = el.attr('data-id');
+            let tr = $(this).closest('li');
+            let companyId = $('#createNewSubcategoryBtn').attr('data-id');
+            if (confirm('Вы  хотите удалить запись?')) {
+                $.ajax({
+				    url: '@Url.Action("DeleteSubcategory", "Company")',
+				    type: 'post',
+                    data: {
+                        companyId: companyId,
+                        subcategoryId: id
+				    },
+                    success: function (data) {
+                        if (data == "OK") {
+                            tr.remove();
+                        }
+				    }
+			    });
+
+            }
+    });
+
+    //Добавление и удаление соцсети
+         $('#createNewSocnetBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("AddSocnet", "Company")', { id: companyId }, function (data) {
+				$('#createNewSocnet').html(data);
+				$('#createNewSocnet').prop('disabled', true);
+            $('#SocialNetNameId').focus();
+				$('#CanselNewSocnet').click(function () {
+					$('#createNewSocnet').empty();
+					$('#createNewSocnetBtn').prop('disabled', false);
+                });
+            $('.addNewSocnet').click(function () {
+                let countErrors = 0;
+                let fname = $('#SocialNetNameId').val();
+                let url = $('#newUrl').val();
+                let companyId = $('#CompanyId').val();
+                if (url.length < 3 || url.length > 500) {
+                    $('#newUrl').css('border', '2px solid #f00');
+                    countErrors++;
+                } else { $('#newUrl').removeAttr('style'); }
+
+                console.log(fname, url, companyId);
+                if (countErrors == 0) {
+                    try {
+                        $.ajax({
+                            url: '@Url.Action("AddNewSocnet", "Company")',
+                            type: 'post',
+                            data: {
+                                companyId: companyId,
+                                socnetnameId: fname,
+                                url: url
+                            },
+                            success: function (newdata) {
+                                $('#CanselNewSocnet').click();
+                                $('#newSocnet').prepend(newdata);
+                            }
+                        });
+                    } catch (e) {
+                        console.log('exception: ', e);
+                    }
+                }
+				});
+			});
+     });
+
+    $('#newSocnet').on('click.delete', '.delSocnet', function (e) {
+			e.preventDefault();
+
+			let el = $(this);
+        let id = el.attr('data-id');
+            let tr = $(this).closest('li');
+            let companyId = $('#createNewSocnetBtn').attr('data-id');
+            if (confirm('Вы  хотите удалить запись?')) {
+                $.ajax({
+				    url: '@Url.Action("DeleteSocnet", "Company")',
+				    type: 'post',
+                    data: {
+                        companyId: companyId,
+                        socnetnameId: id
+				    },
+                    success: function (data) {
+                        if (data == "OK") {
+                            tr.remove();
+                        }
+				    }
+			    });
+
+            }
+    });
+    </script>
 }

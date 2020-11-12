@@ -1,0 +1,24 @@
+﻿
+@{var myPage = Html.ViewContext.ViewData["Page"].ToString();}
+@{var myCountPages = Html.ViewContext.ViewData["CountPages"].ToString();}
+@{var isTrue = Html.ViewContext.ViewData["IsInt"].ToString();}  
+<div class="row">
+    <div class="col">
+        @Html.ActionLink("Назад", "Index", new { Page = Convert.ToInt32(myPage) - 1 }, new { @class = "btn btn-sm btn-primary " })
+    </div>
+    @{ int addOne = 0;}
+    @if (Convert.ToBoolean(isTrue) != true)
+    {
+        addOne = 1;
+    }
+        @for (int i = 1; i <= Convert.ToInt32(myCountPages)+ addOne; i++)
+        {
+            <div class="col">
+                    @Html.ActionLink($"{i }", "Index", new { Page = i }, new { @class = "btn btn-sm btn-primary " })
+            </div>
+         }
+     
+    <div class="col">
+        @Html.ActionLink("Вперед", "Index", new { Page = Convert.ToInt32(myPage) + 1 }, new { @class = "btn btn-sm btn-primary " })
+    </div>
+</div>
