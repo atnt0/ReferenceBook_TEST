@@ -1,0 +1,9 @@
+﻿@model RB.DAL.Models.SocialNetNames
+
+<td class="cityName">
+    <input type="text" value="@Model.SocialNetName" minlength="3" maxlength="256" id="newSocialNetName" class="form-control" placeholder="название соцсети" />
+</td>
+<td>
+    <button class="btn btn-success" data-id="@Model.SocialNetName" id="SocialNetNameSave">Save</button>
+    <button class="btn btn-secondary" id="SocialNetNameCancel">Cancel</button>
+</td>

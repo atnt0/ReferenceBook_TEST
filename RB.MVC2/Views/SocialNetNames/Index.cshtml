@@ -1,6 +1,9 @@
-﻿@model IEnumerable<RB.DAL.Models.Cities>
+﻿@model IEnumerable<RB.DAL.Models.SocialNetNames>
+@{ 
 
-<h1>Список городов</h1>
+}
+
+<h1>Index</h1>
 
 <p>
     <button id="createNewBtn" class="btn btn-primary">Create New</button>
@@ -10,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CityName)
+                @Html.DisplayNameFor(model => model.SocialNetName)
             </th>
             <th></th>
         </tr>
@@ -19,51 +22,53 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td class="cityName">
-                    @Html.DisplayFor(modelItem => item.CityName)
+                <td class="SocialNetName">
+                    @Html.DisplayFor(modelItem => item.SocialNetName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.CityId" class="btn btn-info editCity" data-id="@item.CityId">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.CityId" class="btn btn-danger delCity" data-id="@item.CityId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.SocialNetNameId" class="btn btn-info editSocialNetName" data-id="@item.SocialNetNameId">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.SocialNetNameId" class="btn btn-danger delSocialNetName" data-id="@item.SocialNetNameId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 <div class="row">
-    <div class="col-md-12">
-        <partial name="PartialViews/Pagination" />
+    <div class="col-md-12">    
+        <partial name="PartialViews/Pagination"/>     
     </div>
 </div>
+
+@*<a asp-action="Delete" asp-route-id="@item.SocialNetNameId" class="btn btn-danger delSocialNetName" data-id="@item.SocialNetNameId">Delete</a>*@
 @section Scripts{
     <script>
 		$('#createNewBtn').click(function () {
 			$.get('@Url.Action("Create")', function (data) {
 				$('#createNew').html(data);
 				$('#createNewBtn').prop('disabled', true);
-				$('#newCityName').focus();
-				$('#CanselNewCity').click(function () {
+                $('#newSocialNetName').focus();
+                $('#CanselNewSocialNetName').click(function () {
 					$('#createNew').empty();
 					$('#createNewBtn').prop('disabled', false);
 				});
-				$('#CreateNewCity').click(function () {
+                $('#CreateNewSocialNetName').click(function () {
 					let countErrors = 0;
-					let fname = $('#newCityName').val();
-					if (fname.length < 3 || fname.length > 150) {
-                        $('#newCityName').css('border', '2px solid #f00');
+                    let fname = $('#newSocialNetName').val();
+					if (fname.length < 3 || fname.length > 256) {
+                        $('#newSocialNetName').css('border', '2px solid #f00');
                         countErrors++;
-                    } else { $('#newCityName').removeAttr('style'); }
+                    } else { $('#newSocialNetName').removeAttr('style'); }
 
                     if (countErrors == 0) {
                         try {
 							$.ajax({
-								url: '@Url.Action("CreateNewCity")',
+								url: '@Url.Action("CreateNewSocialNetName")',
 								type: 'post',
 								data: {
-                                    cityName: fname
+                                    name: fname
 								},
 								success: function (newdata) {
-									$('#CanselNewCity').click();
+                                    $('#CanselNewSocialNetName').click();
 									$('tbody').prepend(newdata);
 								}
 							});
@@ -75,10 +80,10 @@
 			});
 		});
 
-		$('table').on('click.edit', '.editCity', function (e) {
+        $('table').on('click.edit', '.editSocialNetName', function (e) {
 			e.preventDefault();
-			$('#CanselNewCity').click();
-			$('#cityCancel').click();
+            $('#CanselNewSocialNetName').click();
+            $('#SocialNetNameCancel').click();
 			let id = $(this).attr('data-id');
 			let trtmp = $(this).closest('tr').html();
 			let tr = $(this).closest('tr');
@@ -91,16 +96,17 @@
 				},
 				success: function (data) {
 					tr.html(data);
-					$('#cityCancel').click(function () {
+                    $('#SocialNetNameCancel').click(function () {
 						tr.html(trtmp);
 					});
-					$('#citySave').click(function () {
+                    $('#SocialNetNameSave').click(function () {
                         let countErrors = 0;
-						let fname = $('#newCityName').val();
-						if (fname.length < 3 || fname.length > 150) {
-							$('#newCityName').css('border', '2px solid #f00');
+                        let fname = $('#newSocialNetName').val();
+                        console.log(fname);
+						if (fname.length < 3 || fname.length > 256) {
+                            $('#newSocialNetName').css('border', '2px solid #f00');
                             countErrors++;
-						} else { $('#newCityName').removeAttr('style'); }
+                        } else { $('#newSocialNetName').removeAttr('style'); }
                         if (countErrors == 0) {
 							$.post(
 								'@Url.Action("Save")',
@@ -118,14 +124,14 @@
 			});
 		});
 
-        $('table').on('click.delete', '.delCity', function (e) {
+        $('table').on('click.delete', '.delSocialNetName', function (e) {
 			e.preventDefault();
 
 			let el = $(this);
 			let id = el.attr('data-id');
             let tr = $(this).closest('tr');
                if (confirm('Вы  хотите удалить запись?')) {
-                   $.post('@Url.Action("Delete", "City")', { id: id }, function (data) {
+                   $.post('@Url.Action("Delete", "SocialNetNames")', { id: id }, function (data) {
                        if (data == "OK") {
                            tr.remove();
                        }
