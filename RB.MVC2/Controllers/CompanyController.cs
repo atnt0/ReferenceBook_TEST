@@ -10,7 +10,7 @@ using RB.DAL.Repositories;
 using RB.MVC.Models;
 using RB.DAL.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.AspNetCore.Routing;
 
 namespace RB.MVC.Controllers
 {
@@ -281,23 +281,54 @@ namespace RB.MVC.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public IActionResult Find(ViewModelCompanyFind dataForm)
-        {
-            try
-            {
-                string jsonString = JsonSerializer.Serialize(dataForm);
-                HttpContext.Session.SetString("dataForm", jsonString);
-            }
-            catch (Exception exc)
-            {
-                string s = exc.StackTrace;
-            }
+        //[HttpPost]
+        //public IActionResult Find(ViewModelCompanyFind dataForm)
+        //{
+        //    try
+        //    {
+        //        string jsonString = JsonSerializer.Serialize(dataForm);
+        //        HttpContext.Session.SetString("dataForm", jsonString);
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        string s = exc.StackTrace;
+        //    }
 
-            return Json("OK");
-        }
-        public ActionResult CompanyByFilter(ViewModelCompanyFind filter)
+        //    return Json("OK");
+        //}
+        public ActionResult CompanyByFilter(ViewModelCompanyFind filter, int Page)
         {
+            //if (Page <= 0) Page = 1;
+            //int countrecord = 5;
+            //var model = companies.FindBy(filter.Predicate()).Skip(countrecord * (Page - 1)).Take(countrecord).OrderBy(p => p.CompanyName);
+            //int countRows = companies.FindBy(filter.Predicate()).Count();
+
+            //Dictionary<Guid, string> photoS = new Dictionary<Guid, string>();
+            //foreach (var item in model.ToList())
+            //{
+            //    var a = item.CompanyId;
+            //    var photostmp = photos.FindBy(p => p.CompanyId == a);
+            //    string path = @"\Files\";
+            //    if (photostmp.Count() != 0) photoS.Add(a, $"{path}{photostmp.First().FileName}");
+            //    else photoS.Add(a, $"{path}Default.jpg");
+            //}
+            //ViewBag.Photos = photoS;
+
+            //int count = model.Count();
+            //if (count == 0)
+            //{
+            //    Page = Page - 1;
+            //    return RedirectToAction("Find", new RouteValueDictionary(
+            //         new { controller = "Company", action = "Find", Page = Page }));
+            //}
+            //ViewData["CountPages"] = Math.Ceiling((double)(countRows / countrecord));
+            //ViewData["IsInt"] = countRows % countrecord == 0 ? true : false;
+            //ViewData["Page"] = Page;
+            //return PartialView(model);
+
+
+
+
             var model = companies.FindBy(filter.Predicate());
             Dictionary<Guid, string> photoS = new Dictionary<Guid, string>();
             foreach (var item in model.ToList())
