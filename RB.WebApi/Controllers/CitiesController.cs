@@ -26,25 +26,39 @@ namespace RB.WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Cities>> GetAll()
         {
-            var citiesList = cities.GetAll().ToList();
-            List<CitiesPOCO> citiesPOCOs = new List<CitiesPOCO>();
-            foreach (var item in citiesList)
+            try
             {
-                citiesPOCOs.Add(adapterCities_To_CitiesPOCO.GetCitiesPOCO(item));
+                var citiesList = cities.GetAll().ToList();
+                List<CitiesPOCO> citiesPOCOs = new List<CitiesPOCO>();
+                foreach (var item in citiesList)
+                {
+                    citiesPOCOs.Add(adapterCities_To_CitiesPOCO.GetCitiesPOCO(item));
+                }
+                return Ok(citiesPOCOs);
             }
-            return Ok(citiesPOCOs);
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpGet("{id}")]
         public ActionResult<Cities> Get(Guid id)
         {
-            var city = cities.Get(id);
-            if (city == null)
+            try
             {
-                return NotFound();
+                var city = cities.Get(id);
+                if (city == null)
+                {
+                    return NotFound();
+                }
+                var citiesPOCO = adapterCities_To_CitiesPOCO.GetCitiesPOCO(city);
+                return Ok(citiesPOCO);
             }
-            var citiesPOCO = adapterCities_To_CitiesPOCO.GetCitiesPOCO(city);
-            return Ok(citiesPOCO);
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
