@@ -16,26 +16,7 @@ namespace RB.MVC.Controllers
         {
             this.socialNetNames = socialNetNames;
         }
-
-        //public ActionResult<IEnumerable<object>> Paging(int countRecord, int page)
-        //{
-        //    var address = context.Address.Skip(countRecord * (page - 1)).Take(countRecord);
-        //    var query = from a in address
-        //                join s in context.Street on a.StreetId equals s.StreetId into adstr
-        //                from st in adstr.DefaultIfEmpty()
-        //                join sub in context.Subdivision on a.SubdivisionId equals sub.SubdivisionId into subd
-        //                from sb in subd.DefaultIfEmpty()
-        //                select new
-        //                {
-        //                    AddressId = a.AddressId,
-        //                    House = a.House,
-        //                    СountFloor = a.СountFloor,
-        //                    StreetName = st.StreetName,
-        //                    SubdivisionName = sb.SubdivisionName
-        //                };
-        //    return Ok(query);
-        //}
-       // [Route("SocialNetNames/Index/{Page}")]
+    
         public IActionResult Index(int Page)
         {
             if (Page <= 0) Page = 1;      
@@ -49,8 +30,7 @@ namespace RB.MVC.Controllers
                return RedirectToAction("Index", new RouteValueDictionary(
                     new { controller = "SocialNetNames", action = "Index", Page = Page }));
             }
-            ViewData["CountPages"] = Math.Ceiling((double)(countRows / countrecord));
-            ViewData["IsInt"] = countRows % countrecord == 0 ? true : false;
+            ViewData["CountPages"] = Math.Ceiling((double)(countRows / countrecord));        
             ViewData["Page"] = Page;
             return View(model);
         }

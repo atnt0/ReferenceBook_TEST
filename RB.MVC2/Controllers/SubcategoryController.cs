@@ -29,8 +29,7 @@ namespace RB.MVC2.Controllers
                 return RedirectToAction("Index", new RouteValueDictionary(
                      new { controller = "Subcategory", action = "Index", Page = Page }));
             }
-            ViewData["CountPages"] = Math.Ceiling((double)(countRows / countrecord));
-            ViewData["IsInt"] = countRows % countrecord == 0 ? true : false;
+            ViewData["CountPages"] = Math.Ceiling((double)countRows / countrecord);       
             ViewData["Page"] = Page;
             return View(model);        
         }

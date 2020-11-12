@@ -7,15 +7,22 @@
 <h1>Index</h1>
 
 <p>
-    @Html.ActionLink("Добавить", "Edit", "Company", new { id = 0 }, new { @class = "btn btn-sm btn-primary" })
+    @Html.ActionLink("Добавить", "Create", "Company", new { id = 0 }, new { @class = "btn btn-sm btn-primary" })
 </p>
 
 <div class="row">
     @foreach (var item in Model)
     {
     <div id="tr-@item.CompanyId" class="col-4">
-        <img src=" @(((Dictionary<Guid, String>)ViewBag.Photos)[item.CompanyId])" height="130" />
-        <div class="font-weight-bold"> @item.CompanyName</div>
+
+        <a asp-action="Details" asp-controller="Company" asp-route-id="@item.CompanyId" >
+            <img src=" @(((Dictionary<Guid, String>)ViewBag.Photos)[item.CompanyId])" height="130" />
+        </a>
+
+        <a asp-action="Details" asp-controller="Company" asp-route-id="@item.CompanyId" >
+            <div class="font-weight-bold"> @item.CompanyName</div>
+        </a>
+
         <p class="font-weight-bold"> Категории </p>
         @foreach (var item2 in item.CompaniesCategories)
         {
@@ -84,7 +91,11 @@
     </div>
     }
 </div>
-
+<div class="row">
+    <div class="col-md-12">
+        <partial name="PartialViews/Pagination" />
+    </div>
+</div>
 @*<p>
         <a asp-action="Create">Create New</a>
     </p>

@@ -53,6 +53,7 @@ namespace RB.MVC2.Controllers
             ViewBag.ZipCodeId = new SelectList(zips, "ZipCodeId", "ZipCode", address.ZipCodeId);
             return View(address);
         }
+      
         public ActionResult SelectZip(Guid id)
         {
             var zip = zipCodes.FindBy(p => p.CityId == id).OrderBy(p=>p.ZipCode);      
@@ -69,14 +70,10 @@ namespace RB.MVC2.Controllers
         {
             if (ModelState.IsValid)
             {
-                Guid CompId = (Guid)TempData["CompanyId"];            
-                if (address.AddressId == Guid.Empty)
-                {             
-                    adresses.Create(address);
-                    var a = adresses.GetAll();
+                Guid CompId = (Guid)TempData["CompanyId"];                     
+                    adresses.Update(address);
                     adresses.Save();
                     return RedirectToAction("Index", new { id = CompId });
-                }
             }
             return View(address);
         }
@@ -87,7 +84,6 @@ namespace RB.MVC2.Controllers
             if (ModelState.IsValid)
             {
                 Guid CompId = (Guid)TempData["CompanyId"];
-
                 if (address.AddressId == Guid.Empty)
                 {                
                      address.AddressId = Guid.NewGuid();

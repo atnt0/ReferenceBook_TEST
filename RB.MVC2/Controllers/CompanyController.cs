@@ -39,16 +39,13 @@ namespace RB.MVC.Controllers
             this.socialNets = socialNets;
             this.socialNetsNames = socialNetsNames;
         }
-        public IActionResult Index()
+        public IActionResult Index(int Page)
         {
-            var model = companies.GetAll();
-            var aa = compSubcat.GetAll();
-            //System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-            //bool c = currentUser.IsInRole("Admin");
-            //ViewBag.role = c;
-            //var b = currentUser.Identity.IsAuthenticated;
-            //ViewBag.user = b;
-            //var model = films.GetAll();
+            if (Page <= 0) Page = 1;
+            int countrecord = 6;
+            var model = companies.GetAll().Skip(countrecord * (Page - 1)).Take(countrecord).OrderBy(p => p.CompanyName);
+            int countRows = companies.GetAll().Count();
+            int count = model.Count();
 
             Dictionary<Guid, string> photoS = new Dictionary<Guid, string>();
             foreach (var item in model.ToList())
@@ -60,7 +57,36 @@ namespace RB.MVC.Controllers
                 else photoS.Add(a, $"{path}Default.jpg");
             }
             ViewBag.Photos = photoS;
+
+            if (count == 0)
+            {
+                Page = Page - 1;
+                return RedirectToAction("Index", new RouteValueDictionary(
+                     new { controller = "Subcategory", action = "Index", Page = Page }));
+            }
+            ViewData["CountPages"] = Math.Ceiling((double)countRows / countrecord);
+            ViewData["Page"] = Page;
             return View(model);
+            //var model = companies.GetAll();
+            //var aa = compSubcat.GetAll();
+            ////System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            ////bool c = currentUser.IsInRole("Admin");
+            ////ViewBag.role = c;
+            ////var b = currentUser.Identity.IsAuthenticated;
+            ////ViewBag.user = b;
+            ////var model = films.GetAll();
+
+            //Dictionary<Guid, string> photoS = new Dictionary<Guid, string>();
+            //foreach (var item in model.ToList())
+            //{
+            //    var a = item.CompanyId;
+            //    var photostmp = photos.FindBy(p => p.CompanyId == a);
+            //    string path = @"\Files\";
+            //    if (photostmp.Count() != 0) photoS.Add(a, $"{path}{photostmp.First().FileName}");
+            //    else photoS.Add(a, $"{path}Default.jpg");
+            //}
+            //ViewBag.Photos = photoS;
+            //return View(model);
         }
         public ActionResult Edit(Guid id)
         {
@@ -253,29 +279,56 @@ namespace RB.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (companyNew.CompanyId == Guid.Empty)
-                {
-                    companyNew.CompanyId = Guid.NewGuid();
-                    companies.Create(companyNew);
+                //if (companyNew.CompanyId == Guid.Empty)
+                //{
+                //    companyNew.CompanyId = Guid.NewGuid();
+                //    companies.Create(companyNew);
+                //    companies.Save();
+                //    return RedirectToAction("Index");
+                //}
+                //else
+                //{
+                //    var companyOld = companies.Get(companyNew.CompanyId);
+                // если пользователь ClientCompany и является владельцем компании
+                // с формы забираем только поля которые ему доступны (игнорируем и переопределяем оставшиеся
+                // поля из старой записи)     
+
+              //  var companyOld = companies.Get(companyNew.CompanyId);
+              //companyNew.CreatedOn = companyOld.CreatedOn;
+                ///   
+                companies.Update(companyNew);
                     companies.Save();
                     return RedirectToAction("Index");
-                }
-                else
-                {
-                    var companyOld = companies.Get(companyNew.CompanyId);
-                    // если пользователь ClientCompany и является владельцем компании
-                    // с формы забираем только поля которые ему доступны (игнорируем и переопределяем оставшиеся
-                    // поля из старой записи)     
-                    companyNew.CreatedOn = companyOld.CreatedOn;
-                    companies.Update(companyNew);
-                    companies.Save();
-                    return RedirectToAction("Index");
-                }
+               // }
             }
             return View(companyNew);
         }
 
-        public IActionResult Find()
+        public ActionResult Create(Guid id)
+        {
+            Companies company = id == Guid.Empty ? new Companies() : companies.Get(id);         
+            return View(company);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Companies companyNew)
+        {
+            if (ModelState.IsValid)
+            {
+              
+                    companyNew.CompanyId = Guid.NewGuid();
+                companyNew.CreatedOn = DateTime.Now;
+                    companies.Create(companyNew);
+                    companies.Save();
+                    return RedirectToAction("Edit",new RouteValueDictionary(
+                     new { controller = "Company", action = "Edit", id = companyNew.CompanyId }));
+                
+            }
+            return View(companyNew);
+        }
+
+
+        public IActionResult Find(int Page)
         {
             var model = new ViewModelCompanyFind(categories, subcategories, compcat, compSubcat, companies);
             return View(model);
@@ -296,11 +349,14 @@ namespace RB.MVC.Controllers
 
         //    return Json("OK");
         //}
+        [HttpPost]
         public ActionResult CompanyByFilter(ViewModelCompanyFind filter, int Page)
         {
+            //ViewData["filter"] = filter;
+
             //if (Page <= 0) Page = 1;
             //int countrecord = 5;
-            //var model = companies.FindBy(filter.Predicate()).Skip(countrecord * (Page - 1)).Take(countrecord).OrderBy(p => p.CompanyName);
+            //var model = companies.FindBy(filter.Predicate());
             //int countRows = companies.FindBy(filter.Predicate()).Count();
 
             //Dictionary<Guid, string> photoS = new Dictionary<Guid, string>();
