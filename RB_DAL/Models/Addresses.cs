@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RB.DAL.Repositories;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,6 +12,7 @@ namespace RB.DAL.Models
         {
             Companies = new HashSet<Companies>();
         }
+
 
         [Key]
         public Guid AddressId { get; set; }

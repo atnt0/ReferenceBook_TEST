@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RB.DAL.Infrastructure;
+using RB.WebApi.Adapters;
 
 namespace RB.WebApi
 {
@@ -21,6 +22,7 @@ namespace RB.WebApi
         {
             services.AddMyService(Configuration);
             services.AddSwaggerGen();
+            services.AddScoped<AdapterCompanies_To_CompaniesPOCO>();
             services.AddControllers();
             //services.AddScoped<IGenericRepository, GenericRepository<Categories, int>>();
         }

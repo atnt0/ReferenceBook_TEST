@@ -14,17 +14,17 @@ namespace RB.WebApi.Controllers
     [ApiController]
     public class CitiesController : ControllerBase
     {
-        readonly IGenericRepository<Cities, Guid> cities;
-        readonly Companies_To_CompaniesPOCO companies_To;
+        IGenericRepository<Cities, Guid> cities;
+        AdapterCompanies_To_CompaniesPOCO companies_To;
 
-        public CitiesController(IGenericRepository<Cities, Guid> cities, Companies_To_CompaniesPOCO companies_To)
+        public CitiesController(IGenericRepository<Cities, Guid> cities, AdapterCompanies_To_CompaniesPOCO companies_To)
         {
             this.cities = cities;
             this.companies_To = companies_To;
         }
 
         [HttpGet]
-        public ActionResult<IQueryable<Cities>> GetAll()
+        public ActionResult<IEnumerable<Cities>> GetAll()
         {
             var citiesList = cities.GetAll().ToList();
             List<CitiesPOCO> citiesPOCOs = new List<CitiesPOCO>();
