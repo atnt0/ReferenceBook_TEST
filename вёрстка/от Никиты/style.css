@@ -1,0 +1,44 @@
+/* input[type="search"] {
+  border: 2px solid black;
+  border-radius: 4px;
+} */
+/* .square
+{
+  width: 120px;
+  height: 120px;
+  background: white;
+  border:2px,solid,black;
+} */
+/* body {
+  padding: 1em;
+  font-family: arial;
+}
+input {
+  display: none;
+}
+label {
+  padding: 0.2em 0.5em;
+}
+input:checked + label {
+  font-weight: bold;
+  background: #ccc;
+}
+
+.flex {
+  display: flex;
+  width: 325px;
+  padding: 5px;
+  margin-left: 25%;
+}
+.flex-itm {
+  background: #2e5b61;
+  font-size: 2.5rem;
+  color: #eee;
+  margin: 5px;
+  padding: 15px;
+} */
+#square {
+  width: 100px;
+  height: 100px;
+  background: red;
+}
