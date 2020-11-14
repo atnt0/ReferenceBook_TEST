@@ -1,0 +1,144 @@
+﻿@using RB.MVC.Models
+@model ViewModelCompanyDetails
+@{
+    ViewData["Title"] = "CompanyDetails";
+}
+
+<h1>Компания «@Model.CompanyName»</h1>
+
+<a asp-action="Edit" asp-route-id="@Model.CompanyId" class="btn btn-sm btn-info">Редактировать</a>
+
+<hr />
+
+<div class="row">
+    <div class="col-6">
+        @*<div class="item_property_block">
+                <p class="font-weight-bold">Название компании:</p><br />
+                <p class="font-weight-bold"> @Model.CompanyName</p>
+            </div>*@
+        <div class="item_property_block">
+            <p class="font-weight-bold">Категории:</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                @foreach (var item in Model.Categories)
+                {
+                    <li>@item.CategoryName</li>
+                }
+            </ul>
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Подкатегории:</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                @foreach (var item in Model.Subcategories)
+                {
+                    <li>@item.SubcategoryName</li>
+                }
+            </ul>
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Директор:</p>
+            <p> @Model.Director</p>
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Краткое описание:</p>
+            <p> @Model.DescriptionShort</p>
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Полное описание:</p>
+            <p> @Model.DescriptionFull</p>
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Сайт:</p>
+            <p> @Model.WebSite</p>
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Популярность:</p>
+            <p> @Model.Popularity</p>
+        </div>
+
+        <div class="item_property_block">
+            <p class="font-weight-bold">Адрес:</p>
+            <p>
+                @Model.Address?.ZipCode?.ZipCode, @Model.Address?.City?.CityName,
+                @Model.Address?.Street?.StreetName, @Model.Address?.House, @Model.Address?.Block, @Model.Address?.Apartment
+            </p>
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Широта:</p>
+            <p>@Model.Address?.Latitude</p>
+            <p class="font-weight-bold">Долгота:</p>
+            <p>@Model.Address?.Longitude</p>
+        </div>
+
+    </div>
+    <div class="col-6">
+
+        <div class="item_property_block">
+            <p class="font-weight-bold">Логотип:</p>
+            @{var logo = (Model.PhotoLogo); }
+            @if (logo == null)
+            {
+                <p class="message_Not_Found">Логотипа нет</p>
+            }
+            else
+            {
+                string photoPath = $"{Model.PathLogo}{logo.FileName}";
+                <div data-id="img-@logo.PhotoId">
+
+                    <img src="@photoPath" height="120" width="100" />
+                </div>
+            }
+            <br />
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Фотографии:</p>
+            @if ((Model.Photos).Count() <= 0)
+            {
+                <p class="message_Not_Found">Фотографий нет</p>
+            }
+            else
+            {
+                <ul style="list-style-type: none; padding-left: 0;">
+                    @foreach (var item in Model.Photos)
+                    {
+                        string photoPath = $"{Model.Path}{item.FileName}";
+                        <li data-id="img-@item.PhotoId" style=" display: inline-block;">
+                            <img src="@photoPath" height="100" width="100" />
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+
+        <div class="item_property_block">
+            <p class="font-weight-bold">Emails:</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                @foreach (var item in Model.Emails)
+                {
+                    <li>@item.Email</li>
+                }
+            </ul>
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Phones:</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                @foreach (var item in Model.Phones)
+                {
+                    <li>@item.PhoneNumber</li>
+                }
+            </ul>
+        </div>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Social networks:</p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                @foreach (var item in Model.SocialNets)
+                {
+                    <li>
+                        <a href="@item.SocNetUrl">
+                            @item.socialNetNames.SocialNetName
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
