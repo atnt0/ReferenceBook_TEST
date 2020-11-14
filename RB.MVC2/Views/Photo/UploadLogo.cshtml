@@ -1,0 +1,18 @@
+﻿@model RB.DAL.Models.Photos
+
+@if (Model == null)
+{
+
+    <h4>Logo Company - not found</h4>
+
+}
+else
+{
+        string photoPath = $"{@ViewBag.PathLogos}{Model.FileName}";
+        <div class="col-4" data-id="img-@Model.PhotoId">
+
+            <img src="@photoPath" height="100" width="100" />
+            <br>
+            @Html.ActionLink("DeleteLogo", "DeleteLogo", "Photo", new { id = Model.PhotoId }, new { @class = "btn btn-danger delete-logo", data_photoId = Model.PhotoId })
+        </div>    
+}
