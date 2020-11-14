@@ -116,6 +116,8 @@
                     }
 
                 });
+
+              
                @*$.ajax({
                     url: "@Url.Action("Find", "Goods")",
                     type: 'POST',
@@ -124,6 +126,8 @@
                         if (data == "OK") {
                             $('#goods').load("@Url.Action("GoodByFilter", "Goods")");
                         }
+
+                    let id = el.attr('data-id');
 
                     },
                     error: function (data) {
@@ -139,7 +143,27 @@
         });
 
 
+         @*$('.btnFilter').click(function (e) {
+            e.preventDefault();
+            let dataForm = $('#form').serialize();
+            let Page = el.attr('Page');
+            console.log(Page);
+            $.ajax({
+                url: "@Url.Action("CompanyByFilter", "Company")",
+                type: 'POST',
+                data: {
+                    filter: dataForm,
+                    Page: Page
+                },
+                success: function (data) {
+                    $('#comps').html(data);
+                },
+                error: function (data) {
+                    alert(data);
 
+                }
+
+            });*@
 
     </script>
 

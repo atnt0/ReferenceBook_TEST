@@ -1,0 +1,21 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>Выберите файл</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <form asp-action="UploadLogo" id="loadLogo" asp-controller="Photo" name="loadLogo" enctype="multipart/form-data">
+                    <input type="file" name="file"  class="form-control-file btn-sm btn-success" />
+                    <input type="submit" class="btn btn-primary" value="Save Photo" id="submitFile" />
+                </form>
+            </td>
+            <td>
+                <button id="CanselNewLogo" class="btn btn-secondary">Cancel</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

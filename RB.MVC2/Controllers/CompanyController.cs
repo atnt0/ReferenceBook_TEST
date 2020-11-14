@@ -18,7 +18,7 @@ namespace RB.MVC.Controllers
     {
         IGenericRepository<Companies, Guid> companies;
         IGenericRepository<Photos, Guid> photos;
-
+        IGenericRepository<Logos, Guid> logos;
         IGenericRepository<Categories, int> categories;
         IGenericRepository<SocialNets, Guid> socialNets;
         IGenericRepository<SocialNetNames, int> socialNetsNames;
@@ -28,7 +28,7 @@ namespace RB.MVC.Controllers
         public CompanyController(IGenericRepository<Companies, Guid> companies, IGenericRepository<Photos, Guid> photos, IGenericRepository<Categories, int> categories,
             IGenericRepository<Subcategories, int> subcategories, IGenericRepository<CompaniesCategories, Guid> compcat,
            IGenericRepository<CompaniesSubcategories, Guid> compSubcat, IGenericRepository<SocialNets, Guid> socialNets,
-          IGenericRepository<SocialNetNames, int> socialNetsNames)
+          IGenericRepository<SocialNetNames, int> socialNetsNames, IGenericRepository<Logos, Guid> logos)
         {
             this.companies = companies;
             this.categories = categories;
@@ -38,29 +38,50 @@ namespace RB.MVC.Controllers
             this.photos = photos;
             this.socialNets = socialNets;
             this.socialNetsNames = socialNetsNames;
+            this.logos = logos;
         }
-        public IActionResult Index()
+        public IActionResult Index(int Page)
         {
-            var model = companies.GetAll();
-            var aa = compSubcat.GetAll();
-            //System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-            //bool c = currentUser.IsInRole("Admin");
-            //ViewBag.role = c;
-            //var b = currentUser.Identity.IsAuthenticated;
-            //ViewBag.user = b;
-            //var model = films.GetAll();
+            if (Page <= 0) Page = 1;
+            int countrecord = 6;
+            var model = companies.GetAll().Skip(countrecord * (Page - 1)).Take(countrecord).OrderBy(p => p.CompanyName);
+            int countRows = companies.GetAll().Count();
+            int count = model.Count();
 
             Dictionary<Guid, string> photoS = new Dictionary<Guid, string>();
             foreach (var item in model.ToList())
             {
-                var a = item.CompanyId;
-                var photostmp = photos.FindBy(p => p.CompanyId == a);
+                var selectPhotos = photos.FindBy(p => p.CompanyId == item.CompanyId);
+                var photoLogo = selectPhotos.Where(p => p.Logos.PhotoId == p.PhotoId).FirstOrDefault();
+             
                 string path = @"\Files\";
-                if (photostmp.Count() != 0) photoS.Add(a, $"{path}{photostmp.First().FileName}");
-                else photoS.Add(a, $"{path}Default.jpg");
+                if (photoLogo!= null)
+                {
+                    path += @"Logos\";
+                    photoS.Add(item.CompanyId, $"{path}{photoLogo.FileName}");
+                }
+                else 
+                {
+                    photoS.Add(item.CompanyId, $"{path}Default.jpg"); 
+                }
             }
             ViewBag.Photos = photoS;
-            return View(model);
+
+            if (count == 0)
+            {
+                Page = Page - 1;
+                return RedirectToAction("Index", new RouteValueDictionary(
+                     new { controller = "Subcategory", action = "Index", Page = Page }));
+            }
+            ViewData["CountPages"] = Math.Ceiling((double)countRows / countrecord);
+            ViewData["Page"] = Page;
+            return View(model);       
+            ////System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            ////bool c = currentUser.IsInRole("Admin");
+            ////ViewBag.role = c;
+            ////var b = currentUser.Identity.IsAuthenticated;
+            ////ViewBag.user = b;
+            ////var model = films.GetAll();          
         }
         public ActionResult Edit(Guid id)
         {
@@ -86,8 +107,7 @@ namespace RB.MVC.Controllers
             var companySocnet = socialNets.FindBy(p => p.CompanyId == id);
             List<SocnetPoco> socnetPocos = new List<SocnetPoco>();
             foreach (var item in companySocnet)
-            {
-                
+            {               
                 var socNetName = socialNetsNames.FindBy(p => p.SocialNetNameId == item.SocialNetNameId);
                 if (socNetName.Count() > 0) {
                     socnetPocos.Add(new SocnetPoco() { socialNetNames = socNetName.FirstOrDefault(), SocNetUrl = item.SocialNetUrl });
@@ -95,6 +115,18 @@ namespace RB.MVC.Controllers
             }
             ViewBag.socialnetNames = socnetPocos;
 
+            TempData["CompanyId"] = id;
+            string path = @"\Files\Photos\";
+            string pathlogo = @"\Files\Logos\";
+            ViewBag.Path = path;
+            ViewBag.PathLogo = pathlogo;
+            // ViewBag.Company = companies.Get(id);
+            Photos ph = new Photos();
+            var selectPhotos = photos.FindBy(p => p.CompanyId == id);//.Where(p => p.Logos.PhotoId != p.PhotoId);
+            ViewBag.Photos = selectPhotos.Where(p=>p.Logos.PhotoId!=p.PhotoId);
+
+            var photoLogo = selectPhotos.Where(p => p.Logos.PhotoId == p.PhotoId).FirstOrDefault();         
+            ViewBag.Logo = photoLogo;
             return View(company);
         }
 
@@ -102,22 +134,7 @@ namespace RB.MVC.Controllers
         {
             var companysocnet = socialNets.FindBy(p => p.CompanyId == id);
             List<SocialNetNames> socialnetNames = new List<SocialNetNames>();
-            var socialNetNamesList = socialNetsNames.GetAll();
-            //foreach (var item in socialNetNamesList)
-            //{
-            //    bool isInCompanycat = false;
-            //    foreach (var item2 in companysocnet)
-            //    {
-            //        if (item.SocialNetNameId == item2.SocialNetNameId)
-            //        {
-            //            isInCompanycat = true;
-            //        }
-            //    }
-            //    if (!isInCompanycat)
-            //    {
-            //        socialnetNames.Add(item);
-            //    }
-            //}
+            var socialNetNamesList = socialNetsNames.GetAll();          
             ViewBag.CompanyId = id;
             ViewBag.SocialNetNameId = new SelectList(socialNetNamesList, "SocialNetNameId", "SocialNetName");
             return PartialView();
@@ -253,29 +270,56 @@ namespace RB.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (companyNew.CompanyId == Guid.Empty)
-                {
-                    companyNew.CompanyId = Guid.NewGuid();
-                    companies.Create(companyNew);
+                //if (companyNew.CompanyId == Guid.Empty)
+                //{
+                //    companyNew.CompanyId = Guid.NewGuid();
+                //    companies.Create(companyNew);
+                //    companies.Save();
+                //    return RedirectToAction("Index");
+                //}
+                //else
+                //{
+                //    var companyOld = companies.Get(companyNew.CompanyId);
+                // если пользователь ClientCompany и является владельцем компании
+                // с формы забираем только поля которые ему доступны (игнорируем и переопределяем оставшиеся
+                // поля из старой записи)     
+
+              //  var companyOld = companies.Get(companyNew.CompanyId);
+              //companyNew.CreatedOn = companyOld.CreatedOn;
+                ///   
+                companies.Update(companyNew);
                     companies.Save();
                     return RedirectToAction("Index");
-                }
-                else
-                {
-                    var companyOld = companies.Get(companyNew.CompanyId);
-                    // если пользователь ClientCompany и является владельцем компании
-                    // с формы забираем только поля которые ему доступны (игнорируем и переопределяем оставшиеся
-                    // поля из старой записи)     
-                    companyNew.CreatedOn = companyOld.CreatedOn;
-                    companies.Update(companyNew);
-                    companies.Save();
-                    return RedirectToAction("Index");
-                }
+               // }
             }
             return View(companyNew);
         }
 
-        public IActionResult Find()
+        public ActionResult Create(Guid id)
+        {
+            Companies company = id == Guid.Empty ? new Companies() : companies.Get(id);         
+            return View(company);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Companies companyNew)
+        {
+            if (ModelState.IsValid)
+            {
+              
+                    companyNew.CompanyId = Guid.NewGuid();
+                companyNew.CreatedOn = DateTime.Now;
+                    companies.Create(companyNew);
+                    companies.Save();
+                    return RedirectToAction("Edit",new RouteValueDictionary(
+                     new { controller = "Company", action = "Edit", id = companyNew.CompanyId }));
+                
+            }
+            return View(companyNew);
+        }
+
+
+        public IActionResult Find(int Page)
         {
             var model = new ViewModelCompanyFind(categories, subcategories, compcat, compSubcat, companies);
             return View(model);
@@ -296,11 +340,14 @@ namespace RB.MVC.Controllers
 
         //    return Json("OK");
         //}
+        [HttpPost]
         public ActionResult CompanyByFilter(ViewModelCompanyFind filter, int Page)
         {
+            //ViewData["filter"] = filter;
+
             //if (Page <= 0) Page = 1;
             //int countrecord = 5;
-            //var model = companies.FindBy(filter.Predicate()).Skip(countrecord * (Page - 1)).Take(countrecord).OrderBy(p => p.CompanyName);
+            //var model = companies.FindBy(filter.Predicate());
             //int countRows = companies.FindBy(filter.Predicate()).Count();
 
             //Dictionary<Guid, string> photoS = new Dictionary<Guid, string>();
@@ -336,8 +383,15 @@ namespace RB.MVC.Controllers
                 var a = item.CompanyId;
                 var photostmp = photos.FindBy(p => p.CompanyId == a);
                 string path = @"\Files\";
-                if (photostmp.Count() != 0) photoS.Add(a, $"{path}{photostmp.First().FileName}");
-                else photoS.Add(a, $"{path}Default.jpg");
+                if (photostmp.Count() != 0)
+                {
+                    path += @"Photos\";
+                    photoS.Add(a, $"{path}{photostmp.First().FileName}");
+                }
+                else
+                {
+                    photoS.Add(a, $"{path}Default.jpg"); 
+                }
             }
             ViewBag.Photos = photoS;
             return PartialView(model);

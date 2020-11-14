@@ -1,0 +1,30 @@
+﻿
+@model IEnumerable<RB.DAL.Models.Photos>
+<h3>Load Photos  @ViewBag.Company.CompanyName</h3>
+<form asp-action="ManyFileUpload" asp-controller="Photo" name="manyfileupload" enctype="multipart/form-data">
+    <input type="file" name="files" multiple class="form-control-file" />
+    <input type="submit" class="btn btn-primary" value="Save Photo" />
+</form>
+
+@if (Model.Count() <= 0)
+{
+    <div class="row">
+        <h3>Photo Company - not found</h3>
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            string photoPath = $"{@ViewBag.Path}{item.FileName}";
+            <div class="col-4">
+               
+                <img src="@photoPath" height="200" />
+                <br>
+                @Html.ActionLink("Delete", "Delete", "Photo", new { id = item.PhotoId }, new { @class = "btn btn-danger" })
+            </div>
+        }
+    </div>
+
+}

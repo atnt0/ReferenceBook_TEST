@@ -1,38 +1,38 @@
 ﻿@model IEnumerable<RB.DAL.Models.Companies>
 <p>
-        <a asp-action="Create">Create New</a>
-    </p>
+    <a asp-action="Create">Create New</a>
+</p>
 
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div id="tr-@item.CompanyId" class="col-4">
-                <img src=" @(((Dictionary<Guid, String>)ViewBag.Photos)[item.CompanyId])" height="130" />
-                <div class="font-weight-bold"> @item.CompanyName</div>
-            </div>
-        }
-    </div>
-
-@*@{var myPage = Html.ViewContext.ViewData["Page"].ToString();}
-@{var myCountPages = Html.ViewContext.ViewData["CountPages"].ToString();}
-@{var isTrue = Html.ViewContext.ViewData["IsInt"].ToString();}
 <div class="row">
-    <div class="col">
-        @Html.ActionLink("Назад", "Find", new { Page = Convert.ToInt32(myPage) - 1 }, new { @class = "btn btn-sm btn-primary " })
-    </div>
-    @{ int addOne = 0;}
-    @if (Convert.ToBoolean(isTrue) != true)
+    @foreach (var item in Model)
     {
-        addOne = 1;
-    }
-    @for (int i = 1; i <= Convert.ToInt32(myCountPages) + addOne; i++)
-    {
-        <div class="col">
-            @Html.ActionLink($"{i }", "Find", new { Page = i }, new { @class = "btn btn-sm btn-primary " })
+        <div id="tr-@item.CompanyId" class="col-4">
+            <img src=" @(((Dictionary<Guid, String>)ViewBag.Photos)[item.CompanyId])" height="130" />
+            <div class="font-weight-bold"> @item.CompanyName</div>
         </div>
     }
+</div>
 
-    <div class="col">
-        @Html.ActionLink("Вперед", "Find", new { Page = Convert.ToInt32(myPage) + 1 }, new { @class = "btn btn-sm btn-primary " })
-    </div>
-</div>*@
+@*@{var myPage = Html.ViewContext.ViewData["Page"].ToString();}
+    @{var myCountPages = Html.ViewContext.ViewData["CountPages"].ToString();}
+    @{var isTrue = Html.ViewContext.ViewData["IsInt"].ToString();}
+    <div class="row">
+        <div class="col">
+            @Html.ActionLink("Назад", "Find", new { Page = Convert.ToInt32(myPage) - 1 }, new { @class = "btn btn-sm btn-primary " })
+        </div>
+        @{ int addOne = 0;}
+        @if (Convert.ToBoolean(isTrue) != true)
+        {
+            addOne = 1;
+        }
+        @for (int i = 1; i <= Convert.ToInt32(myCountPages) + addOne; i++)
+        {
+            <div class="col">
+                @Html.ActionLink($"{i }", "Find", new { Page = i }, new { @class = "btn btn-sm btn-primary btnFilter ", Page = i })
+            </div>
+        }
+
+        <div class="col">
+            @Html.ActionLink("Вперед", "Find", new { Page = Convert.ToInt32(myPage) + 1 }, new { @class = "btn btn-sm btn-primary " })
+        </div>
+    </div>*@

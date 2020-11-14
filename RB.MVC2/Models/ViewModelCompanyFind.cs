@@ -30,6 +30,7 @@ namespace RB.MVC.Models
         IGenericRepository<CompaniesSubcategories, Guid> compSubcat;
         IGenericRepository<Companies, Guid> companies;
         public string CompanyName { get; set; }
+
         public List<CategoryCheck> CategorySelects { get; set; }
         public List<SubCategoryCheck> SubCategorySelects { get; set; }
         public ViewModelCompanyFind() { }

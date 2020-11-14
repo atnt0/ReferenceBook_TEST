@@ -27,4 +27,9 @@
     <ProjectReference Include="..\RB_DAL\RB.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Files\Photos\" />
+    <Folder Include="wwwroot\Files\Logos\" />
+  </ItemGroup>
+
 </Project>

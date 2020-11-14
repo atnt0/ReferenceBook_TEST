@@ -9,11 +9,11 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CompanyId" id="CompId" />
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="CreatedOn" class="control-label"></label>
                 <input asp-for="CreatedOn" class="form-control" />
                 <span asp-validation-for="CreatedOn" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="CompanyName" class="control-label"></label>
                 <input asp-for="CompanyName" class="form-control" />
@@ -44,20 +44,20 @@
                 <input asp-for="WebSite" class="form-control" />
                 <span asp-validation-for="WebSite" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="AddressId" class="control-label"></label>
                 <select asp-for="AddressId" class="form-control" asp-items="ViewBag.AddressId"></select>
                 <span asp-validation-for="AddressId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            </div>*@
+            @*<div class="form-group">
                 <label asp-for="Popularity" class="control-label"></label>
                 <input asp-for="Popularity" class="form-control" />
                 <span asp-validation-for="Popularity" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-        </form>
+        </form>     
     </div>
     <div class="col-md-4">
         <div class="row">
@@ -128,6 +128,64 @@
                 </ul>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Фотографии</p>
+                <p>
+                    <button id="createNewPhotoBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Photo</button>
+                </p>
+                <div class="row"><div id="createNewPhoto" class="col-12"></div></div>
+                <div class="row" id="containerPhotos">
+                    @if (((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos).Count() <= 0)
+                    {
+                        <h4 class="message_Not_Found">Photo Company - not found</h4>
+                    }
+                    else
+                    {
+                        @foreach (var item in ((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos))
+                        {
+                            string photoPath = $"{@ViewBag.Path}{item.FileName}";
+                            <div class="col-4" data-id="img-@item.PhotoId">
+
+                                <img src="@photoPath" height="100" width="100" />
+                                <br>
+                                @Html.ActionLink("Delete", "Delete", "Photo", new { id = item.PhotoId }, new { @class = "btn btn-danger delete-photo", data_photoId = item.PhotoId })
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold">Логотип</p>
+                <p>
+                    <button id="replaceLogo" class="btn btn-primary" data-id="@Model.CompanyId">Replace Logo</button>
+                </p>
+                <div class="row"><div id="createNewLogo" class="col-12"></div></div>
+                <div class="row" id="containerLogo">
+                    @{var logo = ((RB.DAL.Models.Photos)ViewBag.Logo); }
+                    @if (logo == null)
+                    {
+                        <h4 class="message_Not_Found">Logo Company - not found</h4>
+                    }
+                    else
+                    {                     
+                            string photoPath = $"{@ViewBag.PathLogo}{logo.FileName}";
+                            <div class="col-4" data-id="img-@logo.PhotoId">
+
+                                <img src="@photoPath" height="100" width="100" />
+                                <br>
+                                @Html.ActionLink("DeleteLogo", "DeleteLogo", "Photo", new { id = logo.PhotoId }, new { @class = "btn btn-danger delete-logo", data_photoId = logo.PhotoId })
+                            </div>                        
+                    }
+                </div>
+            </div>
+        </div>
+
+
     </div>
     <div class="col-md-4" id="LoadDiv">
         <div class="row">
@@ -186,7 +244,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-    <script>
+<script>
     // Для номеров телефона
     $('#createNewBtn').click(function () {
         let companyId = $(this).attr('data-id');
@@ -272,13 +330,6 @@
 				}
 			});
 		});
-    @*$('#LoadPhones').click(function () {
-        let id = $('#CompId').val();
-        console.log(id);
-        $.get('@Url.Action("Index", "Phone")', { id: id }, function (data) {
-            $('#LoadDiv').html(data);
-        })
-    })*@
 
     $('#newPhone').on('click.delete', '.delPhone', function (e) {
 			e.preventDefault();
@@ -583,5 +634,123 @@
 
             }
     });
-    </script>
+
+        //Добавление и удаление фото
+
+         $('#createNewPhotoBtn').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("AddPhoto", "Photo")', { id: companyId }, function (data) {
+				$('#createNewPhoto').html(data);
+            $('#CanselNewPhoto').click(function () {
+					$('#createNewPhoto').empty();
+                });
+            $('#submitFile').click(function (e) {
+                e.preventDefault();
+                let formData = new FormData();
+                let formloadFile = $(this).parents('form');
+                console.log('formloadFile ', formloadFile);
+                let inputFiles = formloadFile.find('[name="files"]')[0];
+                console.log('inputFile ', inputFiles);
+                for (let i = 0; i < inputFiles.files.length; i++) {
+                    formData.append('files', inputFiles.files[i]);
+                }
+                formData.append('companyId', companyId);
+                        $.ajax({
+                            url: '@Url.Action("ManyFileUpload", "Photo")',
+                            type: 'post',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (newdata) {
+                                $('#CanselNewPhoto').click();
+                                let dff = $("#containerPhotos .message_Not_Found");
+                                if (dff.length != 0) {
+                                    dff.remove();
+                                }
+                                $('#containerPhotos').prepend(newdata);
+                            },
+                            error: function (res) {
+                                console.log('error res', res);
+                            }
+                        });
+				});
+			});
+     });
+
+      $('.delete-photo').click(function (e) {
+               e.preventDefault();
+
+               let el = $(this);
+               let id = el.attr('data-photoId');
+
+               if (confirm('Вы  хотите удалить запись?')) {
+                   $.post('@Url.Action("Delete", "Photo")', { id: id }, function (data) {
+                       if (data == "OK") {
+                           let elemIgm = $(`[data-id="img-${id}"]`);;
+                           console.log('elemIgm: ', elemIgm);
+                           elemIgm.remove();
+                           $(this).remove();
+                       }
+                   })
+               }
+
+      })
+
+     //Добавление и удаление логотипа
+
+    $('#replaceLogo').click(function () {
+        let companyId = $(this).attr('data-id');
+        $.get('@Url.Action("AddLogo", "Photo")', { id: companyId }, function (data) {
+				$('#createNewLogo').html(data);
+            $('#CanselNewLogo').click(function () {
+                $('#createNewLogo').empty();
+                });
+            $('#submitFile').click(function (e) {
+                e.preventDefault();
+                let formData = new FormData();
+                let formloadFile = $(this).parents('form');
+                let inputFile = formloadFile.find('[name="file"]')[0];
+                formData.append('file', inputFile.files[0]);
+                formData.append('companyId', companyId);
+
+                $.ajax({
+                    url: '@Url.Action("UploadLogo", "Photo")',
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (newdata) {
+                        $('#CanselNewLogo').click();
+                        let dff = $("#containerLogo .message_Not_Found");
+                        if (dff.length != 0) {
+                            dff.remove();
+                        }
+                        $('#containerLogo').html(newdata);
+                    },
+                    error: function (res) {
+                        console.log('error res', res);
+                    }
+                });
+				});
+			});
+    });
+
+    $('#containerLogo').on('click.deleteLogo', '.delete-logo', function (e) {  
+               e.preventDefault();
+               let el = $(this);
+               let id = el.attr('data-photoId');
+               if (confirm('Вы  хотите удалить запись?')) {
+                   $.post('@Url.Action("DeleteLogo", "Photo")', { id: id }, function (data) {
+                       if (data == "OK") {
+                           let elemIgm = $(`[data-id="img-${id}"]`);;
+                           console.log('elemIgm: ', elemIgm);
+                           elemIgm.remove();
+                           $(this).remove();
+                       }
+                   })
+               }
+
+      })
+
+</script>
 }
