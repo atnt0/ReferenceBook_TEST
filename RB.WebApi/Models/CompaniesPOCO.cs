@@ -17,14 +17,20 @@ namespace RB.WebApi.Models
         public int Popularity { get; set; }
         public AddressesPOCO Address { get; set; }
         public CompaniesPOCO ParentCompany { get; set; }
-        public ICollection<CompaniesCategoriesPOCO> CompaniesCategories { get; set; }
-        public ICollection<CompaniesSubcategoriesPOCO> CompaniesSubcategories { get; set; }
-        public ICollection<DayWeekTimeTablesPOCO> DayWeekTimeTables { get; set; }
-        public ICollection<EmailsPOCO> Emails { get; set; }
-        public ICollection<CompaniesPOCO> InverseParentCompany { get; set; }
-        public ICollection<PhonesPOCO> Phones { get; set; }
-        public ICollection<PhotosPOCO> Photos { get; set; }
-        public ICollection<SocialNetsPOCO> SocialNets { get; set; }
-        public ICollection<UsersCompaniesPOCO> UsersCompanies { get; set; }
+        //Список категорий и список подкатегорий
+
+
+
+
+
+        //public ICollection<CompaniesCategoriesPOCO> CompaniesCategories { get; set; }
+        //public ICollection<CompaniesSubcategoriesPOCO> CompaniesSubcategories { get; set; }
+        //public ICollection<DayWeekTimeTablesPOCO> DayWeekTimeTables { get; set; }
+        //public ICollection<EmailsPOCO> Emails { get; set; }
+        //public ICollection<CompaniesPOCO> InverseParentCompany { get; set; }
+        //public ICollection<PhonesPOCO> Phones { get; set; }
+        //public ICollection<PhotosPOCO> Photos { get; set; }
+        //public ICollection<SocialNetsPOCO> SocialNets { get; set; }
+        //public ICollection<UsersCompaniesPOCO> UsersCompanies { get; set; }
     }
 }
