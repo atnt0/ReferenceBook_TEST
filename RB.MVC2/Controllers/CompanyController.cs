@@ -142,6 +142,15 @@ namespace RB.MVC.Controllers
 
             var photoLogo = selectPhotos.Where(p => p.Logos.PhotoId == p.PhotoId).FirstOrDefault();         
             ViewBag.Logo = photoLogo;
+            if (company.AddressId != Guid.Empty)
+            {             
+                ViewBag.Address = addresses.FindBy(p=>p.AddressId == company.AddressId).FirstOrDefault();           
+            }
+            //else
+            //{
+            //    ViewBag.Address = new Addresses() { };
+            //}
+          
 
             return View(company);
 

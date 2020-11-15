@@ -1,5 +1,11 @@
 ﻿@model RB.DAL.Models.Addresses
 
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
 <h4>Addresses</h4>
 <hr />
 <div class="row">
@@ -64,7 +70,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-    <script>
+<script>
     $(function () {
 
         $("#CityId").change(function (e) {
@@ -92,9 +98,9 @@
                 }
             });
         })
-
+     
     })
 
-    </script>
+</script>
 
 }

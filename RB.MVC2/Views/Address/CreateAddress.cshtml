@@ -1,0 +1,38 @@
+﻿@model RB.MVC.Models.AddressPoco
+
+<div class="wrapper_address">
+    <dl class="row">
+        <dt class="col-6">City</dt>
+        <dd class="col-6">
+            @Html.DisplayFor(model => model.City.CityName)
+        </dd>
+        <dt class="col-6">ZipCode</dt>
+        <dd class="col-6">
+            @Html.DisplayFor(model => model.ZipCode.ZipCode)
+        </dd>
+        <dt class="col-6">Street</dt>
+        <dd class="col-6">
+            @Html.DisplayFor(model => model.Street.StreetName)
+        </dd>
+        <dt class="col-6">House</dt>
+        <dd class="col-6">
+            @Html.DisplayFor(model => model.House)
+        </dd>
+        <dt class="col-6">Block</dt>
+        <dd class="col-6">
+            @Html.DisplayFor(model => model.Block)
+        </dd>
+        <dt class="col-6">Apartment</dt>
+        <dd class="col-6">
+            @Html.DisplayFor(model => model.Apartment)
+        </dd>
+        <dt class="col-6">Latitude</dt>
+        <dd class="col-6">
+            @Html.DisplayFor(model => model.Latitude)
+        </dd>
+        <dt class="col-6">Longitude</dt>
+        <dd class="col-6">
+            @Html.DisplayFor(model => model.Longitude)
+        </dd>
+    </dl>
+</div>

@@ -107,6 +107,86 @@
             </ul>
         </div>
 
+        <div class="item_property_block">
+            <p class="font-weight-bold">Адрес </p>
+            @{
+                var address = Model.Address;
+            }
+
+            <div id="containerChangeAddress">
+                @if (address == null)
+                {
+                    <p>
+                        <button id="setAddress" class="btn btn-primary" data-id="@Model.CompanyId">Set new Address</button>
+                    </p>
+
+                    <div id="formEditAddress"></div>
+
+                    <div id="divViewAddress"></div>
+                }
+                else
+                {
+                    <p>
+                        <button id="changeAddress" class="btn btn-primary" data-id="@Model.CompanyId">Change Address</button>
+                    </p>
+                    
+                    <div id="formEditAddress"></div>
+
+                    <div id="divViewAddress">
+                        <div class="wrapper_address">
+                            <dl class="row">
+                                <dt class="col-6">City</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.City.CityName)
+                                </dd>
+                                <dt class="col-6">ZipCode</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.ZipCode.ZipCode)
+                                </dd>
+                                <dt class="col-6">Street</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Street.StreetName)
+                                </dd>
+                                <dt class="col-6">House</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.House)
+                                </dd>
+                                <dt class="col-6">Block</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Block)
+                                </dd>
+                                <dt class="col-6">Apartment</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Apartment)
+                                </dd>
+                                <dt class="col-6">Latitude</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Latitude)
+                                </dd>
+                                <dt class="col-6">Longitude</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Longitude)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+                    
+                    
+
+                }
+                
+
+
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -245,7 +325,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-    <script>
+<script>
     // Для номеров телефона
     $('#createNewBtn').click(function () {
         let companyId = $(this).attr('data-id');
@@ -753,5 +833,111 @@
 
       })
    // containerPhotos
-    </script>
+
+  //  containerChangeAddress
+    //Добавление и изменение адреса
+    $('#containerChangeAddress').on('click.setAddress', '#setAddress', function (e) {
+
+        //var _this = $(this);
+        //console.log('_this: ', _this);
+
+        //let btn_setAddress = _this.find('#setAddress');
+        let btn_setAddress = $(this);
+        let companyId = btn_setAddress.attr('data-id');
+        console.log('companyId:', companyId);
+
+        $.get('@Url.Action("Create", "Address")', { companyId: companyId }, function (data) {
+            console.log('get create address data ', data);
+
+
+            //console.log('data: ', data);
+            $('#formEditAddress').html(data);
+     //       $('#CanselNewPhoto').click(function () {
+					//$('#createNewPhoto').empty();
+     //       });
+            $('#containerChangeAddress').on('click.loadAddress', '#loadAddress', function (e) {
+                e.preventDefault();
+                let dataFormJson = $('form').serialize();
+                console.log("dataFormJson", dataFormJson);
+                $.ajax({
+                    url: "@Url.Action("CreateAddress", "Address")",
+                    type: 'POST',
+                    data: dataFormJson,
+                    //data: {
+                    //    address: dataFormJson,
+                    //    companyId: companyId
+                    //},                  
+                    success: function (data) {
+                        $('#formEditAddress').empty();
+                        $('#divViewAddress').html(data);
+                    },
+                    error: function (data) {
+                        alert(data);
+
+                    }
+
+                });
+            });
+           // formEditAddress
+                //let formData = new FormData();
+                //let formloadFile = $(this).parents('form');
+                //console.log('formloadFile ', formloadFile);
+                //let inputFiles = formloadFile.find('[name="files"]')[0];
+                //console.log('inputFile ', inputFiles);
+                //for (let i = 0; i < inputFiles.files.length; i++) {
+                //    formData.append('files', inputFiles.files[i]);
+                //}
+                @*formData.append('companyId', companyId);
+                        $.ajax({
+                            url: '@Url.Action("ManyFileUpload", "Photo")',
+                            type: 'post',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (newdata) {
+                                $('#CanselNewPhoto').click();
+                                let dff = $("#containerPhotos .message_Not_Found");
+                                if (dff.length != 0) {
+                                    dff.remove();
+                                }
+                                $('#containerPhotos').prepend(newdata);
+                            },
+                            error: function (res) {
+                                console.log('error res', res);
+                            }
+                        });
+				});*@
+			
+        });
+    });
+    $('#containerChangeAddress').on('change.setCity', '#CityId', function (e) {
+        // $("#CityId").change(function (e) {
+        e.preventDefault();
+        console.log("111111111111111111111111111111111111111");
+        let id = $(this).val();
+
+        let myurl = `/Address/SelectZip/${id}`;
+        console.log('id: ', id);
+        console.log('myurl: ', myurl);
+
+        $.ajax({
+            type: "GET",
+            url: myurl,
+            success: function (data) {
+                $("#ZipCodeId").html(data);
+            }
+        });
+
+        let myurl2 = `/Address/SelectStreets/${id}`;
+        $.ajax({
+            type: "GET",
+            url: myurl2,
+            success: function (data) {
+                $("#StreetId").html(data);
+            }
+        });
+
+    });
+
+</script>
 }
