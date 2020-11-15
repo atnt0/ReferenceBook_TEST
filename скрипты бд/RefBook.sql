@@ -36,6 +36,9 @@ CREATE TABLE Cities(
 CREATE TABLE Streets(
 	StreetId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY 
 	,StreetName NVARCHAR(150) NOT NULL
+	,CityId UNIQUEIDENTIFIER NULL 
+		FOREIGN KEY REFERENCES Cities(CityId)
+		ON DELETE NO ACTION
 );
 CREATE TABLE SocialNetNames(
 	SocialNetNameId INT IDENTITY PRIMARY KEY
@@ -164,35 +167,3 @@ CREATE TABLE UsersCompanies(
 		ON DELETE SET NULL
 );
 GO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
---DECLARE @guid UNIQUEIDENTIFIER = NEWID();
---INSERT INTO Categories(CategoryName) VALUES (N'Полиграфия');
---INSERT INTO Subcategories(SubcategoryName) VALUES (N'Запчасти'),(N'Ремонт оборудования');
---DECLARE @guid UNIQUEIDENTIFIER = NEWID();
---SELECT @guid;--1AB81AD2-193B-46B4-A378-6137A432296E
---INSERT INTO Companies(CompanyId,CompanyName,DescriptionShort,DescriptionFull,ParentCompanyId,WebSite) VALUES (@guid,N'ShopPM',N'Стоковый магазин расходных материалов',N'Витратні матеріали та запчастини XEROX. Цифрова друкарська техніка XEROX з пробігом.',NULL,N'shop-pm.com.ua')
---INSERT INTO Phones(PhonesId,CompanyId,PhoneNumber) VALUES 
---	('740C10C5-07D4-4C7B-BDB9-66F4CDCA2EA9','1AB81AD2-193B-46B4-A378-6137A432296E','+380980267963')
---	,('15A6D618-6441-4116-BCFF-82815D3BEE6A','1AB81AD2-193B-46B4-A378-6137A432296E','+380980267963');
---INSERT INTO Emails(EmailsId,CompanyId,Email) VALUES 
---	('144F4BD7-A045-4478-B697-01320F00BA24','1AB81AD2-193B-46B4-A378-6137A432296E','admin@shop-pm.com.ua')
---	,('975A1274-A536-43CA-BDD2-BA3AA4197626','1AB81AD2-193B-46B4-A378-6137A432296E','spm.xerox@gmail.com');
---INSERT INTO CompanyCategories(CompanyCategories,CompanyId,CategoryId) VALUES 
---	('74A00E84-E607-4730-87DD-9777813455DC','1AB81AD2-193B-46B4-A378-6137A432296E',1);
---INSERT INTO CompanySubcategories(CompanySubcategories,CompanyId,SubcategoryId) VALUES 
---	('9080C6F2-DADF-4726-BE99-CD51A0981340','1AB81AD2-193B-46B4-A378-6137A432296E',1)
---	,('B08A9177-E309-4DAF-A198-E8A839DE6A24','1AB81AD2-193B-46B4-A378-6137A432296E',2);

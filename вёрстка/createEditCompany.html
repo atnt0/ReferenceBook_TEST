@@ -20,13 +20,14 @@
 		/*input[type="text"],textarea.form-control{margin: 5px 0;}*/
 		/*.input-group-prepend input[type="text"]{margin: 0;}*/
 		td{/*border: 1px solid #ccc;*/ text-align: center; vertical-align: bottom;}
+		td.break{width: 70px; text-align: right;}
 		.weekend{width: 50px;}
 		.tabcol3{width: 70px; height: 24px;}
+		.hidden{display: none;}
     </style>
 </head>
 
 <body>
-	<form>
     <div class="container">
         <div class="row">
             <div class="col">
@@ -64,14 +65,18 @@
                     </div>
 				</div>
 				<div class="row">
-                    <div class="col-6">
+                    <div class="col-6" id="categories">
+                    	<ul class="hidden">
+                       		<li data-id="1">Полиграфия</li>
+                       		<li data-id="2">Унитазы</li>
+                    	</ul>
                         <select class="form-control">
-                            <option value="0" selected>Выберите подходящие категории</option>
+                            
                             <option value="1">Полиграфия</option>
                             <option value="2">Унитазы</option>
                         </select>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6" id="subcategories">
                         <select class="form-control">
                             <option value="0" selected>Выберите подходящие подкатегории</option>
                             <option value="1">Расходные материалы</option>
@@ -387,7 +392,6 @@
 			</div>
 		</div>
     </div>
-	</form>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -445,7 +449,26 @@
 					tr.find('select.breaktime').each(function(){$(this).prop('disabled',false);});
 				}
 			});
-
+			var fullListCategories=[];// fullListCategories.id=[]; fullListCategories.name=[]; fullListCategories.prop=[];
+			//fullListCategories.id[0]=0; fullListCategories.name[0]="Выберите подходящие категории"; fullListCategories.prop[0]=true;
+			var listCat=$('#categories ul>li');
+			for(let i=0;i<listCat.length;i++){
+				fullListCategories[i]={};
+				fullListCategories[i].id=listCat.eq(i).attr('data-id');
+				fullListCategories[i].name=listCat.eq(i).text();
+				fullListCategories[i].prop=true;
+			}
+			function UpdateCatList(){
+				$('#categories select').html('<option value="0" selected>Выберите подходящие категории</option>');
+				for(let i=0;i<listCat.length;i++){
+					if(fullListCategories[i].prop){$('#categories select').append('<option value="'+fullListCategories[i].id+'">'+fullListCategories[i].name+'</option>');}
+				}
+			}
+			$('#categories select').on('change',function(){
+				if($(this).val()!='0'){
+					for(let i)
+				}
+			});
         })
     </script>
 </body>
