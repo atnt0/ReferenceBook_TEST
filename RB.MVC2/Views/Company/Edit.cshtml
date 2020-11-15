@@ -127,7 +127,7 @@
                 else
                 {
                     <p>
-                        <button id="changeAddress" class="btn btn-primary" data-id="@Model.CompanyId">Change Address</button>
+                        <button id="changeAddress" class="btn btn-primary" data-id="@Model.AddressId">Change Address</button>
                     </p>
                     
                     <div id="formEditAddress"></div>
@@ -834,82 +834,88 @@
       })
    // containerPhotos
 
+
+
+
+
+
+
+
+
   //  containerChangeAddress
     //Добавление и изменение адреса
-    $('#containerChangeAddress').on('click.setAddress', '#setAddress', function (e) {
+    $('#containerChangeAddress').on('click', '#setAddress', function (e) {
+        e.preventDefault();
+        console.log('btn click setAddress: ', e.target);
 
-        //var _this = $(this);
-        //console.log('_this: ', _this);
-
-        //let btn_setAddress = _this.find('#setAddress');
         let btn_setAddress = $(this);
         let companyId = btn_setAddress.attr('data-id');
-        console.log('companyId:', companyId);
 
         $.get('@Url.Action("Create", "Address")', { companyId: companyId }, function (data) {
-            console.log('get create address data ', data);
-
-
-            //console.log('data: ', data);
             $('#formEditAddress').html(data);
-     //       $('#CanselNewPhoto').click(function () {
-					//$('#createNewPhoto').empty();
-     //       });
-            $('#containerChangeAddress').on('click.loadAddress', '#loadAddress', function (e) {
+
+            $('#containerChangeAddress').on('click', '#loadSetedAddress', function (e) {
                 e.preventDefault();
+                console.log('btn click loadSetedAddress: ', e.target);
+
                 let dataFormJson = $('form').serialize();
-                console.log("dataFormJson", dataFormJson);
+
                 $.ajax({
                     url: "@Url.Action("CreateAddress", "Address")",
                     type: 'POST',
-                    data: dataFormJson,
-                    //data: {
-                    //    address: dataFormJson,
-                    //    companyId: companyId
-                    //},                  
+                    data: dataFormJson,                
                     success: function (data) {
                         $('#formEditAddress').empty();
                         $('#divViewAddress').html(data);
+                        btn_setAddress.remove();
                     },
-                    error: function (data) {
-                        alert(data);
-
-                    }
-
                 });
             });
-           // formEditAddress
-                //let formData = new FormData();
-                //let formloadFile = $(this).parents('form');
-                //console.log('formloadFile ', formloadFile);
-                //let inputFiles = formloadFile.find('[name="files"]')[0];
-                //console.log('inputFile ', inputFiles);
-                //for (let i = 0; i < inputFiles.files.length; i++) {
-                //    formData.append('files', inputFiles.files[i]);
-                //}
-                @*formData.append('companyId', companyId);
-                        $.ajax({
-                            url: '@Url.Action("ManyFileUpload", "Photo")',
-                            type: 'post',
-                            processData: false,
-                            contentType: false,
-                            data: formData,
-                            success: function (newdata) {
-                                $('#CanselNewPhoto').click();
-                                let dff = $("#containerPhotos .message_Not_Found");
-                                if (dff.length != 0) {
-                                    dff.remove();
-                                }
-                                $('#containerPhotos').prepend(newdata);
-                            },
-                            error: function (res) {
-                                console.log('error res', res);
-                            }
-                        });
-				});*@
-			
+
         });
     });
+
+    $('#containerChangeAddress').on('click', '#changeAddress', function (e) {
+        e.preventDefault();
+        console.log('btn click changeAddress: ', e.target);
+       
+        let btn_changeAddress = $(this);
+        let addressId = btn_changeAddress.attr('data-id');       
+
+        $.get('@Url.Action("Edit", "Address")', { id: addressId }, function (data) {
+            $('#divViewAddress').empty();
+            btn_changeAddress.remove();
+
+            $('#formEditAddress').html(data);
+   
+            $('#containerChangeAddress').on('click', '#loadChangedAddress', function (e) {
+                e.preventDefault();
+                console.log('btn click loadChangedAddress: ', e.target);
+
+                let dataFormJson = $('form').serialize();  
+                
+                $.ajax({
+                    url: "@Url.Action("EditAddress", "Address")",
+                    type: 'POST',
+                    data: dataFormJson,
+                    success: function (data) {
+                        $('#formEditAddress').empty();
+                        $('#divViewAddress').html(data);                                       
+                    },
+                });
+            });
+
+        });
+    });
+
+
+
+
+
+
+
+
+
     $('#containerChangeAddress').on('change.setCity', '#CityId', function (e) {
         // $("#CityId").change(function (e) {
         e.preventDefault();
@@ -929,6 +935,7 @@
         });
 
         let myurl2 = `/Address/SelectStreets/${id}`;
+
         $.ajax({
             type: "GET",
             url: myurl2,

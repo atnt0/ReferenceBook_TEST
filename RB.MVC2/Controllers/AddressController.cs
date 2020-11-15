@@ -67,16 +67,20 @@ namespace RB.MVC2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Addresses address)
+        public ActionResult EditAddress(Addresses address)
         {
+          //  Guid companyId = (Guid)TempData["CompanyId"];
             if (ModelState.IsValid)
-            {
-                Guid CompId = (Guid)TempData["CompanyId"];                     
+            {                              
                     adresses.Update(address);
                     adresses.Save();
-                    return RedirectToAction("Index", new { id = CompId });
+
+                AddressPoco addressPoco = new AddressPoco(adresses, cities, streets, zipCodes, address.AddressId);
+             //   ViewBag.CompanyId = companyId;
+                return PartialView(addressPoco);
+                // return RedirectToAction("Index", new { id = CompId });
             }
-            return View(address);
+            return RedirectToAction("Index","Company");
         }
 
         [HttpPost]
@@ -102,12 +106,12 @@ namespace RB.MVC2.Controllers
                     companies.Save();
 
                 AddressPoco addressPoco = new AddressPoco(adresses, cities, streets, zipCodes, address.AddressId);
-               
+                ViewBag.CompanyId = companyId;
                     return PartialView(addressPoco);
                     // return RedirectToAction("Index", new { id = CompId });
                 }
-          //  }
-             return RedirectToAction("Index", new { id = companyId });
+            //  }
+            return RedirectToAction("Edit", "Company", new { id = companyId });
         }
 
         public ActionResult Create(Guid companyId)
