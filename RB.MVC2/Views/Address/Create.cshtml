@@ -1,109 +1,161 @@
 ﻿@model RB.DAL.Models.Addresses
+@*<h1>Create</h1>*@
 
-@{
-    ViewData["Title"] = "Create";
-}
+@*<h4>Addresses</h4>*@
 
-<h1>Create</h1>
+@*<hr />*@
 
-<h4>Addresses</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="AddressId" />
-
-            @Html.LabelFor(model => model.CityId, "CityId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CityId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+@*<div class="row">
+    <div class="col-12">*@
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="AddressId" />
+    <div class="item_address">
+        <div class="row">
+            <div class="col-6">City:</div>
+            <div class="col-6">
+                <div class="form-group">
+                    @Html.DropDownList("CityId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+                </div>
             </div>
-            @Html.LabelFor(model => model.ZipCodeId, "ZipCodeId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ZipCodeId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ZipCodeId, "", new { @class = "text-danger" })
-            </div>
-            @Html.LabelFor(model => model.StreetId, "StreetId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("StreetId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.StreetId, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                <label asp-for="House" class="control-label"></label>
-                <input asp-for="House" class="form-control" />
-                <span asp-validation-for="House" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Block" class="control-label"></label>
-                <input asp-for="Block" class="form-control" />
-                <span asp-validation-for="Block" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apartment" class="control-label"></label>
-                <input asp-for="Apartment" class="form-control" />
-                <span asp-validation-for="Apartment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Latitude" class="control-label"></label>
-                <input asp-for="Latitude" class="form-control" />
-                <span asp-validation-for="Latitude" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Longitude" class="control-label"></label>
-                <input asp-for="Longitude" class="form-control" />
-                <span asp-validation-for="Longitude" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="item_address">
+        <div class="row">
+            <div class="col-6">Zip Code:</div>
+            <div class="col-6">
+                <div class="form-group">
+                    @Html.DropDownList("ZipCodeId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ZipCodeId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <div class="item_address">
+        <div class="row">
+            <div class="col-6">Street:</div>
+            <div class="col-6">
+                <div class="form-group">
+                    @Html.DropDownList("StreetId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.StreetId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="item_address">
+        <div class="row">
+            <div class="col-6">House:</div>
+            <div class="col-6">
+                <div class="form-group">
+                    <input asp-for="House" class="form-control" />
+                    <span asp-validation-for="House" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="item_address">
+        <div class="row">
+            <div class="col-6">Block:</div>
+            <div class="col-6">
+                <div class="form-group">
+                    <input asp-for="Block" class="form-control" />
+                    <span asp-validation-for="Block" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="item_address">
+        <div class="row">
+            <div class="col-6">Apartment:</div>
+            <div class="col-6">
+                <div class="form-group">
+                    <input asp-for="Apartment" class="form-control" />
+                    <span asp-validation-for="Apartment" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="item_address">
+        <div class="row">
+            <div class="col-6">Latitude:</div>
+            <div class="col-6">
+                <div class="form-group">
+                    <input asp-for="Latitude" class="form-control" />
+                    <span asp-validation-for="Latitude" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="item_address">
+        <div class="row">
+            <div class="col-6">Longitude:</div>
+            <div class="col-6">
+                <div class="form-group">
+                    <input asp-for="Longitude" class="form-control" />
+                    <span asp-validation-for="Longitude" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input id="loadSetedAddress" type="submit" value="Create" class="btn btn-primary" />
+    </div>
+
+</form>
+@*</div>
+    </div>*@
+
+@*<div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
+@*@section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-<script>
-    $(function () {
+        <script>
+        $(function () {
 
-        $("#CityId").change(function (e) {
-            e.preventDefault();
+            $("#CityId").change(function (e) {
+                e.preventDefault();
+                console.log("111111111111111111111111111111111111111");
+                let id = $(this).val();
 
-            let id = $(this).val();
+                let myurl = `/Address/SelectZip/${id}`;
+                console.log('id: ', id);
+                console.log('myurl: ', myurl);
 
-            let myurl = `/Address/SelectZip/${id}`;
-            console.log('id: ', id);
-            console.log('myurl: ', myurl);
+                $.ajax({
+                    type: "GET",
+                    url: myurl,
+                    success: function (data) {
+                        $("#ZipCodeId").html(data);
+                    }
+                });
 
-            $.ajax({
-                type: "GET",
-                url: myurl,
-                success: function (data) {
-                    $("#ZipCodeId").html(data);
-                }
-            });
+                let myurl2 = `/Address/SelectStreets/${id}`;
+                $.ajax({
+                    type: "GET",
+                    url: myurl2,
+                    success: function (data) {
+                        $("#StreetId").html(data);
+                    }
+                });
 
-            let myurl2 = `/Address/SelectStreets/${id}`;
-            $.ajax({
-                type: "GET",
-                url: myurl2,
-                success: function (data) {
-                    $("#StreetId").html(data);
-                }
-            });
+              })
+           })
 
-          })
-       })
-
-</script>
+        </script>
 
 
 
-}
+    }*@

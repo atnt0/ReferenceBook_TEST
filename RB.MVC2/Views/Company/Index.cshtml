@@ -15,11 +15,11 @@
     {
     <div id="tr-@item.CompanyId" class="col-4">
 
-        <a asp-action="Details" asp-controller="Company" asp-route-id="@item.CompanyId" >
+        <a asp-action="CompanyDetails" asp-controller="Company" asp-route-id="@item.CompanyId" >
             <img src=" @(((Dictionary<Guid, String>)ViewBag.Photos)[item.CompanyId])" height="130" />
         </a>
 
-        <a asp-action="Details" asp-controller="Company" asp-route-id="@item.CompanyId" >
+        <a asp-action="CompanyDetails" asp-controller="Company" asp-route-id="@item.CompanyId" >
             <div class="font-weight-bold"> @item.CompanyName</div>
         </a>
 
@@ -48,7 +48,9 @@
         <p class="font-weight-bold"> Adress </p>
         <p>Город: @item.Address?.City?.CityName  Улица: @item.Address?.Street?.StreetName @item.Address?.House</p>
         <p class="font-weight-bold">Popularity @item.Popularity </p>
+
         <a asp-action="Edit" asp-route-id="@item.CompanyId" class="btn btn-sm btn-success">Редактировать</a>
+
         @if (item.AddressId != null)
         {
             <a asp-action="Index" asp-controller="Address" asp-route-id="@item.CompanyId" class="btn btn-sm btn-success">Адрес</a>

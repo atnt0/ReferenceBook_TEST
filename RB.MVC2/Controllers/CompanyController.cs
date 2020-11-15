@@ -23,12 +23,15 @@ namespace RB.MVC.Controllers
         IGenericRepository<SocialNets, Guid> socialNets;
         IGenericRepository<SocialNetNames, int> socialNetsNames;
         IGenericRepository<Subcategories, int> subcategories;
+        IGenericRepository<Addresses, Guid> addresses;
         IGenericRepository<CompaniesCategories, Guid> compcat;//категория-кампания
         IGenericRepository<CompaniesSubcategories, Guid> compSubcat;
+        IGenericRepository<DayWeekTimeTables, Guid> timetables;
         public CompanyController(IGenericRepository<Companies, Guid> companies, IGenericRepository<Photos, Guid> photos, IGenericRepository<Categories, int> categories,
             IGenericRepository<Subcategories, int> subcategories, IGenericRepository<CompaniesCategories, Guid> compcat,
            IGenericRepository<CompaniesSubcategories, Guid> compSubcat, IGenericRepository<SocialNets, Guid> socialNets,
-          IGenericRepository<SocialNetNames, int> socialNetsNames, IGenericRepository<Logos, Guid> logos)
+          IGenericRepository<SocialNetNames, int> socialNetsNames, IGenericRepository<Logos, Guid> logos,
+           IGenericRepository<Addresses, Guid> addresses, IGenericRepository<DayWeekTimeTables, Guid> timetables)
         {
             this.companies = companies;
             this.categories = categories;
@@ -39,6 +42,8 @@ namespace RB.MVC.Controllers
             this.socialNets = socialNets;
             this.socialNetsNames = socialNetsNames;
             this.logos = logos;
+            this.addresses = addresses;
+            this.timetables = timetables;
         }
         public IActionResult Index(int Page)
         {
@@ -83,9 +88,19 @@ namespace RB.MVC.Controllers
             ////ViewBag.user = b;
             ////var model = films.GetAll();          
         }
-        public ActionResult Edit(Guid id)
+        public ActionResult CompanyDetails(Guid id)
         {
-            Companies company = id == Guid.Empty ? new Companies() : companies.Get(id);
+            var comp = companies.Get(id);
+             comp.Popularity = comp.Popularity + 1; 
+            companies.Update(comp);
+            companies.Save();
+            ViewModelCompanyDetails model = new ViewModelCompanyDetails( companies, photos, categories, subcategories, compcat, 
+            compSubcat, socialNets, socialNetsNames, logos, id, addresses, timetables);
+            return View(model);
+        }
+            public ActionResult Edit(Guid id)
+        {
+            Companies company = companies.Get(id);                  
             var companycat = compcat.FindBy(p => p.CompanyId == id);
             List<Categories> cateGories = new List<Categories>();
             foreach (var item in companycat)            
@@ -127,7 +142,18 @@ namespace RB.MVC.Controllers
 
             var photoLogo = selectPhotos.Where(p => p.Logos.PhotoId == p.PhotoId).FirstOrDefault();         
             ViewBag.Logo = photoLogo;
+            if (company.AddressId != Guid.Empty)
+            {             
+                ViewBag.Address = addresses.FindBy(p=>p.AddressId == company.AddressId).FirstOrDefault();           
+            }
+            //else
+            //{
+            //    ViewBag.Address = new Addresses() { };
+            //}
+          
+
             return View(company);
+
         }
 
         public ActionResult AddSocnet(Guid id)
@@ -268,6 +294,48 @@ namespace RB.MVC.Controllers
         [HttpPost]
         public ActionResult Edit(Companies companyNew)
         {
+            var companyOld = companies.Get(companyNew.CompanyId);
+            var createOn = companyOld.CreatedOn;
+            var addressId = companyOld.AddressId;
+            var companiesCategories = companyOld.CompaniesCategories;
+            var companiesSubcategories = companyOld.CompaniesSubcategories;
+            var phones = companyOld.Phones;
+            var photos = companyOld.Photos;
+            var popularity = companyOld.Popularity;
+            var socialNets = companyOld.SocialNets;
+            var dayWeekTimeTables = companyOld.DayWeekTimeTables;
+            var emails = companyOld.Emails;        
+
+            var companyId = companyNew.CompanyId;
+            var parentCompanyId = companyNew.ParentCompanyId;
+            var companyName = companyNew.CompanyName;
+            var director = companyNew.Director;
+            var descriptionShort = companyNew.DescriptionShort;
+            var descriptionFull = companyNew.DescriptionFull;
+            var webSite = companyNew.WebSite;
+
+            Companies company = new Companies()
+            {
+                CompanyId = companyId,
+                CreatedOn = createOn,
+                CompanyName = companyName,
+                ParentCompanyId = parentCompanyId,
+                Director = director,
+                DescriptionShort = descriptionShort,
+                DescriptionFull = descriptionFull,
+                WebSite = webSite,
+                AddressId = addressId,
+                Popularity = popularity,
+
+                CompaniesCategories = companiesCategories,
+                CompaniesSubcategories = companiesSubcategories,
+                Phones = phones,
+                Emails = emails,
+                SocialNets = socialNets,
+                Photos = photos,
+                DayWeekTimeTables = dayWeekTimeTables,
+            };
+
             if (ModelState.IsValid)
             {
                 //if (companyNew.CompanyId == Guid.Empty)
@@ -284,15 +352,17 @@ namespace RB.MVC.Controllers
                 // с формы забираем только поля которые ему доступны (игнорируем и переопределяем оставшиеся
                 // поля из старой записи)     
 
-              //  var companyOld = companies.Get(companyNew.CompanyId);
-              //companyNew.CreatedOn = companyOld.CreatedOn;
+                //  var companyOld = companies.Get(companyNew.CompanyId);
+                //companyNew.CreatedOn = companyOld.CreatedOn;
                 ///   
-                companies.Update(companyNew);
+               // companyNew.AddressId = (Guid)ViewData["Adress"];
+                companies.Delete(companyId);
+                companies.Save();
+                companies.Create(company);
                     companies.Save();
-                    return RedirectToAction("Index");
-               // }
+                    return RedirectToAction("Index");            
             }
-            return View(companyNew);
+            return View(company);
         }
 
         public ActionResult Create(Guid id)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RB.DAL.Common;
 using RB.DAL.Models;
+using RB.MVC.Models;
 
 namespace RB.MVC2.Controllers
 {
@@ -51,7 +52,7 @@ namespace RB.MVC2.Controllers
             ViewBag.CityId = new SelectList(cities.GetAll(), "CityId", "CityName", Id);
             ViewBag.StreetId = new SelectList(str, "StreetId", "StreetName", address.StreetId);
             ViewBag.ZipCodeId = new SelectList(zips, "ZipCodeId", "ZipCode", address.ZipCodeId);
-            return View(address);
+            return PartialView(address);
         }
       
         public ActionResult SelectZip(Guid id)
@@ -66,56 +67,67 @@ namespace RB.MVC2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Addresses address)
+        public ActionResult EditAddress(Addresses address)
         {
+          //  Guid companyId = (Guid)TempData["CompanyId"];
             if (ModelState.IsValid)
-            {
-                Guid CompId = (Guid)TempData["CompanyId"];                     
+            {                              
                     adresses.Update(address);
                     adresses.Save();
-                    return RedirectToAction("Index", new { id = CompId });
+
+                AddressPoco addressPoco = new AddressPoco(adresses, cities, streets, zipCodes, address.AddressId);
+             //   ViewBag.CompanyId = companyId;
+                return PartialView(addressPoco);
+                // return RedirectToAction("Index", new { id = CompId });
             }
-            return View(address);
+            return RedirectToAction("Index","Company");
         }
 
         [HttpPost]
-        public ActionResult Create(Addresses address)
+        public ActionResult CreateAddress(Addresses address)
         {
+
+            Guid companyId = (Guid)TempData["CompanyId"];
             if (ModelState.IsValid)
-            {
-                Guid CompId = (Guid)TempData["CompanyId"];
-                if (address.AddressId == Guid.Empty)
-                {                
+            { 
+            //{
+            
+            //    if (address.AddressId == Guid.Empty)
+            //    {                
                      address.AddressId = Guid.NewGuid();
                     adresses.Create(address);              
                     adresses.Save();
-                    var comp = companies.Get(CompId);
+                    var comp = companies.Get(companyId);
                     if (comp.AddressId == null)
                     {
                         comp.AddressId = address.AddressId;
                     }           
-                  companies.Update(comp);
+                    companies.Update(comp);
                     companies.Save();
-                    return RedirectToAction("Index", new { id = CompId });
+
+                AddressPoco addressPoco = new AddressPoco(adresses, cities, streets, zipCodes, address.AddressId);
+                ViewBag.CompanyId = companyId;
+                    return PartialView(addressPoco);
+                    // return RedirectToAction("Index", new { id = CompId });
                 }
-            }
-            return View(address);
+            //  }
+            return RedirectToAction("Edit", "Company", new { id = companyId });
         }
 
-        public ActionResult Create(Guid id)
+        public ActionResult Create(Guid companyId)
         {
-            TempData["CompanyId"] = id;
+            TempData["CompanyId"] = companyId;
             var address = new Addresses();
             List<ZipCodes> zips = new List<ZipCodes>();
             List<Streets> str = new List<Streets>();
             var cit = cities.GetAll().ToList();
             var Id = cit.First().CityId;       
             zips = zipCodes.FindBy(p => p.CityId == Id).OrderBy(p => p.ZipCode).ToList();  
-            str =streets.FindBy(p => p.CityId == Id).ToList();
+            str =streets.FindBy(p => p.CityId == Id).ToList();         
             ViewBag.CityId = new SelectList(cit, "CityId", "CityName", Id);
             ViewBag.StreetId = new SelectList(str, "StreetId", "StreetName", address.StreetId);
             ViewBag.ZipCodeId = new SelectList(zips, "ZipCodeId", "ZipCode", address.ZipCodeId);
-            return View(address);
+            return PartialView(address);
         }   
     }
 }

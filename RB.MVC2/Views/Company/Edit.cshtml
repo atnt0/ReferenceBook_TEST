@@ -2,18 +2,25 @@
 @using RB.MVC.Models;
 @model RB.DAL.Models.Companies
 
-<h4>Companies</h4>
+<h1>Редактирование компании «@Model.CompanyName»</h1>
+
+<a asp-action="CompanyDetails" asp-route-id="@Model.CompanyId" class="btn btn-sm btn-primary">Просмотреть</a>
+
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CompanyId" id="CompId" />
+            @*<input type="hidden" asp-for="AddressId" id="AddressId" />*@
+            @*<input type="hidden" asp-for="Popularity" id="Popularity" />*@
+            @*<input type="hidden" asp-for="AddressId" value="@ViewBag.AddressId" id="CompId" />*@
             @*<div class="form-group">
-                <label asp-for="CreatedOn" class="control-label"></label>
-                <input asp-for="CreatedOn" class="form-control" />
-                <span asp-validation-for="CreatedOn" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="CreatedOn" class="control-label"></label>
+                    <input asp-for="CreatedOn" class="form-control" />
+                    <span asp-validation-for="CreatedOn" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="CompanyName" class="control-label"></label>
                 <input asp-for="CompanyName" class="form-control" />
@@ -45,199 +52,273 @@
                 <span asp-validation-for="WebSite" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="AddressId" class="control-label"></label>
-                <select asp-for="AddressId" class="form-control" asp-items="ViewBag.AddressId"></select>
-                <span asp-validation-for="AddressId" class="text-danger"></span>
-            </div>*@
-            @*<div class="form-group">
-                <label asp-for="Popularity" class="control-label"></label>
-                <input asp-for="Popularity" class="form-control" />
-                <span asp-validation-for="Popularity" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="Popularity" class="control-label"></label>
+                    <input asp-for="Popularity" class="form-control" />
+                    <span asp-validation-for="Popularity" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-        </form>     
+        </form>
+        <a asp-action="Index" asp-controller="TimeTable" asp-route-id="@Model.CompanyId" class="btn btn-sm btn-success">Расписание</a>
     </div>
+
     <div class="col-md-4">
-        <div class="row">
-            <div class="col-md-12">
-                <p class="font-weight-bold">Emails </p>
-                <p>
-                    <button id="createNewEmailBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Email</button>
-                </p>
-                <div class="row"><div id="createNewEmail" class="col-12"></div></div>
-                <ul id="newEmail" style="list-style-type:none; padding-left: 0;">
-                    @foreach (var item in Model.Emails)
-                    {
-                        <li>
-                            <div>
-                                @Html.DisplayFor(modelItem => item.Email)
-                                @Html.HiddenFor(modelItem => item.CreatedOn)
-                                @Html.HiddenFor(modelItem => item.EmailId)
-                                @Html.HiddenFor(modelItem => item.CompanyId)
-                                <a asp-action="Edit" asp-route-id="@item.EmailId" class="btn btn-info editEmail" data-id="@item.EmailId">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@item.EmailId" class="btn btn-danger delEmail" data-id="@item.EmailId">Delete</a>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <p class="font-weight-bold">Категории </p>
-                <p>
-                    <button id="createNewCategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Category</button>
-                </p>
-                <div class="row"><div id="createNewCategory" class="col-12"></div></div>
-                <ul id="newCategory" style="list-style-type:none; padding-left: 0;">
-                    @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
-                    @foreach (var item in ViewBag.Categories)
-                    {
-                        <li>
-                            <div>
-                                @item.CategoryName
-                                <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger delCategory" data-id="@item.CategoryId">Delete</a>
-                            </div>
-                        </li>
 
-                    }
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <p class="font-weight-bold">Подкатегории </p>
-                <p>
-                    <button id="createNewSubcategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Subcategory</button>
-                </p>
-                <div class="row"><div id="createNewSubcategory" class="col-12"></div></div>
-                <ul id="newSubcategory" style="list-style-type:none; padding-left: 0;">
-                    @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
-                    @foreach (var item in ViewBag.Subategories)
-                    {
-                        <li>
-                            <div>
-                                @item.SubcategoryName
-                                <a asp-action="Delete" asp-route-id="@item.SubcategoryId" class="btn btn-danger delSubcategory" data-id="@item.SubcategoryId">Delete</a>
-                            </div>
-                        </li>
+        <div class="item_property_block">
+            <p class="font-weight-bold">Категории </p>
+            <p>
+                <button id="createNewCategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Category</button>
+            </p>
+            <div class="row"><div id="createNewCategory" class="col-12"></div></div>
+            <ul id="newCategory" style="list-style-type:none; padding-left: 0;">
+                @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
+                @foreach (var item in ViewBag.Categories)
+                {
+                    <li>
+                        <div>
+                            @item.CategoryName
+                            <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger delCategory" data-id="@item.CategoryId">Delete</a>
+                        </div>
+                    </li>
 
-                    }
-                </ul>
-            </div>
+                }
+            </ul>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <p class="font-weight-bold">Фотографии</p>
-                <p>
-                    <button id="createNewPhotoBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Photo</button>
-                </p>
-                <div class="row"><div id="createNewPhoto" class="col-12"></div></div>
-                <div class="row" id="containerPhotos">
-                    @if (((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos).Count() <= 0)
-                    {
-                        <h4 class="message_Not_Found">Photo Company - not found</h4>
-                    }
-                    else
-                    {
-                        @foreach (var item in ((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos))
-                        {
-                            string photoPath = $"{@ViewBag.Path}{item.FileName}";
-                            <div class="col-4" data-id="img-@item.PhotoId">
+        <div class="item_property_block">
+            <p class="font-weight-bold">Подкатегории </p>
+            <p>
+                <button id="createNewSubcategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Subcategory</button>
+            </p>
+            <div class="row"><div id="createNewSubcategory" class="col-12"></div></div>
+            <ul id="newSubcategory" style="list-style-type:none; padding-left: 0;">
+                @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
+                @foreach (var item in ViewBag.Subategories)
+                {
+                    <li>
+                        <div>
+                            @item.SubcategoryName
+                            <a asp-action="Delete" asp-route-id="@item.SubcategoryId" class="btn btn-danger delSubcategory" data-id="@item.SubcategoryId">Delete</a>
+                        </div>
+                    </li>
 
-                                <img src="@photoPath" height="100" width="100" />
-                                <br>
-                                @Html.ActionLink("Delete", "Delete", "Photo", new { id = item.PhotoId }, new { @class = "btn btn-danger delete-photo", data_photoId = item.PhotoId })
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
+                }
+            </ul>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <p class="font-weight-bold">Логотип</p>
-                <p>
-                    <button id="replaceLogo" class="btn btn-primary" data-id="@Model.CompanyId">Replace Logo</button>
-                </p>
-                <div class="row"><div id="createNewLogo" class="col-12"></div></div>
-                <div class="row" id="containerLogo">
-                    @{var logo = ((RB.DAL.Models.Photos)ViewBag.Logo); }
-                    @if (logo == null)
-                    {
-                        <h4 class="message_Not_Found">Logo Company - not found</h4>
-                    }
-                    else
-                    {                     
-                            string photoPath = $"{@ViewBag.PathLogo}{logo.FileName}";
-                            <div class="col-4" data-id="img-@logo.PhotoId">
+        <div class="item_property_block">
+            <p class="font-weight-bold">Адрес </p>
+            @{
+                var address = Model.Address;
+            }
 
-                                <img src="@photoPath" height="100" width="100" />
-                                <br>
-                                @Html.ActionLink("DeleteLogo", "DeleteLogo", "Photo", new { id = logo.PhotoId }, new { @class = "btn btn-danger delete-logo", data_photoId = logo.PhotoId })
-                            </div>                        
-                    }
-                </div>
+            <div id="containerChangeAddress">
+                @if (address == null)
+                {
+                    <p>
+                        <button id="setAddress" class="btn btn-primary" data-id="@Model.CompanyId">Set new Address</button>
+                    </p>
+
+                    <div id="formEditAddress"></div>
+
+                    <div id="divViewAddress"></div>
+                }
+                else
+                {
+                    <p>
+                        <button id="changeAddress" class="btn btn-primary" data-id="@Model.AddressId">Change Address</button>
+                    </p>
+                    
+                    <div id="formEditAddress"></div>
+
+                    <div id="divViewAddress">
+                        <div class="wrapper_address">
+                            <dl class="row">
+                                <dt class="col-6">City</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.City.CityName)
+                                </dd>
+                                <dt class="col-6">ZipCode</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.ZipCode.ZipCode)
+                                </dd>
+                                <dt class="col-6">Street</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Street.StreetName)
+                                </dd>
+                                <dt class="col-6">House</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.House)
+                                </dd>
+                                <dt class="col-6">Block</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Block)
+                                </dd>
+                                <dt class="col-6">Apartment</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Apartment)
+                                </dd>
+                                <dt class="col-6">Latitude</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Latitude)
+                                </dd>
+                                <dt class="col-6">Longitude</dt>
+                                <dd class="col-6">
+                                    @Html.DisplayFor(model => model.Address.Longitude)
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+                    
+                    
+
+                }
+                
+
+
+
             </div>
-        </div>
 
+        </div>
 
     </div>
-    <div class="col-md-4" id="LoadDiv">
-        <div class="row">
-            <div class="col-md-12">
-                <p class="font-weight-bold">Телефоны </p>
-                <p>
-                    <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Phone</button>
-                </p>
-                <div class="row"><div id="createNew" class="col-12"></div></div>
-                <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
-                    @foreach (var item in Model.Phones)
-                    {
-                        <li>
-                            <div>
-                                @Html.DisplayFor(modelItem => item.PhoneNumber)
-                                @Html.HiddenFor(modelItem => item.CreatedOn)
-                                @Html.HiddenFor(modelItem => item.PhoneId)
-                                @Html.HiddenFor(modelItem => item.CompanyId)
-                                <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-info editPhone" data-id="@item.PhoneId">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <p class="font-weight-bold">Социальные сети </p>
-                <p>
-                    <button id="createNewSocnetBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Social Net</button>
-                </p>
-                <div class="row"><div id="createNewSocnet" class="col-12"></div></div>
-                <ul id="newSocnet" style="list-style-type:none; padding-left: 0;">
-                    @foreach (var item in ((List<SocnetPoco>)ViewBag.socialnetNames))
-                    {
-                        <li>
-                            <div>
-                                <p> @item.socialNetNames.SocialNetName</p>
-                                <p> @item.SocNetUrl</p>
-                                <a asp-action="Delete" asp-route-id="@item.socialNetNames.SocialNetNameId" class="btn btn-danger delSocnet" data-id="@item.socialNetNames.SocialNetNameId">Delete</a>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
+
+
+    @*id="LoadDiv"*@
+<div class="col-md-4">
+
+    <div class="item_property_block">
+        <p class="font-weight-bold">Фотографии</p>
+        <p>
+            <button id="createNewPhotoBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Photo</button>
+        </p>
+        <div class="row"><div id="createNewPhoto" class="col-12"></div></div>
+        <div class="row" id="containerPhotos">
+            @if (((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos).Count() <= 0)
+            {
+                <h4 class="message_Not_Found">Photo Company - not found</h4>
+            }
+            else
+            {
+                @foreach (var item in ((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos))
+                {
+                    string photoPath = $"{@ViewBag.Path}{item.FileName}";
+                    <div class="col-4" data-id="img-@item.PhotoId">
+
+                        <img src="@photoPath" height="100" width="100" />
+                        <br>
+                        @Html.ActionLink("Delete", "Delete", "Photo", new { id = item.PhotoId }, new { @class = "btn btn-danger delete-photo", data_photoId = item.PhotoId })
+                    </div>
+                }
+            }
         </div>
     </div>
+
+    <div class="item_property_block">
+        <p class="font-weight-bold">Логотип</p>
+        <p>
+            <button id="replaceLogo" class="btn btn-primary" data-id="@Model.CompanyId">Replace Logo</button>
+        </p>
+        <div class="row"><div id="createNewLogo" class="col-12"></div></div>
+        <div class="row" id="containerLogo">
+            @{var logo = ((RB.DAL.Models.Photos)ViewBag.Logo); }
+            @if (logo == null)
+            {
+                <h4 class="message_Not_Found">Logo Company - not found</h4>
+            }
+            else
+            {
+                string photoPath = $"{@ViewBag.PathLogo}{logo.FileName}";
+                <div class="col-4" data-id="img-@logo.PhotoId">
+
+                    <img src="@photoPath" height="100" width="100" />
+                    <br>
+                    @Html.ActionLink("DeleteLogo", "DeleteLogo", "Photo", new { id = logo.PhotoId }, new { @class = "btn btn-danger delete-logo", data_photoId = logo.PhotoId })
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="item_property_block">
+        <p class="font-weight-bold">Emails:</p>
+        <p>
+            <button id="createNewEmailBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Email</button>
+        </p>
+        <div class="row"><div id="createNewEmail" class="col-12"></div></div>
+        <ul id="newEmail" style="list-style-type:none; padding-left: 0;">
+            @foreach (var item in Model.Emails)
+            {
+                <li>
+                    <div>
+                        @Html.DisplayFor(modelItem => item.Email)
+                        @Html.HiddenFor(modelItem => item.CreatedOn)
+                        @Html.HiddenFor(modelItem => item.EmailId)
+                        @Html.HiddenFor(modelItem => item.CompanyId)
+                        <a asp-action="Edit" asp-route-id="@item.EmailId" class="btn btn-info editEmail" data-id="@item.EmailId">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.EmailId" class="btn btn-danger delEmail" data-id="@item.EmailId">Delete</a>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="item_property_block">
+        <p class="font-weight-bold">Телефоны:</p>
+        <p>
+            <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Phone</button>
+        </p>
+        <div class="row"><div id="createNew" class="col-12"></div></div>
+        <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
+            @foreach (var item in Model.Phones)
+            {
+                <li>
+                    <div>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        @Html.HiddenFor(modelItem => item.CreatedOn)
+                        @Html.HiddenFor(modelItem => item.PhoneId)
+                        @Html.HiddenFor(modelItem => item.CompanyId)
+                        <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-info editPhone" data-id="@item.PhoneId">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="item_property_block">
+        <p class="font-weight-bold">Социальные сети:</p>
+        <p>
+            <button id="createNewSocnetBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Social Net</button>
+        </p>
+        <div class="row"><div id="createNewSocnet" class="col-12"></div></div>
+        <ul id="newSocnet" style="list-style-type:none; padding-left: 0;">
+            @foreach (var item in ((List<SocnetPoco>)ViewBag.socialnetNames))
+            {
+                <li>
+                    <div>
+                        <p> @item.socialNetNames.SocialNetName</p>
+                        <p>
+                            @item.SocNetUrl
+                            <a asp-action="Delete" asp-route-id="@item.socialNetNames.SocialNetNameId" class="btn btn-danger delSocnet" data-id="@item.socialNetNames.SocialNetNameId">Delete</a>
+                        </p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
+</div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
 </div>
 
 @section Scripts {
@@ -677,7 +758,7 @@
 			});
      });
 
-      $('.delete-photo').click(function (e) {
+    $('#containerPhotos').on('click.deletePhoto', '.delete-photo', function (e) {
                e.preventDefault();
 
                let el = $(this);
@@ -735,7 +816,7 @@
 			});
     });
 
-    $('#containerLogo').on('click.deleteLogo', '.delete-logo', function (e) {  
+    $('#containerLogo').on('click.deleteLogo', '.delete-logo', function (e) {
                e.preventDefault();
                let el = $(this);
                let id = el.attr('data-photoId');
@@ -751,6 +832,119 @@
                }
 
       })
+   // containerPhotos
+
+
+
+
+
+
+
+
+
+  //  containerChangeAddress
+    //Добавление и изменение адреса
+    $('#containerChangeAddress').on('click', '#setAddress', function (e) {
+        e.preventDefault();
+        console.log('btn click setAddress: ', e.target);
+
+        let btn_setAddress = $(this);
+        let companyId = btn_setAddress.attr('data-id');
+
+        $.get('@Url.Action("Create", "Address")', { companyId: companyId }, function (data) {
+            $('#formEditAddress').html(data);
+
+            $('#containerChangeAddress').on('click', '#loadSetedAddress', function (e) {
+                e.preventDefault();
+                console.log('btn click loadSetedAddress: ', e.target);
+
+                let dataFormJson = $('form').serialize();
+
+                $.ajax({
+                    url: "@Url.Action("CreateAddress", "Address")",
+                    type: 'POST',
+                    data: dataFormJson,                
+                    success: function (data) {
+                        $('#formEditAddress').empty();
+                        $('#divViewAddress').html(data);
+                        btn_setAddress.remove();
+                    },
+                });
+            });
+
+        });
+    });
+
+    $('#containerChangeAddress').on('click', '#changeAddress', function (e) {
+        e.preventDefault();
+        console.log('btn click changeAddress: ', e.target);
+       
+        let btn_changeAddress = $(this);
+        let addressId = btn_changeAddress.attr('data-id');       
+
+        $.get('@Url.Action("Edit", "Address")', { id: addressId }, function (data) {
+            $('#divViewAddress').empty();
+            btn_changeAddress.remove();
+
+            $('#formEditAddress').html(data);
+   
+            $('#containerChangeAddress').on('click', '#loadChangedAddress', function (e) {
+                e.preventDefault();
+                console.log('btn click loadChangedAddress: ', e.target);
+
+                let dataFormJson = $('form').serialize();  
+                
+                $.ajax({
+                    url: "@Url.Action("EditAddress", "Address")",
+                    type: 'POST',
+                    data: dataFormJson,
+                    success: function (data) {
+                        $('#formEditAddress').empty();
+                        $('#divViewAddress').html(data);                                       
+                    },
+                });
+            });
+
+        });
+    });
+
+
+
+
+
+
+
+
+
+    $('#containerChangeAddress').on('change.setCity', '#CityId', function (e) {
+        // $("#CityId").change(function (e) {
+        e.preventDefault();
+        console.log("111111111111111111111111111111111111111");
+        let id = $(this).val();
+
+        let myurl = `/Address/SelectZip/${id}`;
+        console.log('id: ', id);
+        console.log('myurl: ', myurl);
+
+        $.ajax({
+            type: "GET",
+            url: myurl,
+            success: function (data) {
+                $("#ZipCodeId").html(data);
+            }
+        });
+
+        let myurl2 = `/Address/SelectStreets/${id}`;
+
+        $.ajax({
+            type: "GET",
+            url: myurl2,
+            success: function (data) {
+                $("#StreetId").html(data);
+            }
+        });
+
+    });
 
 </script>
 }
