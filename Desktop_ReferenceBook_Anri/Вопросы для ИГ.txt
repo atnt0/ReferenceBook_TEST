@@ -1,8 +1,11 @@
 
 
-вопрос по трекингу для перезаписи CreatedOn 
 
+- вопрос по трекингу для перезаписи CreatedOn с "костылем"
+	
 
+- address.Get() неудается преобразовать company.AddressId? -> "AddressId?" к "AddressId"
+	"System.Guid?" в "System.Guid"
 
 
 
