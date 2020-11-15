@@ -117,18 +117,18 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <textarea class="form-control" name="descrshort" placeholder="Краткое описание (до 200 символов)" style="height: 100%"></textarea>
+                <textarea class="form-control" id="descrshort" placeholder="Краткое описание (до 200 символов)" style="height: 100%"></textarea>
             </div>
             <div class="col-6">
 				<div class="row">
 					<div class="col-6">
-						<select class="form-control" name="city">
+						<select class="form-control" id="city">
 							<option value="0" selected>Выберите город</option>
 							<option value="1">Киев</option>
 						</select>
 					</div>
 					<div class="col-6">
-						<select class="form-control" name="zipcode">
+						<select class="form-control" id="zipcode">
 							<option value="0" selected>Выберите индекс</option>
 							<option value="1">01001</option>
 							<option value="2">03028</option>
@@ -138,27 +138,35 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
-						<select class="form-control" name="street">
+						<select class="form-control" id="street">
 							<option value="0" selected>Выберите улицу</option>
 						</select>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-4">
-						<input type="text" class="form-control" name="house" placeholder="Дом">
+						<input type="text" class="form-control" id="house" placeholder="Дом">
 					</div>
 					<div class="col-4">
-						<input type="text" class="form-control" name="block" placeholder="Корпус">
+						<input type="text" class="form-control" id="block" placeholder="Корпус">
 					</div>
 					<div class="col-4">
-						<input type="text" class="form-control" name="apartment" placeholder="Кв./оф.">
+						<input type="text" class="form-control" id="apartment" placeholder="Кв./оф.">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<input type="number" class="form-control" id="latitude" placeholder="Широта">
+					</div>
+					<div class="col-6">
+						<input type="number" class="form-control" id="longitude" placeholder="Долгота">
 					</div>
 				</div>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <textarea class="form-control" name="descrfull" rows="5" placeholder="Полное описание"></textarea>
+                <textarea class="form-control" id="descrfull" rows="5" placeholder="Полное описание"></textarea>
             </div>
         </div>
 		<div class="row">
@@ -425,10 +433,10 @@
 			ContactsMultiplier('socials','Социальные сети');
 			//расписание
 			for(let i=0;i<24;i++){
-				$('.day-start-h,.day-finish-h,.timeout-start-h,.timeout-finish-h').append('<option value="'+i+'"'+(i==0?' selected':'')+'>'+(i<10?'0'+i:i)+'</option>');
+				$('.day-start-h,.day-finish-h,.timeout-start-h,.timeout-finish-h').append('<option value="'+i+'"'+(i==0?' selected':'')+'>'+(i<10?'0'+i:i)+'ч</option>');
 			}
 			for(let i=0;i<60;i+=5){
-				$('.day-start-m,.day-finish-m,.timeout-start-m,.timeout-finish-m').append('<option value="'+i+'"'+(i==0?' selected':'')+'>'+(i<10?'0'+i:i)+'</option>');
+				$('.day-start-m,.day-finish-m,.timeout-start-m,.timeout-finish-m').append('<option value="'+i+'"'+(i==0?' selected':'')+'>'+(i<10?'0'+i:i)+'м</option>');
 			}
 			$('input.workday').on('change',function(){
 				let tr=$(this).closest('tr');
@@ -466,7 +474,7 @@
 			}
 			$('#categories select').on('change',function(){
 				if($(this).val()!='0'){
-					for(let i)
+					
 				}
 			});
         })
