@@ -1,13 +1,17 @@
 ﻿@model IEnumerable<RB.DAL.Models.SocialNetNames>
-@{ 
 
+@{
+    ViewData["Title"] = $"Социальные сети";
 }
 
-<h1>Index</h1>
+<h1>Список социальных сетей</h1>
 
 <p>
-    <button id="createNewBtn" class="btn btn-primary">Create New</button>
+    <button id="createNewBtn" class="btn btn-sm btn-primary">Добавить новую</button>
 </p>
+
+<hr />
+
 <div class="row"><div id="createNew" class="col-12"></div></div>
 <table class="table">
     <thead>
@@ -33,13 +37,16 @@
         }
     </tbody>
 </table>
+
+<hr />
+
 <div class="row">
-    <div class="col-md-12">    
-        <partial name="PartialViews/Pagination"/>     
+    <div class="col-md-12">
+        <partial name="PartialViews/Pagination" />
     </div>
 </div>
 
-@*<a asp-action="Delete" asp-route-id="@item.SocialNetNameId" class="btn btn-danger delSocialNetName" data-id="@item.SocialNetNameId">Delete</a>*@
+
 @section Scripts{
     <script>
 		$('#createNewBtn').click(function () {
@@ -130,7 +137,7 @@
 			let el = $(this);
 			let id = el.attr('data-id');
             let tr = $(this).closest('tr');
-               if (confirm('Вы  хотите удалить запись?')) {
+               if (confirm('Вы хотите удалить запись?')) {
                    $.post('@Url.Action("Delete", "SocialNetNames")', { id: id }, function (data) {
                        if (data == "OK") {
                            tr.remove();

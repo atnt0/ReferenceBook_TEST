@@ -1,0 +1,45 @@
+﻿@model IEnumerable<RB.MVC.Models.DayWeekTimeTablesPoco>
+
+<p>
+    <button id="setTimeTables" class="btn btn-primary" data-id="@ViewBag.CompanyId">Set TimeTables</button>
+</p>
+
+<div class="row">
+    <div class="col">
+        <table style="width: 100%;">
+            <thead>
+                <tr>
+                    <td><strong>День</strong></td>
+                    <td><strong>Время</strong></td>
+                    <td><strong>Перерыв</strong></td>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var mdl = (List<RB.MVC.Models.DayWeekTimeTablesPoco>)Model; }
+                @foreach (var day in mdl)
+                {
+                <tr>
+                    <td>@day.WeekDayLocal</td>
+                    @if (@day.DayStartHours != null && @day.DayStartHours != string.Empty)
+                        {
+                    <td>@day.DayStartHours:@day.DayStartMinutes - @day.DayEndHours:@day.DayEndMinutes</td>
+                        }
+                        else
+                        {
+                    <td>—</td>
+                        }
+                    @if (@day.LunchBreakStartHours != null && @day.LunchBreakStartHours != string.Empty)
+                        {
+                    <td>@day.LunchBreakStartHours:@day.LunchBreakStartMinutes - @day.LunchBreakEndHours:@day.LunchBreakEndMinutes</td>
+                        }
+                        else
+                        {
+                    <td>—</td>
+                        }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

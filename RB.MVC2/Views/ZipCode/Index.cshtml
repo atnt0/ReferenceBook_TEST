@@ -1,10 +1,17 @@
 ﻿@model IEnumerable<RB.DAL.Models.ZipCodes>
 
+@{
+    ViewData["Title"] = $"Почтовые индексы";
+}
+
 <h1>Список почтовых индексов</h1>
 
 <p>
-    <button id="createNewBtn" class="btn btn-primary">Create New</button>
+    <button id="createNewBtn" class="btn btn-sm btn-primary">Создать новый</button>
 </p>
+
+<hr />
+
 <div class="row"><div id="createNew" class="col-12"></div></div>
 <table class="table" id="tableZips">
     <thead>
@@ -36,11 +43,15 @@
         }
     </tbody>
 </table>
+
+<hr />
+
 <div class="row">
     <div class="col-md-12">
         <partial name="PartialViews/Pagination" />
     </div>
 </div>
+
 @section Scripts{
     <script>
 		$('#createNewBtn').click(function () {
@@ -90,7 +101,7 @@
             $('#zipCancel').click();
 			let id = $(this).attr('data-id');
 			let trtmp = $(this).closest('tr').html();
-			let tr = $(this).closest('tr');          
+			let tr = $(this).closest('tr');
 			$.ajax({
 				url: '@Url.Action("Edit")',
 				type: 'get',
@@ -135,7 +146,7 @@
 			let el = $(this);
 			let id = el.attr('data-id');
             let tr = $(this).closest('tr');
-               if (confirm('Вы  хотите удалить запись?')) {
+               if (confirm('Вы хотите удалить запись?')) {
                    $.post('@Url.Action("Delete", "ZipCode")', { id: id }, function (data) {
                        if (data == "OK") {
                            tr.remove();

@@ -1,51 +1,53 @@
 ﻿@model IEnumerable<RB.DAL.Models.Categories>
 
 @{
-    ViewData["Title"] = "Index";
-    
+	ViewData["Title"] = "Категории";
 }
 
 <h1>Список категорий</h1>
 
 <p>
-    <button id="createNewBtn" class="btn btn-primary">Create New</button>
+	<button id="createNewBtn" class="btn btn-sm btn-primary">Создать новую</button>
 </p>
+
+<hr />
+
 <div class="row"><div id="createNew" class="col-12"></div></div>
 <table class="table">
-    <thead>
-        <tr>
-            <th >
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td class="catName">
-                    @Html.DisplayFor(modelItem => item.CategoryName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-info editCategory" data-id="@item.CategoryId">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger delCategory" data-id="@item.CategoryId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.CategoryName)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td class="catName">
+					@Html.DisplayFor(modelItem => item.CategoryName)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-info editCategory" data-id="@item.CategoryId">Edit</a>
+					<a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger delCategory" data-id="@item.CategoryId">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
 
 <div class="row">
-    <div class="col-md-12">
+	<div class="col-md-12">
 
-        <partial name="PartialViews/Pagination" />
+		<partial name="PartialViews/Pagination" />
 
 
-    </div>
+	</div>
 </div>
 @section Scripts{
-    <script>
+	<script>
 		$('#createNewBtn').click(function () {
 			$.get('@Url.Action("Create")', function (data) {
 				$('#createNew').html(data);
@@ -63,7 +65,7 @@
                         countErrors++;
 					} else { $('#newCategoryName').removeAttr('style'); }
 
-                    if (countErrors == 0) {			
+                    if (countErrors == 0) {
                         try {
 							$.ajax({
 								url: '@Url.Action("CreateNewCat")',
@@ -90,13 +92,13 @@
 			$('#catCancel').click();
 			let id = $(this).attr('data-id');
 			let trtmp = $(this).closest('tr').html();
-			let tr = $(this).closest('tr');					
+			let tr = $(this).closest('tr');
 
 			$.ajax({
 				url: '@Url.Action("Edit")',
 				type: 'get',
 				data: {
-					id: id					
+					id: id
 				},
 				success: function (data) {
 					tr.html(data);
@@ -105,17 +107,17 @@
 					});
 					$('#catSave').click(function () {
                         let countErrors = 0;
-						let fname = $('#newCategoryName').val();			
+						let fname = $('#newCategoryName').val();
 						if (fname.length < 3 || fname.length > 256) {
 							$('#newCategoryName').css('border', '2px solid #f00');
                             countErrors++;
-						} else { $('#newCategoryName').removeAttr('style'); }				
+						} else { $('#newCategoryName').removeAttr('style'); }
                         if (countErrors == 0) {
 							$.post(
 								'@Url.Action("Save")',
 								{
 									id: id,
-									fname: fname							
+									fname: fname
 								},
 								function (data) {
 									tr.html(data);
@@ -131,9 +133,9 @@
 			e.preventDefault();
 
 			let el = $(this);
-			let id = el.attr('data-id');		
+			let id = el.attr('data-id');
             let tr = $(this).closest('tr');
-               if (confirm('Вы  хотите удалить запись?')) {
+               if (confirm('Вы хотите удалить запись?')) {
                    $.post('@Url.Action("Delete", "Category")', { id: id }, function (data) {
                        if (data == "OK") {
                            tr.remove();
@@ -141,5 +143,5 @@
                    })
                }
 		});
-    </script>
+	</script>
 }

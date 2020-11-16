@@ -1,19 +1,26 @@
 ﻿@model IEnumerable<RB.DAL.Models.Streets>
 
+@{
+    ViewData["Title"] = $"Улицы";
+}
+
 <h1>Список улиц</h1>
 
 <p>
-    <button id="createNewBtn" class="btn btn-primary">Create New</button>
+    <button id="createNewBtn" class="btn btn-sm btn-primary">Создать новую</button>
 </p>
+
+<hr />
+
 <div class="row"><div id="createNew" class="col-12"></div></div>
 <table class="table" id="tableStreets">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StreetName)
+                @Html.DisplayNameFor(model => model.City)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                @Html.DisplayNameFor(model => model.StreetName)
             </th>
             <th></th>
         </tr>
@@ -23,10 +30,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StreetName)
+                    @Html.DisplayFor(modelItem => item.City.CityName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.City.CityName)
+                    @Html.DisplayFor(modelItem => item.StreetName)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.StreetId" class="btn btn-info editStreet" data-id="@item.StreetId">Edit</a>
@@ -36,11 +43,15 @@
         }
     </tbody>
 </table>
+
+<hr />
+
 <div class="row">
     <div class="col-md-12">
         <partial name="PartialViews/Pagination" />
     </div>
 </div>
+
 @section Scripts{
     <script>
 		$('#createNewBtn').click(function () {
@@ -90,7 +101,7 @@
             $('#streetCancel').click();
 			let id = $(this).attr('data-id');
 			let trtmp = $(this).closest('tr').html();
-			let tr = $(this).closest('tr');        
+			let tr = $(this).closest('tr');
 			$.ajax({
 				url: '@Url.Action("Edit")',
 				type: 'get',
@@ -135,7 +146,7 @@
 			let el = $(this);
 			let id = el.attr('data-id');
             let tr = $(this).closest('tr');
-               if (confirm('Вы  хотите удалить запись?')) {
+               if (confirm('Вы хотите удалить запись?')) {
                    $.post('@Url.Action("Delete", "Street")', { id: id }, function (data) {
                        if (data == "OK") {
                            tr.remove();

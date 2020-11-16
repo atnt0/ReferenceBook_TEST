@@ -1,12 +1,13 @@
 ﻿@using RB.MVC.Models
 @model ViewModelCompanyDetails
+
 @{
-    ViewData["Title"] = "CompanyDetails";
+    ViewData["Title"] = $"Компания {@Model.CompanyName}";
 }
 
 <h1>Компания «@Model.CompanyName»</h1>
 
-<a asp-action="Edit" asp-route-id="@Model.CompanyId" class="btn btn-sm btn-info">Редактировать</a>
+<a asp-action="Edit" asp-route-id="@Model.CompanyId" class="btn btn-sm btn-outline-info">Редактировать</a>
 
 <hr />
 
@@ -62,6 +63,7 @@
                 @Model.Address?.Street?.StreetName, @Model.Address?.House, @Model.Address?.Block, @Model.Address?.Apartment
             </p>
         </div>
+
         <div class="item_property_block">
             <p class="font-weight-bold">Широта:</p>
             <p>@Model.Address?.Latitude</p>
@@ -107,6 +109,55 @@
                     }
                 </ul>
             }
+        </div>
+
+        <div class="item_property_block">
+            <p class="font-weight-bold">График работы:</p>
+
+            @*<partial name="~/Views/TimeTable/GetTimeTables.cshtml" model="DayWeekTimeTablesPoco" view-data="@ViewBag.TimeTables"></partial>*@
+            @*@Html.Partial("GetTimeTables", @ViewBag.TimeTables)*@
+            @*<% Html.RenderPartial("~/Views/TimeTable/GetTimeTables.cshtml", ViewData.Model.Successes); %>*@
+
+            <div class="row">
+                <div class="col">
+                    <table style="width: 100%; margin-bottom: 1rem;">
+                        <thead>
+                            <tr>
+                                <td><strong>День</strong></td>
+                                <td><strong>Время</strong></td>
+                                <td><strong>Перерыв</strong></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ var timeTables = (List<DayWeekTimeTablesPoco>)ViewBag.TimeTables; }
+
+                            @foreach (var day in timeTables)
+                            {
+                                <tr>
+                                    <td>@day.WeekDayLocal</td>
+                                    @if (@day.DayStartHours != null && @day.DayStartHours != string.Empty)
+                                    {
+                                        <td>@day.DayStartHours:@day.DayStartMinutes - @day.DayEndHours:@day.DayEndMinutes</td>
+                                    }
+                                    else
+                                    {
+                                        <td>—</td>
+                                    }
+                                    @if (@day.LunchBreakStartHours != null && @day.LunchBreakStartHours != string.Empty)
+                                    {
+                                        <td>@day.LunchBreakStartHours:@day.LunchBreakStartMinutes - @day.LunchBreakEndHours:@day.LunchBreakEndMinutes</td>
+                                    }
+                                    else
+                                    {
+                                        <td>—</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
         <div class="item_property_block">

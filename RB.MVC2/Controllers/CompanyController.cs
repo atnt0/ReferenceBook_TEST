@@ -11,6 +11,7 @@ using RB.MVC.Models;
 using RB.DAL.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
+using static RB.MVC.Models.DayWeekTimeTablesPoco;
 
 namespace RB.MVC.Controllers
 {
@@ -27,7 +28,8 @@ namespace RB.MVC.Controllers
         IGenericRepository<CompaniesCategories, Guid> compcat;//категория-кампания
         IGenericRepository<CompaniesSubcategories, Guid> compSubcat;
         IGenericRepository<DayWeekTimeTables, Guid> timetables;
-        public CompanyController(IGenericRepository<Companies, Guid> companies, IGenericRepository<Photos, Guid> photos, IGenericRepository<Categories, int> categories,
+        public CompanyController(IGenericRepository<Companies, Guid> companies, IGenericRepository<Photos, Guid> photos, 
+            IGenericRepository<Categories, int> categories,
             IGenericRepository<Subcategories, int> subcategories, IGenericRepository<CompaniesCategories, Guid> compcat,
            IGenericRepository<CompaniesSubcategories, Guid> compSubcat, IGenericRepository<SocialNets, Guid> socialNets,
           IGenericRepository<SocialNetNames, int> socialNetsNames, IGenericRepository<Logos, Guid> logos,
@@ -80,7 +82,7 @@ namespace RB.MVC.Controllers
             }
             ViewData["CountPages"] = Math.Ceiling((double)countRows / countrecord);
             ViewData["Page"] = Page;
-            return View(model);       
+            return View(model);
             ////System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             ////bool c = currentUser.IsInRole("Admin");
             ////ViewBag.role = c;
@@ -88,6 +90,7 @@ namespace RB.MVC.Controllers
             ////ViewBag.user = b;
             ////var model = films.GetAll();          
         }
+
         public ActionResult CompanyDetails(Guid id)
         {
             var comp = companies.Get(id);
@@ -96,9 +99,17 @@ namespace RB.MVC.Controllers
             companies.Save();
             ViewModelCompanyDetails model = new ViewModelCompanyDetails( companies, photos, categories, subcategories, compcat, 
             compSubcat, socialNets, socialNetsNames, logos, id, addresses, timetables);
+
+            var listOriginalDays = timetables.FindBy(p => p.CompanyId == id).ToList();
+            var timeTablesCollection = new CompanyTimeTablesCollectionPoco(listOriginalDays, id);
+
+            //ViewBag.TimeTables = listNew.OrderBy(item => item.WeekDay);
+            ViewBag.TimeTables = timeTablesCollection.Days;
+
             return View(model);
         }
-            public ActionResult Edit(Guid id)
+
+        public ActionResult Edit(Guid id)
         {
             Companies company = companies.Get(id);                  
             var companycat = compcat.FindBy(p => p.CompanyId == id);
@@ -150,7 +161,16 @@ namespace RB.MVC.Controllers
             //{
             //    ViewBag.Address = new Addresses() { };
             //}
-          
+
+            // расписание
+
+
+
+            var listOriginalDays = timetables.FindBy(p => p.CompanyId == id).ToList();
+            var timeTablesCollection = new CompanyTimeTablesCollectionPoco(listOriginalDays, id);
+
+            //ViewBag.TimeTables = listNew.OrderBy(item => item.WeekDay);
+            ViewBag.TimeTables = timeTablesCollection.Days;
 
             return View(company);
 

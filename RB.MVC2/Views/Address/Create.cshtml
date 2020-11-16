@@ -107,55 +107,8 @@
     </div>
 
     <div class="form-group">
-        <input id="loadSetedAddress" type="submit" value="Create" class="btn btn-primary" />
+        <input id="loadSetedAddress" type="submit" value="Create" class="btn btn-sm btn-primary" />
     </div>
 
 </form>
-@*</div>
-    </div>*@
 
-@*<div>
-        <a asp-action="Index">Back to List</a>
-    </div>*@
-
-@*@section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-
-        <script>
-        $(function () {
-
-            $("#CityId").change(function (e) {
-                e.preventDefault();
-                console.log("111111111111111111111111111111111111111");
-                let id = $(this).val();
-
-                let myurl = `/Address/SelectZip/${id}`;
-                console.log('id: ', id);
-                console.log('myurl: ', myurl);
-
-                $.ajax({
-                    type: "GET",
-                    url: myurl,
-                    success: function (data) {
-                        $("#ZipCodeId").html(data);
-                    }
-                });
-
-                let myurl2 = `/Address/SelectStreets/${id}`;
-                $.ajax({
-                    type: "GET",
-                    url: myurl2,
-                    success: function (data) {
-                        $("#StreetId").html(data);
-                    }
-                });
-
-              })
-           })
-
-        </script>
-
-
-
-    }*@

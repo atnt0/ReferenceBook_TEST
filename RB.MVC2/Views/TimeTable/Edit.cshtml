@@ -1,0 +1,133 @@
+﻿@*@model IEnumerable<RB.MVC.Models.DayWeekTimeTablesPoco>*@
+@*@model RB.MVC.Models.CompanyTimeTablesCollectionPoco*@
+@model IEnumerable<RB.MVC.Models.DayWeekTimeTablesPoco>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="@TempData["CompanyId"]" />
+    <div class="row">
+        <div class="col">
+            <table id="workdays">
+                <thead>
+                    <tr>
+                        <td rowspan="2">Рабо<br>чий</td>
+                        <td rowspan="2">День<br>недели</td>
+                        <td colspan="7">Рабочее время</td>
+                        <td></td>
+                        <td colspan="7">Перерыв</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">начало</td>
+                        <td></td>
+                        <td colspan="3">конец</td>
+                        <td></td>
+                        <td colspan="3">начало</td>
+                        <td></td>
+                        <td colspan="3">конец</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{ var Days = (List<RB.MVC.Models.DayWeekTimeTablesPoco>)Model; }
+
+                    @for (int i = 0; i < Days.Count; i++)
+                    {
+                        <tr>
+                            <td class="weekend">
+                                <div class="custom-control custom-switch">
+                                    @*<input type="hidden" asp-for="@dayWeek.DayWeekTimeTableId" />*@
+                                    <input type="hidden" asp-for="@Days[i].DayWeekTimeTableId" />
+                                    <input type="hidden" asp-for="@Days[i].WeekDay" />
+                                    <input type="hidden" asp-for="@Days[i].CompanyId" />
+
+                                    <input asp-for="@Days[i].IsDayOn" class="custom-control-input workday">
+                                    <label asp-for="@Days[i].IsDayOn" class="custom-control-label"></label>
+                                    (@Days[i].IsDayOn)
+
+                                    @*<input type="checkbox" id="customSwitch_@Model.Days[i].Index" value="@Model.Days[i].Index" class="custom-control-input workday" @checkedDayOn>*@
+                                    @*<label class="custom-control-label" for="customSwitch_@Model.Days[i].Index"></label>*@
+                                </div>
+                            </td>
+                            <td class="day">@Days[i].WeekDayLocal</td>
+                            <td>
+                                @*<select asp-for="@Model.Days[i].DayStartHours" asp-items="@(new SelectList(@Model.Hours, @Model.Days[i].DayStartHours))"></select>*@
+                                <select asp-for="@Days[i].DayStartHours" class="day-start-h worktime form-control"
+                                        asp-items="@(new SelectList(@ViewBag.ListHours, "Key", "Value", @Days[i].DayStartHours))"></select>
+                            </td>
+                            <td>:</td>
+                            <td>
+                                @*<select data-value="@Model.Days[i].DayStartMinutes" class="day-start-m worktime form-control"></select>*@
+                                <select asp-for="@Days[i].DayStartMinutes" class="day-start-m worktime form-control"
+                                        asp-items="@(new SelectList(@ViewBag.ListMinutes, "Key", "Value", @Days[i].DayStartMinutes))"></select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                @*<select data-value="@Model.Days[i].DayEndHours" class="day-finish-h worktime form-control"></select>*@
+                                <select asp-for="@Days[i].DayEndHours" class="day-finish-h worktime form-control"
+                                        asp-items="@(new SelectList(@ViewBag.ListHours, "Key", "Value", @Days[i].DayEndHours))"></select>
+                            </td>
+                            <td>:</td>
+                            <td>
+                                @*<select data-value="@Model.Days[i].DayEndMinutes" class="day-finish-m worktime form-control"></select>*@
+                                <select asp-for="@Days[i].DayEndMinutes" class="day-finish-m worktime form-control"
+                                        asp-items="@(new SelectList(@ViewBag.ListMinutes, "Key", "Value", @Days[i].DayEndMinutes))"></select>
+                            </td>
+                            <td class="break">
+                                <div class="custom-control custom-switch">
+                                    @*<input type="checkbox" id="customSwitchp_@Days[i].Index" class="custom-control-input breaktime">*@
+                                    @*<label class="custom-control-label" for="customSwitchp_@Model.Days[i].Index"></label>*@
+                                    <br />
+                                    <input asp-for="@Days[i].IsLunchBreakOn" class="custom-control-input breaktime">
+                                    <label asp-for="@Days[i].IsLunchBreakOn" class="custom-control-label"></label>
+
+                                    (@Days[i].IsLunchBreakOn)
+                                </div>
+                            </td>
+                            <td class="tabcol3">
+                                @*<select data-value="@Model.Days[i].LunchBreakStartHours" class="timeout-start-h breaktime form-control" disabled></select>*@
+                                <select asp-for="@Days[i].LunchBreakStartHours" class="timeout-start-h breaktime form-control" disabled
+                                        asp-items="@(new SelectList(@ViewBag.ListHours, "Key", "Value", @Days[i].LunchBreakStartHours))"></select>
+                            </td>
+                            <td class="tabcol4">:</td>
+                            <td class="tabcol3">
+                                @*<select data-value="@Model.Days[i].LunchBreakStartMinutes" class="timeout-start-m breaktime form-control" disabled></select>*@
+                                <select asp-for="@Days[i].LunchBreakStartMinutes>" class="timeout-start-m breaktime form-control" disabled
+                                        asp-items="@(new SelectList(@ViewBag.ListMinutes, "Key", "Value", @Days[i].LunchBreakStartMinutes))"></select>
+                            </td>
+                            <td class="tabcol4">&nbsp;</td>
+                            <td class="tabcol3">
+                                @*<select data-value="@Model.Days[i].LunchBreakEndHours" class="timeout-finish-h breaktime form-control" disabled></select>*@
+                                <select asp-for="@Days[i].LunchBreakEndHours" class="timeout-finish-h breaktime form-control" disabled
+                                        asp-items="@(new SelectList(@ViewBag.ListHours, "Key", "Value", @Days[i].LunchBreakEndHours))"></select>
+                            </td>
+                            <td class="tabcol4">:</td>
+                            <td class="tabcol3">
+                                @*<select data-value="@Model.Days[i].LunchBreakEndMinutes" class="timeout-finish-m breaktime form-control" disabled></select>*@
+                                <select asp-for="@Days[i].LunchBreakEndMinutes" class="timeout-finish-m breaktime form-control" disabled
+                                        asp-items="@(new SelectList(@ViewBag.ListMinutes, "Key", "Value", @Days[i].LunchBreakEndMinutes))"></select>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input id="loadSavedTimeTables" type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+<style>
+    #workdays select {
+        width: 80px;
+    }
+</style>
+
+<script>
+    //hendlerTimeTablesSelects('h', 'ч', 24, 1);
+    //hendlerTimeTablesSelects('m', 'м', 60, 5);
+
+    $("input.workday").click().click(); // на сонную голову сложно придумать что-то более разумное чем это
+    //$("input.breaktime").click().click();
+
+</script>

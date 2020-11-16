@@ -1,151 +1,50 @@
 ﻿@model IEnumerable<RB.DAL.Models.Companies>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Компании";
 }
 
-<h1>Index</h1>
+<h1>Список компаний</h1>
 
 <p>
     @Html.ActionLink("Добавить", "Create", "Company", new { id = 0 }, new { @class = "btn btn-sm btn-primary" })
 </p>
 
+<hr />
+
 <div class="row">
     @foreach (var item in Model)
     {
-    <div id="tr-@item.CompanyId" class="col-4">
+        <div id="tr-@item.CompanyId" class="col-4">
 
-        <a asp-action="CompanyDetails" asp-controller="Company" asp-route-id="@item.CompanyId" >
-            <img src=" @(((Dictionary<Guid, String>)ViewBag.Photos)[item.CompanyId])" height="130" />
-        </a>
-
-        <a asp-action="CompanyDetails" asp-controller="Company" asp-route-id="@item.CompanyId" >
-            <div class="font-weight-bold"> @item.CompanyName</div>
-        </a>
-
-        <p class="font-weight-bold"> Категории </p>
-        @foreach (var item2 in item.CompaniesCategories)
-        {
-            <p> @item2.Category?.CategoryName</p>
-        }
-        <p class="font-weight-bold"> Субкатегории </p>
-        @foreach (var item2 in item.CompaniesSubcategories)
-        {
-            <p>@item2.Subcategory?.SubcategoryName</p>
-        }
-        <p class="font-weight-bold"> Email </p>
-        @foreach (var item2 in item.Emails)
-        {
-            <p>@item2.Email</p>
-        }
-        <p class="font-weight-bold"> Phones </p>
-        @foreach (var item2 in item.Phones)
-        {
-            <p>@item2.PhoneNumber</p>
-        }
-        <p class="font-weight-bold"> Director </p>
-        <p>@item.Director</p>
-        <p class="font-weight-bold"> Adress </p>
-        <p>Город: @item.Address?.City?.CityName  Улица: @item.Address?.Street?.StreetName @item.Address?.House</p>
-        <p class="font-weight-bold">Popularity @item.Popularity </p>
-
-        <a asp-action="Edit" asp-route-id="@item.CompanyId" class="btn btn-sm btn-success">Редактировать</a>
-
-        @if (item.AddressId != null)
-        {
-            <a asp-action="Index" asp-controller="Address" asp-route-id="@item.CompanyId" class="btn btn-sm btn-success">Адрес</a>
-        }
-        else
-        {
-            @*@TempData["CompanyId"]=item.CompanyId;*@
-            <a asp-action="Create" asp-controller="Address" asp-route-id="@item.CompanyId" class="btn btn-sm btn-success">Добавить адрес</a>
-        }
-        @*Улица: @item.Address?.Street?.StreetName @item.Address?.House?</p>*@
+            <a asp-action="CompanyDetails" asp-controller="Company" asp-route-id="@item.CompanyId">
+                <img src=" @(((Dictionary<Guid, String>)ViewBag.Photos)[item.CompanyId])" height="130" />
+            </a>
+            <a asp-action="Edit" asp-route-id="@item.CompanyId" class="btn btn-sm btn-outline-info">Редактировать</a>
 
 
-        @*<div class="font-weight-bold"> @item.Address.Street.StreetName</div>*@
-        @*<div>@item.FilmInfo</div>
-        <div> Дата: @item.FilmDate.Year год</div>
-        <p class="font-weight-bold">Жанр: </p>
-        @foreach (var item2 in item.GenreFilm)
-        {
-            <p> @item2.Genre.GenreName</p>
-        }
-        <p class="font-weight-bold"> В ролях </p>
-        @foreach (var item2 in item.ActFilm)
-        {
-            <p> @item2.Actor.ActorName </p>
-        }
-        <p class="font-weight-bold" id="rate-@item.FilmId">Рейтинг фильма: @item.Voting.Count(); </p>
-        @if (ViewBag.role == true)
-        {
-            <a asp-action="Edit" asp-route-id="@item.FilmId" class="btn btn-sm btn-success">Edit</a>
-            <a asp-action="Index" asp-controller="Actor" asp-route-id="@item.FilmId" class="btn  btn-sm btn-primary">Actors</a>
-            <a asp-action="Index" asp-controller="Genre" asp-route-id="@item.FilmId" class="btn  btn-sm btn-primary">Genres</a>
-            @Html.ActionLink("Удалить", "Delete", new { id = item.FilmId }, new { @class = "btn btn-sm btn-danger delete-Film", data_FilmId = item.FilmId })
-            <a asp-action="Index" asp-controller="Photo" asp-route-id="@item.FilmId" class="btn  btn-sm btn-info">Photos</a>
-        }
-        @if (ViewBag.user == true)
-        {
-            @Html.ActionLink("Голосовать", "EditVote", new { id = item.FilmId }, new { @class = "btn btn-sm btn-primary vote", data_FilmId = item.FilmId })
-        }
-        <br>*@
-    </div>
+            <a asp-action="CompanyDetails" asp-controller="Company" asp-route-id="@item.CompanyId">
+                <div class="font-weight-bold"> @item.CompanyName</div>
+            </a>
+
+            <p class="font-weight-bold"> Категории </p>
+            @foreach (var item2 in item.CompaniesCategories)
+            {
+                <p> @item2.Category?.CategoryName</p>
+            }
+
+            <p>Город: <span class="font-weight-bold">@item.Address?.City?.CityName</span></p>
+            <p>Popularity <span class="font-weight-bold">@item.Popularity</span></p>
+
+
+        </div>
     }
 </div>
+
+<hr />
+
 <div class="row">
     <div class="col-md-12">
         <partial name="PartialViews/Pagination" />
     </div>
 </div>
-@*<p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.CompanyName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DescriptionShort)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DescriptionFull)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.WebSite)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ParentCompany)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CompanyName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DescriptionShort)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DescriptionFull)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WebSite)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ParentCompany.CompanyName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CompanyId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.CompanyId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CompanyId">Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>*@

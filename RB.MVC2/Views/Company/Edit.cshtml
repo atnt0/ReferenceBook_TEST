@@ -2,6 +2,10 @@
 @using RB.MVC.Models;
 @model RB.DAL.Models.Companies
 
+@{
+    ViewData["Title"] = $"Редактирование компании {@Model.CompanyName}";
+}
+
 <h1>Редактирование компании «@Model.CompanyName»</h1>
 
 <a asp-action="CompanyDetails" asp-route-id="@Model.CompanyId" class="btn btn-sm btn-primary">Просмотреть</a>
@@ -9,323 +13,405 @@
 <hr />
 
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CompanyId" id="CompId" />
-            @*<input type="hidden" asp-for="AddressId" id="AddressId" />*@
-            @*<input type="hidden" asp-for="Popularity" id="Popularity" />*@
-            @*<input type="hidden" asp-for="AddressId" value="@ViewBag.AddressId" id="CompId" />*@
-            @*<div class="form-group">
-                    <label asp-for="CreatedOn" class="control-label"></label>
-                    <input asp-for="CreatedOn" class="form-control" />
-                    <span asp-validation-for="CreatedOn" class="text-danger"></span>
-                </div>*@
-            <div class="form-group">
-                <label asp-for="CompanyName" class="control-label"></label>
-                <input asp-for="CompanyName" class="form-control" />
-                <span asp-validation-for="CompanyName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ParentCompanyId" class="control-label"></label>
-                <select asp-for="ParentCompanyId" class="form-control" asp-items="ViewBag.ParentCompanyId"></select>
-                <span asp-validation-for="ParentCompanyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Director" class="control-label"></label>
-                <input asp-for="Director" class="form-control" />
-                <span asp-validation-for="Director" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DescriptionShort" class="control-label"></label>
-                <input asp-for="DescriptionShort" class="form-control" />
-                <span asp-validation-for="DescriptionShort" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DescriptionFull" class="control-label"></label>
-                <input asp-for="DescriptionFull" class="form-control" />
-                <span asp-validation-for="DescriptionFull" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WebSite" class="control-label"></label>
-                <input asp-for="WebSite" class="form-control" />
-                <span asp-validation-for="WebSite" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="Popularity" class="control-label"></label>
-                    <input asp-for="Popularity" class="form-control" />
-                    <span asp-validation-for="Popularity" class="text-danger"></span>
-                </div>*@
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-        <a asp-action="Index" asp-controller="TimeTable" asp-route-id="@Model.CompanyId" class="btn btn-sm btn-success">Расписание</a>
-    </div>
-
-    <div class="col-md-4">
-
-        <div class="item_property_block">
-            <p class="font-weight-bold">Категории </p>
-            <p>
-                <button id="createNewCategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Category</button>
-            </p>
-            <div class="row"><div id="createNewCategory" class="col-12"></div></div>
-            <ul id="newCategory" style="list-style-type:none; padding-left: 0;">
-                @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
-                @foreach (var item in ViewBag.Categories)
-                {
-                    <li>
-                        <div>
-                            @item.CategoryName
-                            <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger delCategory" data-id="@item.CategoryId">Delete</a>
-                        </div>
-                    </li>
-
-                }
+    <div class="col-md-12">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Основное</a></li>
+                <li><a href="#tabs-2">Логотип и фотографии</a></li>
+                <li><a href="#tabs-3">Категории и подкатегории</a></li>
+                <li><a href="#tabs-4">Адрес</a></li>
+                <li><a href="#tabs-5">Emails, Телефоны и Соц. сети</a></li>
+                <li><a href="#tabs-6">График работы</a></li>
             </ul>
-        </div>
+            <div id="tabs-1">
+                <h2>Основное</h2>
 
-        <div class="item_property_block">
-            <p class="font-weight-bold">Подкатегории </p>
-            <p>
-                <button id="createNewSubcategoryBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Subcategory</button>
-            </p>
-            <div class="row"><div id="createNewSubcategory" class="col-12"></div></div>
-            <ul id="newSubcategory" style="list-style-type:none; padding-left: 0;">
-                @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
-                @foreach (var item in ViewBag.Subategories)
-                {
-                    <li>
-                        <div>
-                            @item.SubcategoryName
-                            <a asp-action="Delete" asp-route-id="@item.SubcategoryId" class="btn btn-danger delSubcategory" data-id="@item.SubcategoryId">Delete</a>
-                        </div>
-                    </li>
-
-                }
-            </ul>
-        </div>
-
-        <div class="item_property_block">
-            <p class="font-weight-bold">Адрес </p>
-            @{
-                var address = Model.Address;
-            }
-
-            <div id="containerChangeAddress">
-                @if (address == null)
-                {
-                    <p>
-                        <button id="setAddress" class="btn btn-primary" data-id="@Model.CompanyId">Set new Address</button>
-                    </p>
-
-                    <div id="formEditAddress"></div>
-
-                    <div id="divViewAddress"></div>
-                }
-                else
-                {
-                    <p>
-                        <button id="changeAddress" class="btn btn-primary" data-id="@Model.AddressId">Change Address</button>
-                    </p>
-                    
-                    <div id="formEditAddress"></div>
-
-                    <div id="divViewAddress">
-                        <div class="wrapper_address">
-                            <dl class="row">
-                                <dt class="col-6">City</dt>
-                                <dd class="col-6">
-                                    @Html.DisplayFor(model => model.Address.City.CityName)
-                                </dd>
-                                <dt class="col-6">ZipCode</dt>
-                                <dd class="col-6">
-                                    @Html.DisplayFor(model => model.Address.ZipCode.ZipCode)
-                                </dd>
-                                <dt class="col-6">Street</dt>
-                                <dd class="col-6">
-                                    @Html.DisplayFor(model => model.Address.Street.StreetName)
-                                </dd>
-                                <dt class="col-6">House</dt>
-                                <dd class="col-6">
-                                    @Html.DisplayFor(model => model.Address.House)
-                                </dd>
-                                <dt class="col-6">Block</dt>
-                                <dd class="col-6">
-                                    @Html.DisplayFor(model => model.Address.Block)
-                                </dd>
-                                <dt class="col-6">Apartment</dt>
-                                <dd class="col-6">
-                                    @Html.DisplayFor(model => model.Address.Apartment)
-                                </dd>
-                                <dt class="col-6">Latitude</dt>
-                                <dd class="col-6">
-                                    @Html.DisplayFor(model => model.Address.Latitude)
-                                </dd>
-                                <dt class="col-6">Longitude</dt>
-                                <dd class="col-6">
-                                    @Html.DisplayFor(model => model.Address.Longitude)
-                                </dd>
-                            </dl>
-                        </div>
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="CompanyId" id="CompId" />
+                    @*<input type="hidden" asp-for="AddressId" id="AddressId" />*@
+                    @*<input type="hidden" asp-for="Popularity" id="Popularity" />*@
+                    @*<input type="hidden" asp-for="AddressId" value="@ViewBag.AddressId" id="CompId" />*@
+                    @*<div class="form-group">
+                            <label asp-for="CreatedOn" class="control-label"></label>
+                            <input asp-for="CreatedOn" class="form-control" />
+                            <span asp-validation-for="CreatedOn" class="text-danger"></span>
+                        </div>*@
+                    <div class="form-group">
+                        <label asp-for="CompanyName" class="control-label"></label>
+                        <input asp-for="CompanyName" class="form-control" />
+                        <span asp-validation-for="CompanyName" class="text-danger"></span>
                     </div>
-
-                    
-
-
-
-
-                    
-                    
-
-                }
-                
-
-
-
+                    <div class="form-group">
+                        <label asp-for="ParentCompanyId" class="control-label"></label>
+                        <select asp-for="ParentCompanyId" class="form-control" asp-items="ViewBag.ParentCompanyId"></select>
+                        <span asp-validation-for="ParentCompanyId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Director" class="control-label"></label>
+                        <input asp-for="Director" class="form-control" />
+                        <span asp-validation-for="Director" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DescriptionShort" class="control-label"></label>
+                        <input asp-for="DescriptionShort" class="form-control" />
+                        <span asp-validation-for="DescriptionShort" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DescriptionFull" class="control-label"></label>
+                        <input asp-for="DescriptionFull" class="form-control" />
+                        <span asp-validation-for="DescriptionFull" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="WebSite" class="control-label"></label>
+                        <input asp-for="WebSite" class="form-control" />
+                        <span asp-validation-for="WebSite" class="text-danger"></span>
+                    </div>
+                    @*<div class="form-group">
+                            <label asp-for="Popularity" class="control-label"></label>
+                            <input asp-for="Popularity" class="form-control" />
+                            <span asp-validation-for="Popularity" class="text-danger"></span>
+                        </div>*@
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-sm  btn-primary" />
+                    </div>
+                </form>
             </div>
+            <div id="tabs-2">
+                <h2>Логотип и фотографии</h2>
 
-        </div>
+                <div class="item_property_block">
+                    <p class="font-weight-bold">Логотип</p>
+                    <p>
+                        <button id="replaceLogo" class="btn btn-sm  btn-primary" data-id="@Model.CompanyId">Replace Logo</button>
+                    </p>
+                    <div class="row"><div id="createNewLogo" class="col-12"></div></div>
+                    <div class="row" id="containerLogo">
+                        @{var logo = ((RB.DAL.Models.Photos)ViewBag.Logo); }
+                        @if (logo == null)
+                        {
+                            <h4 class="message_Not_Found">Logo Company - not found</h4>
+                        }
+                        else
+                        {
+                            string photoPath = $"{@ViewBag.PathLogo}{logo.FileName}";
+                            <div class="col-4" data-id="img-@logo.PhotoId">
 
-    </div>
-
-
-    @*id="LoadDiv"*@
-<div class="col-md-4">
-
-    <div class="item_property_block">
-        <p class="font-weight-bold">Фотографии</p>
-        <p>
-            <button id="createNewPhotoBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Photo</button>
-        </p>
-        <div class="row"><div id="createNewPhoto" class="col-12"></div></div>
-        <div class="row" id="containerPhotos">
-            @if (((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos).Count() <= 0)
-            {
-                <h4 class="message_Not_Found">Photo Company - not found</h4>
-            }
-            else
-            {
-                @foreach (var item in ((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos))
-                {
-                    string photoPath = $"{@ViewBag.Path}{item.FileName}";
-                    <div class="col-4" data-id="img-@item.PhotoId">
-
-                        <img src="@photoPath" height="100" width="100" />
-                        <br>
-                        @Html.ActionLink("Delete", "Delete", "Photo", new { id = item.PhotoId }, new { @class = "btn btn-danger delete-photo", data_photoId = item.PhotoId })
+                                <img src="@photoPath" height="100" width="100" />
+                                <br>
+                                @Html.ActionLink("DeleteLogo", "DeleteLogo", "Photo", new { id = logo.PhotoId }, new { @class = "btn btn-sm btn-danger delete-logo", data_photoId = logo.PhotoId })
+                            </div>
+                        }
                     </div>
-                }
-            }
-        </div>
-    </div>
-
-    <div class="item_property_block">
-        <p class="font-weight-bold">Логотип</p>
-        <p>
-            <button id="replaceLogo" class="btn btn-primary" data-id="@Model.CompanyId">Replace Logo</button>
-        </p>
-        <div class="row"><div id="createNewLogo" class="col-12"></div></div>
-        <div class="row" id="containerLogo">
-            @{var logo = ((RB.DAL.Models.Photos)ViewBag.Logo); }
-            @if (logo == null)
-            {
-                <h4 class="message_Not_Found">Logo Company - not found</h4>
-            }
-            else
-            {
-                string photoPath = $"{@ViewBag.PathLogo}{logo.FileName}";
-                <div class="col-4" data-id="img-@logo.PhotoId">
-
-                    <img src="@photoPath" height="100" width="100" />
-                    <br>
-                    @Html.ActionLink("DeleteLogo", "DeleteLogo", "Photo", new { id = logo.PhotoId }, new { @class = "btn btn-danger delete-logo", data_photoId = logo.PhotoId })
                 </div>
-            }
+
+                <div class="item_property_block">
+                    <p class="font-weight-bold">Фотографии</p>
+                    <p>
+                        <button id="createNewPhotoBtn" class="btn btn-sm  btn-primary" data-id="@Model.CompanyId">Add New Photo</button>
+                    </p>
+                    <div class="row"><div id="createNewPhoto" class="col-12"></div></div>
+                    <div class="row" id="containerPhotos">
+                        @if (((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos).Count() <= 0)
+                        {
+                            <h4 class="message_Not_Found">Photo Company - not found</h4>
+                        }
+                        else
+                        {
+                            @foreach (var item in ((IEnumerable<RB.DAL.Models.Photos>)ViewBag.Photos))
+                            {
+                                string photoPath = $"{@ViewBag.Path}{item.FileName}";
+                                <div class="col-4" data-id="img-@item.PhotoId">
+
+                                    <img src="@photoPath" height="100" width="100" />
+                                    <br>
+                                    @Html.ActionLink("Delete", "Delete", "Photo", new { id = item.PhotoId }, new { @class = "btn btn-sm btn-danger delete-photo", data_photoId = item.PhotoId })
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+            </div>
+            <div id="tabs-3">
+                <h2>Категории и подкатегории</h2>
+
+                <div class="item_property_block">
+                    <p class="font-weight-bold">Категории </p>
+                    <p>
+                        <button id="createNewCategoryBtn" class="btn btn-sm  btn-primary" data-id="@Model.CompanyId">Add New Category</button>
+                    </p>
+                    <div class="row"><div id="createNewCategory" class="col-12"></div></div>
+                    <ul id="newCategory" style="list-style-type:none; padding-left: 0;">
+                        @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
+                        @foreach (var item in ViewBag.Categories)
+                        {
+                            <li>
+                                <div>
+                                    @item.CategoryName
+                                    <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-sm btn-danger delCategory" data-id="@item.CategoryId">Delete</a>
+                                </div>
+                            </li>
+
+                        }
+                    </ul>
+                </div>
+
+                <div class="item_property_block">
+                    <p class="font-weight-bold">Подкатегории </p>
+                    <p>
+                        <button id="createNewSubcategoryBtn" class="btn btn-sm  btn-primary" data-id="@Model.CompanyId">Add New Subcategory</button>
+                    </p>
+                    <div class="row"><div id="createNewSubcategory" class="col-12"></div></div>
+                    <ul id="newSubcategory" style="list-style-type:none; padding-left: 0;">
+                        @*<input type="hidden" id="CompanyId" class="form-control" value="@Model.CompanyId" />*@
+                        @foreach (var item in ViewBag.Subategories)
+                        {
+                            <li>
+                                <div>
+                                    @item.SubcategoryName
+                                    <a asp-action="Delete" asp-route-id="@item.SubcategoryId" class="btn btn-sm btn-danger delSubcategory" data-id="@item.SubcategoryId">Delete</a>
+                                </div>
+                            </li>
+
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div id="tabs-4">
+                <h2>Адрес</h2>
+
+                <div class="item_property_block">
+                    <p class="font-weight-bold">Адрес:</p>
+                    @{
+                        var address = Model.Address;
+                    }
+
+                    <div id="containerChangeAddress">
+                        @if (address == null)
+                        {
+                            <p>
+                                <button id="setAddress" class="btn btn-sm  btn-primary" data-id="@Model.CompanyId">Set new Address</button>
+                            </p>
+
+                            <div id="formEditAddress"></div>
+
+                            <div id="divViewAddress"></div>
+                        }
+                        else
+                        {
+                            <p>
+                                <button id="changeAddress" class="btn btn-sm  btn-primary" data-id="@Model.AddressId">Change Address</button>
+                            </p>
+
+                            <div id="formEditAddress"></div>
+
+                            <div id="divViewAddress">
+                                <div class="wrapper_address">
+                                    <dl class="row">
+                                        <dt class="col-6">City</dt>
+                                        <dd class="col-6">
+                                            @Html.DisplayFor(model => model.Address.City.CityName)
+                                        </dd>
+                                        <dt class="col-6">ZipCode</dt>
+                                        <dd class="col-6">
+                                            @Html.DisplayFor(model => model.Address.ZipCode.ZipCode)
+                                        </dd>
+                                        <dt class="col-6">Street</dt>
+                                        <dd class="col-6">
+                                            @Html.DisplayFor(model => model.Address.Street.StreetName)
+                                        </dd>
+                                        <dt class="col-6">House</dt>
+                                        <dd class="col-6">
+                                            @Html.DisplayFor(model => model.Address.House)
+                                        </dd>
+                                        <dt class="col-6">Block</dt>
+                                        <dd class="col-6">
+                                            @Html.DisplayFor(model => model.Address.Block)
+                                        </dd>
+                                        <dt class="col-6">Apartment</dt>
+                                        <dd class="col-6">
+                                            @Html.DisplayFor(model => model.Address.Apartment)
+                                        </dd>
+                                        <dt class="col-6">Latitude</dt>
+                                        <dd class="col-6">
+                                            @Html.DisplayFor(model => model.Address.Latitude)
+                                        </dd>
+                                        <dt class="col-6">Longitude</dt>
+                                        <dd class="col-6">
+                                            @Html.DisplayFor(model => model.Address.Longitude)
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div id="tabs-5">
+                <h2>Контакты</h2>
+
+                <div class="item_property_block">
+                    <p class="font-weight-bold">Emails:</p>
+                    <p>
+                        <button id="createNewEmailBtn" class="btn btn-sm  btn-primary" data-id="@Model.CompanyId">Create New Email</button>
+                    </p>
+                    <div class="row"><div id="createNewEmail" class="col-12"></div></div>
+                    <ul id="newEmail" style="list-style-type:none; padding-left: 0;">
+                        @foreach (var item in Model.Emails)
+                        {
+                            <li>
+                                <div>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                    @Html.HiddenFor(modelItem => item.CreatedOn)
+                                    @Html.HiddenFor(modelItem => item.EmailId)
+                                    @Html.HiddenFor(modelItem => item.CompanyId)
+                                    <a asp-action="Edit" asp-route-id="@item.EmailId" class="btn btn-sm btn-info editEmail" data-id="@item.EmailId">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.EmailId" class="btn btn-sm btn-danger delEmail" data-id="@item.EmailId">Delete</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="item_property_block">
+                    <p class="font-weight-bold">Телефоны:</p>
+                    <p>
+                        <button id="createNewBtn" class="btn btn-sm  btn-primary" data-id="@Model.CompanyId">Create New Phone</button>
+                    </p>
+                    <div class="row"><div id="createNew" class="col-12"></div></div>
+                    <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
+                        @foreach (var item in Model.Phones)
+                        {
+                            <li>
+                                <div>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                    @Html.HiddenFor(modelItem => item.CreatedOn)
+                                    @Html.HiddenFor(modelItem => item.PhoneId)
+                                    @Html.HiddenFor(modelItem => item.CompanyId)
+                                    <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-sm btn-info editPhone" data-id="@item.PhoneId">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-sm btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="item_property_block">
+                    <p class="font-weight-bold">Социальные сети:</p>
+                    <p>
+                        <button id="createNewSocnetBtn" class="btn btn-sm  btn-primary" data-id="@Model.CompanyId">Add New Social Net</button>
+                    </p>
+                    <div class="row"><div id="createNewSocnet" class="col-12"></div></div>
+                    <ul id="newSocnet" style="list-style-type:none; padding-left: 0;">
+                        @foreach (var item in ((List<SocnetPoco>)ViewBag.socialnetNames))
+                        {
+                            <li>
+                                <div>
+                                    <p> @item.socialNetNames.SocialNetName</p>
+                                    <p>
+                                        @item.SocNetUrl
+                                        <a asp-action="Delete" asp-route-id="@item.socialNetNames.SocialNetNameId" class="btn btn-sm btn-danger delSocnet" data-id="@item.socialNetNames.SocialNetNameId">Delete</a>
+                                    </p>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div id="tabs-6">
+                <h2>График работы</h2>
+
+                <div class="item_property_block">
+                    <p class="font-weight-bold">График работы:</p>
+                    @{
+                        //var address = Model.DayWeekTimeTables;
+                    }
+
+                    @*@Html.RenderPartial("TimeTablesCompany", ViewBag.TimeTables )*@
+
+
+
+                    <div id="containerTimeTables">
+
+                        <p>
+                            <button id="setTimeTables" class="btn btn-sm btn-primary" data-id="@Model.CompanyId">Set TimeTables</button>
+                        </p>
+
+                        <div id="formEditTimeTables"></div>
+
+                        @{ var timeTables = (List<DayWeekTimeTablesPoco>)ViewBag.TimeTables; }
+
+                        <div id="divViewTimeTables">
+                            <div class="row">
+                                <div class="col">
+                                    <table style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <td><strong>День</strong></td>
+                                                <td><strong>Время</strong></td>
+                                                <td><strong>Перерыв</strong></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var day in timeTables)
+                                            {
+                                                <tr>
+                                                    <td>@day.WeekDayLocal</td>
+                                                    @if (@day.DayStartHours != null && @day.DayStartHours != string.Empty)
+                                                    {
+                                                        <td>@day.DayStartHours:@day.DayStartMinutes - @day.DayEndHours:@day.DayEndMinutes</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>—</td>
+                                                        @*(@day.IsDayOn)*@
+                                                    }
+                                                    @if (@day.LunchBreakStartHours != null && @day.LunchBreakStartHours != string.Empty)
+                                                    {
+                                                        <td>@day.LunchBreakStartHours:@day.LunchBreakStartMinutes - @day.LunchBreakEndHours:@day.LunchBreakEndMinutes</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>—</td>
+                                                        @*(@day.IsLunchBreakOn)*@
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="item_property_block">
-        <p class="font-weight-bold">Emails:</p>
-        <p>
-            <button id="createNewEmailBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Email</button>
-        </p>
-        <div class="row"><div id="createNewEmail" class="col-12"></div></div>
-        <ul id="newEmail" style="list-style-type:none; padding-left: 0;">
-            @foreach (var item in Model.Emails)
-            {
-                <li>
-                    <div>
-                        @Html.DisplayFor(modelItem => item.Email)
-                        @Html.HiddenFor(modelItem => item.CreatedOn)
-                        @Html.HiddenFor(modelItem => item.EmailId)
-                        @Html.HiddenFor(modelItem => item.CompanyId)
-                        <a asp-action="Edit" asp-route-id="@item.EmailId" class="btn btn-info editEmail" data-id="@item.EmailId">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.EmailId" class="btn btn-danger delEmail" data-id="@item.EmailId">Delete</a>
-                    </div>
-                </li>
-            }
-        </ul>
-    </div>
-
-    <div class="item_property_block">
-        <p class="font-weight-bold">Телефоны:</p>
-        <p>
-            <button id="createNewBtn" class="btn btn-primary" data-id="@Model.CompanyId">Create New Phone</button>
-        </p>
-        <div class="row"><div id="createNew" class="col-12"></div></div>
-        <ul id="newPhone" style="list-style-type:none; padding-left: 0;">
-            @foreach (var item in Model.Phones)
-            {
-                <li>
-                    <div>
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        @Html.HiddenFor(modelItem => item.CreatedOn)
-                        @Html.HiddenFor(modelItem => item.PhoneId)
-                        @Html.HiddenFor(modelItem => item.CompanyId)
-                        <a asp-action="Edit" asp-route-id="@item.PhoneId" class="btn btn-info editPhone" data-id="@item.PhoneId">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.PhoneId" class="btn btn-danger delPhone" data-id="@item.PhoneId">Delete</a>
-                    </div>
-                </li>
-            }
-        </ul>
-    </div>
-
-    <div class="item_property_block">
-        <p class="font-weight-bold">Социальные сети:</p>
-        <p>
-            <button id="createNewSocnetBtn" class="btn btn-primary" data-id="@Model.CompanyId">Add New Social Net</button>
-        </p>
-        <div class="row"><div id="createNewSocnet" class="col-12"></div></div>
-        <ul id="newSocnet" style="list-style-type:none; padding-left: 0;">
-            @foreach (var item in ((List<SocnetPoco>)ViewBag.socialnetNames))
-            {
-                <li>
-                    <div>
-                        <p> @item.socialNetNames.SocialNetName</p>
-                        <p>
-                            @item.SocNetUrl
-                            <a asp-action="Delete" asp-route-id="@item.socialNetNames.SocialNetNameId" class="btn btn-danger delSocnet" data-id="@item.socialNetNames.SocialNetNameId">Delete</a>
-                        </p>
-                    </div>
-                </li>
-            }
-        </ul>
-    </div>
-
 </div>
-</div>
+
+<hr />
 
 <div>
-    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    <a asp-action="Index" class="btn btn-sm btn-primary">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
-<script>
+    <script>
+
+    $(function(){
+        $('#tabs').tabs();
+    });
+
+
+
+
     // Для номеров телефона
     $('#createNewBtn').click(function () {
         let companyId = $(this).attr('data-id');
@@ -418,7 +504,7 @@
 			let el = $(this);
 			let id = el.attr('data-id');
             let tr = $(this).closest('li');
-               if (confirm('Вы  хотите удалить запись?')) {
+               if (confirm('Вы хотите удалить запись?')) {
                    $.post('@Url.Action("Delete", "Phone")', { id: id }, function (data) {
                        if (data == "OK") {
                            tr.remove();
@@ -519,7 +605,7 @@
 			let el = $(this);
 			let id = el.attr('data-id');
             let tr = $(this).closest('li');
-               if (confirm('Вы  хотите удалить запись?')) {
+               if (confirm('Вы хотите удалить запись?')) {
                    $.post('@Url.Action("Delete", "Email")', { id: id }, function (data) {
                        if (data == "OK") {
                            tr.remove();
@@ -569,7 +655,7 @@
 			let id = el.attr('data-id');
             let tr = $(this).closest('li');
             let companyId = $('#createNewCategoryBtn').attr('data-id');
-            if (confirm('Вы  хотите удалить запись?')) {
+            if (confirm('Вы хотите удалить запись?')) {
                 $.ajax({
 				    url: '@Url.Action("DeleteCategory", "Company")',
 				    type: 'post',
@@ -628,7 +714,7 @@
         let id = el.attr('data-id');
             let tr = $(this).closest('li');
             let companyId = $('#createNewSubcategoryBtn').attr('data-id');
-            if (confirm('Вы  хотите удалить запись?')) {
+            if (confirm('Вы хотите удалить запись?')) {
                 $.ajax({
 				    url: '@Url.Action("DeleteSubcategory", "Company")',
 				    type: 'post',
@@ -698,7 +784,7 @@
         let id = el.attr('data-id');
             let tr = $(this).closest('li');
             let companyId = $('#createNewSocnetBtn').attr('data-id');
-            if (confirm('Вы  хотите удалить запись?')) {
+            if (confirm('Вы хотите удалить запись?')) {
                 $.ajax({
 				    url: '@Url.Action("DeleteSocnet", "Company")',
 				    type: 'post',
@@ -729,31 +815,32 @@
                 e.preventDefault();
                 let formData = new FormData();
                 let formloadFile = $(this).parents('form');
-                console.log('formloadFile ', formloadFile);
+                //console.log('formloadFile ', formloadFile);
                 let inputFiles = formloadFile.find('[name="files"]')[0];
-                console.log('inputFile ', inputFiles);
+                //console.log('inputFile ', inputFiles);
                 for (let i = 0; i < inputFiles.files.length; i++) {
                     formData.append('files', inputFiles.files[i]);
                 }
                 formData.append('companyId', companyId);
-                        $.ajax({
-                            url: '@Url.Action("ManyFileUpload", "Photo")',
-                            type: 'post',
-                            processData: false,
-                            contentType: false,
-                            data: formData,
-                            success: function (newdata) {
-                                $('#CanselNewPhoto').click();
-                                let dff = $("#containerPhotos .message_Not_Found");
-                                if (dff.length != 0) {
-                                    dff.remove();
-                                }
-                                $('#containerPhotos').prepend(newdata);
-                            },
-                            error: function (res) {
-                                console.log('error res', res);
-                            }
-                        });
+
+                $.ajax({
+                    url: '@Url.Action("ManyFileUpload", "Photo")',
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (newdata) {
+                        $('#CanselNewPhoto').click();
+                        let dff = $("#containerPhotos .message_Not_Found");
+                        if (dff.length != 0) {
+                            dff.remove();
+                        }
+                        $('#containerPhotos').prepend(newdata);
+                    },
+                    error: function (res) {
+                        console.log('error res', res);
+                    }
+                });
 				});
 			});
      });
@@ -764,7 +851,7 @@
                let el = $(this);
                let id = el.attr('data-photoId');
 
-               if (confirm('Вы  хотите удалить запись?')) {
+               if (confirm('Вы хотите удалить запись?')) {
                    $.post('@Url.Action("Delete", "Photo")', { id: id }, function (data) {
                        if (data == "OK") {
                            let elemIgm = $(`[data-id="img-${id}"]`);;
@@ -820,11 +907,11 @@
                e.preventDefault();
                let el = $(this);
                let id = el.attr('data-photoId');
-               if (confirm('Вы  хотите удалить запись?')) {
+               if (confirm('Вы хотите удалить запись?')) {
                    $.post('@Url.Action("DeleteLogo", "Photo")', { id: id }, function (data) {
                        if (data == "OK") {
                            let elemIgm = $(`[data-id="img-${id}"]`);;
-                           console.log('elemIgm: ', elemIgm);
+                           //console.log('elemIgm: ', elemIgm);
                            elemIgm.remove();
                            $(this).remove();
                        }
@@ -833,8 +920,6 @@
 
       })
    // containerPhotos
-
-
 
 
 
@@ -863,7 +948,7 @@
                 $.ajax({
                     url: "@Url.Action("CreateAddress", "Address")",
                     type: 'POST',
-                    data: dataFormJson,                
+                    data: dataFormJson,
                     success: function (data) {
                         $('#formEditAddress').empty();
                         $('#divViewAddress').html(data);
@@ -878,42 +963,35 @@
     $('#containerChangeAddress').on('click', '#changeAddress', function (e) {
         e.preventDefault();
         console.log('btn click changeAddress: ', e.target);
-       
+
         let btn_changeAddress = $(this);
-        let addressId = btn_changeAddress.attr('data-id');       
+        let addressId = btn_changeAddress.attr('data-id');
 
         $.get('@Url.Action("Edit", "Address")', { id: addressId }, function (data) {
             $('#divViewAddress').empty();
             btn_changeAddress.remove();
 
             $('#formEditAddress').html(data);
-   
+
             $('#containerChangeAddress').on('click', '#loadChangedAddress', function (e) {
                 e.preventDefault();
                 console.log('btn click loadChangedAddress: ', e.target);
 
-                let dataFormJson = $('form').serialize();  
-                
+                let dataFormJson = $('form').serialize();
+
                 $.ajax({
                     url: "@Url.Action("EditAddress", "Address")",
                     type: 'POST',
                     data: dataFormJson,
                     success: function (data) {
                         $('#formEditAddress').empty();
-                        $('#divViewAddress').html(data);                                       
+                        $('#divViewAddress').html(data);
                     },
                 });
             });
 
         });
     });
-
-
-
-
-
-
-
 
 
     $('#containerChangeAddress').on('change.setCity', '#CityId', function (e) {
@@ -946,5 +1024,124 @@
 
     });
 
-</script>
+
+
+
+
+
+
+
+
+
+
+
+    function handlerSelectWorktime(){
+        let el = $(this);
+        //console.log('worktime: ', el);
+        let tr = el.closest('tr');
+    	if( el.prop('checked') == false ){
+            tr.find('select.worktime').each(function () {
+                $(this).prop('disabled', true);
+            });
+    		tr.find('input.breaktime').prop('checked',false);
+            tr.find('.breaktime').each(function () {
+                $(this).prop('disabled', true);
+            });
+    	}else{
+            tr.find('select.worktime').each(function () {
+                $(this).prop('disabled', false);
+            });
+    		tr.find('input.breaktime').prop('disabled',false);
+    	}
+    }
+    $('#containerTimeTables').on('change.turnOnOffWorkDay', 'input.workday', handlerSelectWorktime);
+
+
+    function handlerSelectBreaktime() {
+        let el = $(this);
+        //console.log('breaktime: ', el);
+        let tr = el.closest('tr');
+    	if( el.prop('checked') == false ){
+            tr.find('select.breaktime').each(function () {
+                $(this).prop('disabled', true);
+            });
+    		tr.find('input.breaktime').prop('checked',false);
+    	}else{
+            tr.find('select.breaktime').each(function () {
+                $(this).prop('disabled', false);
+            });
+    		tr.find('input.breaktime').prop('disabled',false);
+    	}
+    }
+    $('#containerTimeTables').on('change.turnOnOffBreakTime', 'input.breaktime', handlerSelectBreaktime);
+
+
+    // для генерации расписания
+    //function hendlerTimeTablesSelects(type, postFix, count, step) {
+    //    postFix = ' ' + postFix;
+    //    if (count < 0) count = 1;
+    //    if (step < 0) count = 1;
+
+    //    let selects = $(`.day-start-${type}, .day-finish-${type}, .timeout-start-${type}, .timeout-finish-${type}`);
+
+    //    for(let i = 0; i < count; i += step){
+    //        selects.append('<option value="' + i + '"' + (i == 0 ? ' selected' : '') + '>' + (i < 10 ? '0' + i : i) + postFix + '</option>');
+    //    }
+
+    //    selects.each(function (item, index) {
+    //        let el = $(this);
+    //        let dataValue = el.attr("data-value");
+    //        if (dataValue != null && dataValue != undefined && dataValue != "") {
+    //            var valNew = parseInt(dataValue);
+    //            el.val(valNew);
+    //        }
+    //    });
+    //}
+
+
+
+    // Добавление и изменение графика работы
+    $('#containerTimeTables').on('click', '#setTimeTables', function (e) {
+        e.preventDefault();
+        console.log('btn click 1 setTimeTables: ', e.target);
+
+        let btn_setTimeTables = $(this);
+        let companyId = btn_setTimeTables.attr('data-id');
+
+        $.get('@Url.Action("Edit", "TimeTable")', { companyId : companyId }, function (data) {
+            $('#divViewTimeTables').empty();
+
+            $('#formEditTimeTables').html(data);
+
+
+            $('#containerTimeTables').on('click', '#loadSavedTimeTables', function (e) {
+                e.preventDefault();
+                console.log('btn click 2 loadSetedTimeTables: ', e.target);
+
+                let htmlForm = $('#containerTimeTables form').get(0);
+
+                let formData = new FormData(htmlForm);
+                formData.append('companyId', companyId);
+
+                $.ajax({
+                    url: "@Url.Action("EditTimeTable", "TimeTable")",
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (data) {
+                        console.log('data: ', data);
+                        $('#formEditTimeTables').empty();
+                        $('#divViewTimeTables').html(data);
+                        btn_setTimeTables.remove();
+                    },
+                });
+            });
+        });
+    });
+
+
+
+
+    </script>
 }
