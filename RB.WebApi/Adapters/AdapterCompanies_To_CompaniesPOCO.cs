@@ -64,7 +64,7 @@ namespace RB.WebApi.Adapters
                 DescriptionFull = companies.DescriptionFull,
                 DescriptionShort = companies.DescriptionShort,
                 Director = companies.Director,
-                ParentCompany = GetCompaniesPOCO(companies.ParentCompany),
+                //ParentCompany = GetCompaniesPOCO(companies.ParentCompany),
                 ParentCompanyId = companies.ParentCompanyId,
                 Popularity = companies.Popularity,
                 WebSite = companies.WebSite
@@ -84,62 +84,6 @@ namespace RB.WebApi.Adapters
             {
                 var companiesSubcategoriesPOCO = adapterCompaniesSubcategories_To_CompaniewSubcategoriesPOCO.GetCompaniesSubcategoriesPOCO(item);
                 companiesPOCO.CompaniesSubcategories.Add(companiesSubcategoriesPOCO);
-            }
-            //DayWeekTimeTables
-            if (companies.DayWeekTimeTables.Count() <= 0)
-                companies.DayWeekTimeTables = dayweektimeTables.FindBy(d => d.CompanyId == companies.CompanyId).ToList();
-            foreach (var item in companies.DayWeekTimeTables)
-            {
-                var dayweektimeTablesPOCO = adapterDayWeekTimeTables_To_DayWeekTimeTablesPOCO.GetDayWeekTimeTablesPOCO(item);
-                companiesPOCO.DayWeekTimeTables.Add(dayweektimeTablesPOCO);
-            }
-            //Emails
-            if (companies.Emails.Count() <= 0)
-                companies.Emails = emails.FindBy(e => e.CompanyId == companies.CompanyId).ToList();
-            foreach (var item in companies.Emails)
-            {
-                var emailsPOCO = adapterEmails_To_EmailsPOCO.GetEmailsPOCO(item);
-                companiesPOCO.Emails.Add(emailsPOCO);
-            }
-            //InverseParentCompany
-            if (companies.InverseParentCompany.Count() <= 0)
-                companies.InverseParentCompany = inverseparentCompany.FindBy(i => i.CompanyId == companies.CompanyId).ToList();
-            foreach (var item in companies.InverseParentCompany)
-            {
-                var inverseparentCompanyPOCO = adapterCompanies_To_CompaniesPOCO.GetCompaniesPOCO(item);
-                companiesPOCO.InverseParentCompany.Add(inverseparentCompanyPOCO);
-            }
-            //Phones
-            if (companies.Phones.Count() <= 0)
-                companies.Phones = phones.FindBy(p => p.CompanyId == companies.CompanyId).ToList();
-            foreach (var item in companies.Phones)
-            {
-                var phonesPOCO = adapterPhones_To_PhonesPOCO.GetPhonesPOCO(item);
-                companiesPOCO.Phones.Add(phonesPOCO);
-            }
-            //Photos
-            if (companies.Photos.Count() <= 0)
-                companies.Photos = photos.FindBy(p => p.CompanyId == companies.CompanyId).ToList();
-            foreach (var item in companies.Photos)
-            {
-                var photosPOCO = adapterPhotos_To_PhotosPOCO.GetPhotosPOCO(item);
-                companiesPOCO.Photos.Add(photosPOCO);
-            }
-            //SocialNets
-            if (companies.SocialNets.Count() <= 0)
-                companies.SocialNets = socialNets.FindBy(s => s.CompanyId == companies.CompanyId).ToList();
-            foreach (var item in companies.SocialNets)
-            {
-                var socialNetsPOCO = adapterSocialNets_To_SocialNetsPOCO.GetSocialNetsPOCO(item);
-                companiesPOCO.SocialNets.Add(socialNetsPOCO);
-            }
-            //UsersCompanies
-            if (companies.UsersCompanies.Count() <= 0)
-                companies.UsersCompanies = usersCompanies.FindBy(p => p.CompanyId == companies.CompanyId).ToList();
-            foreach (var item in companies.UsersCompanies)
-            {
-                var usersCompaniesPOCO = adapterUsersCompanies_To_UsersCompaniesPOCO.GetUsersCompaniesPOCO(item);
-                companiesPOCO.UsersCompanies.Add(usersCompaniesPOCO);
             }
             return companiesPOCO;
         }

@@ -29,14 +29,6 @@ namespace RB.WebApi.Adapters
                 StreetId = streets.StreetId,
                 StreetName = streets.StreetName
             };
-            //Addresses
-            if (streets.Addresses.Count() <= 0)
-                streets.Addresses = addresses.FindBy(a => a.StreetId == streets.StreetId).ToList();
-            foreach (var item in streets.Addresses)
-            {
-                var addressesPOCO = adapterAddresses_To_AddressesPOCO.GetAddressesPOCO(item);
-                streetsPOCO.Addresses.Add(addressesPOCO);
-            }
             return streetsPOCO;
         }
     }

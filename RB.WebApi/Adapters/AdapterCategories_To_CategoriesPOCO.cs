@@ -25,14 +25,6 @@ namespace RB.WebApi.Adapters
                 CategoryId = categories.CategoryId,
                 CategoryName = categories.CategoryName
             };
-            //CompaniesCategories
-            if (categories.CompaniesCategories.Count() <= 0)
-                categories.CompaniesCategories = companiesCategories.FindBy(c => c.CategoryId == categories.CategoryId).ToList();
-            foreach (var item in categories.CompaniesCategories)
-            {
-                var companiesCategoriesPOCO = adapterCompaniesCategories_To_CompaniesCategoriesPOCO.GetCompaniesCategoriesPOCO(item);
-                categoriesPOCO.CompaniesCategories.Add(companiesCategoriesPOCO);
-            }
             return categoriesPOCO;
         }
     }

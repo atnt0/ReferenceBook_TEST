@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace RB.WebApi.Models
+namespace RB.WEBAPI1.Models
 {
     public class CompaniesPOCO
     {

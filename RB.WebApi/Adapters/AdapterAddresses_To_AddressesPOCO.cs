@@ -40,14 +40,6 @@ namespace RB.WebApi.Adapters
                 ZipCode = adapterZipCodes_To_ZipCodesPOCO.GetZipCodesPOCO(addresses.ZipCode),
                 ZipCodeId = addresses.ZipCodeId
             };
-            //Companies
-            if (addresses.Companies.Count() <= 0)
-                addresses.Companies = companies.FindBy(c => c.AddressId == addresses.AddressId).ToList();
-            foreach (var item in addresses.Companies)
-            {
-                var companiesPOCO = adapterCompanies_To_CompaniesPOCO.GetCompaniesPOCO(item);
-                addressesPOCO.Companies.Add(companiesPOCO);
-            }
             return addressesPOCO;
         }
     }

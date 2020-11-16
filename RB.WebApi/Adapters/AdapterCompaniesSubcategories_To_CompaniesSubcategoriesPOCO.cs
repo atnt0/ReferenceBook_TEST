@@ -20,7 +20,6 @@ namespace RB.WebApi.Adapters
         {
             CompaniesSubcategoriesPOCO companiesSubcategoriesPOCO = new CompaniesSubcategoriesPOCO()
             {
-                Company = adapterCompanies_To_CompaniesPOCO.GetCompaniesPOCO(companiesSubcategories.Company),
                 CompanyId = companiesSubcategories.CompanyId,
                 CompanySubcategoryId = companiesSubcategories.CompanySubcategoryId,
                 Subcategory = adapterSubcategories_To_SubcategoriesPOCO.GetSubcategoriesPOCO(companiesSubcategories.Subcategory),

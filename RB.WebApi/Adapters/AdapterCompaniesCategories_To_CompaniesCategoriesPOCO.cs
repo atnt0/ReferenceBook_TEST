@@ -22,9 +22,7 @@ namespace RB.WebApi.Adapters
             CompaniesCategoriesPOCO companiesCategoriesPOCO = new CompaniesCategoriesPOCO()
             {
                 CategoryId = companiesCategories.CategoryId,
-                Category = adapterCategories_To_CategoriesPOCO.GetCategoriesPOCO(companiesCategories.Category),
                 CompanyCategoryId = companiesCategories.CompanyCategoryId,
-                Company = adapterCompanies_To_CompaniesPOCO.GetCompaniesPOCO(companiesCategories.Company),
                 CompanyId = companiesCategories.CompanyId
             };
             return companiesCategoriesPOCO;

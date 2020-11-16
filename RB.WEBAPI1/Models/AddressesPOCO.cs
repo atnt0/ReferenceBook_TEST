@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace RB.WebApi.Models
+namespace RB.WEBAPI1.Models
 {
     public class AddressesPOCO
     {
@@ -14,8 +16,5 @@ namespace RB.WebApi.Models
         public string Apartment { get; set; }
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
-        public CitiesPOCO City { get; set; }
-        public StreetsPOCO Street { get; set; }
-        public ZipCodesPOCO ZipCode { get; set; }
     }
 }
